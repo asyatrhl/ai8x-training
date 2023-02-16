@@ -12,8 +12,7 @@ jobs:
         run: |
           # Your ML workflow goes 
           git clone https://github.com/IntelLabs/distiller.git
-          python3 -m virtualenv env
-          source env/bin/activate
+
           cd distiller
           pip3 install -e .
           #pip install -r requirements.txt

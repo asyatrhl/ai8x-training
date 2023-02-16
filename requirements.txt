@@ -9,3 +9,4 @@ pytsmod==0.3.3
 h5py==3.1.0
 distiller
 matplotlib==3.3.4
+shap==0.41.0

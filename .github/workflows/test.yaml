@@ -12,8 +12,10 @@ jobs:
         run: |
           # Your ML workflow goes 
           git clone https://github.com/IntelLabs/distiller.git
+          python3 -m virtualenv env
+          source env/bin/activate
           cd distiller
-          ls
+          pip3 install -e .
           #pip install -r requirements.txt
           #python train.py --epochs 1 --optimizer Adam --lr 0.00032 --wd 0 --model ai85simplenet --dataset CIFAR100 --device MAX78000 --batch-size 32 --print-freq 1 --validation-split 0 --qat-policy None --use-bias "$@"
           #python regressiontest.py

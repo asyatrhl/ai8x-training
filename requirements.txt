@@ -7,8 +7,7 @@ tensorboard==2.9.0
 opencv-python==4.4.0.46
 pytsmod==0.3.3
 h5py==3.1.0
-distiller
-apputils
+distiller==0.1.2
 matplotlib==3.3.4
 shap==0.41.0
 torchnet==0.0.4

@@ -12,8 +12,5 @@ jobs:
         run: |
           # Your ML workflow goes here
           pip install -r requirements.txt
-          cd distiller
-          pip3 install -e .
-          cd ../
           python train.py --epochs 1 --optimizer Adam --lr 0.00032 --wd 0 --model ai85simplenet --dataset CIFAR100 --device MAX78000 --batch-size 32 --print-freq 1 --validation-split 0 --qat-policy None --use-bias "$@"
           python regressiontest.py

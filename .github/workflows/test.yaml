@@ -13,4 +13,5 @@ jobs:
           # Your ML workflow goes here
           /usr/bin/python3 -m pip install --upgrade pip
           pip install -r requirements.txt
+          python train.py --epochs 1 --optimizer Adam --lr 0.00032 --wd 0 --model ai85simplenet --dataset CIFAR100 --device MAX78000 --batch-size 32 --print-freq 1 --validation-split 0 --qat-policy None --use-bias "$@"
           python regressiontest.py

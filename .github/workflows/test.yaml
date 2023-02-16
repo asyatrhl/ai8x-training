@@ -11,5 +11,6 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Your ML workflow goes here
+          /usr/bin/python3 -m pip install --upgrade pip
           pip install -r requirements.txt
           python regressiontest.py

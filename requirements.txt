@@ -16,4 +16,5 @@ torchaudio==0.8.1
 torchvision==0.9.1
 protobuf==4.21.0
 numba==0.53.1
+soundfile
 Distiller

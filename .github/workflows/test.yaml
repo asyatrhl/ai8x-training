@@ -11,6 +11,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Your ML workflow goes 
+          git clone https://github.com/IntelLabs/distiller.git
           cd distiller
           ls
           #pip install -r requirements.txt

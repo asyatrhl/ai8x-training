@@ -7,12 +7,24 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: trial-check
-        env:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          submodules: recursive
+
+      - name: Setup Pyenv and Install Dependencies
+        uses: gabrielfalcao/pyenv-action@v9
+        with:
+          default: 3.8.11
+          command: |
+            pip3 install -U pip wheel setuptools
+            pip3 install -r requirements.txt
+            
+      - name: Run Tests
+        #env:
+          #repo_token: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Your ML workflow goes 
           #git clone https://github.com/IntelLabs/distiller.git
-          sudo apt update
+          #sudo apt update
           #sudo apt install python3.9
           #python3.9
           #sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.[old-version] 1
@@ -23,6 +35,6 @@ jobs:
         #  pip3 install -e .
          # cd ../
          # pip install -r requirements.txt
-         # python regressiontest.py
+         #  python regressiontest.py
          # python train.py --epochs 1 --optimizer Adam --lr 0.00032 --wd 0 --model ai85simplenet --dataset CIFAR100 --device MAX78000 --batch-size 32 --print-freq 1 --validation-split 0 --qat-policy None --use-bias "$@"
          # python regressiontest.py

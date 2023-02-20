@@ -13,11 +13,11 @@ jobs:
           # Your ML workflow goes 
           #git clone https://github.com/IntelLabs/distiller.git
           sudo apt update
-          sudo apt install python3.9
-          python3.9
-          sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.[old-version] 1
-          sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 2
-          sudo update-alternatives --config python3
+          #sudo apt install python3.9
+          #python3.9
+          #sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.[old-version] 1
+          #sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 2
+          #sudo update-alternatives --config python3
           python3 --version
         # cd distiller
         #  pip3 install -e .

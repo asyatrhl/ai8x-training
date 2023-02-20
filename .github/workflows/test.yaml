@@ -11,9 +11,9 @@ jobs:
           submodules: recursive
 
       - name: Setup Pyenv and Install Dependencies
-        uses: gabrielfalcao/pyenv-action@v11
+        uses: gabrielfalcao/pyenv-action@v13
         with:
-          default: 3.8.16
+          default: 3.9
           command: |
             which pip3
             pip3 install -U pip3

@@ -11,7 +11,7 @@ jobs:
           submodules: recursive
       
       - name: Docker set the environment variable 
-        run: export PIP_ROOT_USER_ACTION=ignore
+        run: pip install --root-user-action=ignore
         
       - name: Setup Pyenv and Install Dependencies
         uses: gabrielfalcao/pyenv-action@v13

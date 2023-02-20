@@ -12,6 +12,7 @@ jobs:
         run: |
           # Your ML workflow goes 
           #git clone https://github.com/IntelLabs/distiller.git
+          sudo apt-get install python-is-python3
           python --version
          # cd distiller
         #  pip3 install -e .

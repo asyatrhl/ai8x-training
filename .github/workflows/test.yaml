@@ -17,6 +17,9 @@ jobs:
         uses: gabrielfalcao/pyenv-action@v13
         with:
           default: 3.8.11
+          command: |
+            pip install -U pip setuptools
+            pip install -r development.txt
           
       - name: create venv
         run: pyenv local 3.8.11 & python3 -m venv venv --prompt ai8x-training 

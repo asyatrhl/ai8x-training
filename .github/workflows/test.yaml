@@ -9,9 +9,6 @@ jobs:
         name: trial-check
         with:
           submodules: recursive
-      
-      - name: Docker set the environment variable 
-        run: pip install --root-user-action=ignore
         
       - name: Setup Pyenv and Install Dependencies
         uses: gabrielfalcao/pyenv-action@v13

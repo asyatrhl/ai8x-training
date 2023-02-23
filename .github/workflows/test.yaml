@@ -21,18 +21,6 @@ jobs:
      #       pip install -U pip setuptools
      #       pip install -r development.txt
       
-      - name: update venv
-        run: apt-get update 
-      
-      - name: install venv
-        run: apt-get install python3-virtualenv
-      
-      - name: create venv
-        run: python -m venv venv --prompt ai8x-training
-        
-      - name: act venv
-        run: source venv/bin/activate
-      
       - name: install dep
         #run: pip3 install -U pip wheel setuptools & pip3 install -r requirements.txt
         run: pip3 install -r requirements.txt

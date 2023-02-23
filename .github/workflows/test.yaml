@@ -10,8 +10,8 @@ jobs:
         with:
           submodules: recursive
         
-      - name: Pip version
-        run: pip -V
+      - name: open shell
+        run:  sudo docker exec -it bash
         
      # - name: Setup Pyenv and Install Dependencies
         #uses: gabrielfalcao/pyenv-action@v13

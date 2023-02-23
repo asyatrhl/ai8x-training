@@ -11,7 +11,10 @@ jobs:
           submodules: recursive
         
       - name: Setup venv
-        run: apt-get update && apt-get install python3-virtualenv
+        run: apt-get update
+      
+      - name: Setup venv2
+        run: apt-get install python3-virtualenv
         
       - name: Venv
         run: python -m venv venv --prompt ai8x-training

@@ -14,7 +14,7 @@ jobs:
         run: apt-get update
       
       - name: Setup venv2
-        run: apt-get install python3-virtualenv
+        run: apt install python3.8-venv
         
       - name: Venv
         run: python -m venv venv --prompt ai8x-training

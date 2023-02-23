@@ -22,7 +22,8 @@ jobs:
      #       pip install -r development.txt
       
       - name: install venv
-        run: apt-get install python3-virtualenv
+        run: apt-get update 
+             apt-get install python3-virtualenv
       
       - name: create venv
         run: python -m venv venv --prompt ai8x-training

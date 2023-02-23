@@ -10,16 +10,8 @@ jobs:
         with:
           submodules: recursive
         
-      - name: open shell
-        run:  sudo docker exec -it bash
-        
-     # - name: Setup Pyenv and Install Dependencies
-        #uses: gabrielfalcao/pyenv-action@v13
-       # with:
-      #    default: 3.8.11
-     #     command: |
-     #       pip install -U pip setuptools
-     #       pip install -r development.txt
+      - name: Setup venv and Install Dependencies
+        run: apt-get update && apt-get install python3-virtualenv
       
       - name: install dep
         #run: pip3 install -U pip wheel setuptools & pip3 install -r requirements.txt

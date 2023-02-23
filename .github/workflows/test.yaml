@@ -10,8 +10,14 @@ jobs:
         with:
           submodules: recursive
         
-      - name: Setup venv and Install Dependencies
+      - name: Setup venv
         run: apt-get update && apt-get install python3-virtualenv
+        
+      - name: Venv
+        run: python -m venv venv --prompt ai8x-training
+      
+      - name: Venv2
+        run: source venv/bin/activate
       
       - name: install dep
         #run: pip3 install -U pip wheel setuptools & pip3 install -r requirements.txt
@@ -19,12 +25,6 @@ jobs:
             
       - name: Run Tests
         run: python3 --version
-        
-      - name: installin package libgl1
-        run: apt-get update && apt-get install libgl1
-        
-      - name: lsbrelease
-        run:  sudo mv /usr/bin/lsb_release /usr/bin/lsb_release_back
         
       - name: Training Mnist
         run: python train.py --lr 0.1 --optimizer SGD --epochs 1 --deterministic --compress policies/schedule.yaml --model ai85net5 --dataset MNIST --confusion --param-hist --pr-curves --embedding --device MAX78000 "$@"

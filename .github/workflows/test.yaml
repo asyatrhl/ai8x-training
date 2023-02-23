@@ -18,6 +18,9 @@ jobs:
         
       - name: Venv
         run: python -m venv venv --prompt ai8x-training
+        
+      - name: place
+        run: pwd
       
       - name: Venv2
         run: source venv/bin/activate

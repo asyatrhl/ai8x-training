@@ -2,28 +2,21 @@ name: auto-testing
 on: [push]
 jobs:
   build:
-    runs-on: [ubuntu-latest]
-    container: asyatrhl/cml:v1
+    runs-on: maximintegrated1-MS-7C37
+    #container: docker://dvcorg/cml-py3:latest
     steps:
       - uses: actions/checkout@v2
         name: trial-check
         with:
           submodules: recursive
-        
-      - name: Setup venv
-        run: apt-get update
-      
-      - name: Setup venv2
-        run: apt install python3.8-venv
-        
-      - name: Venv
-        run: python -m venv venv --prompt ai8x-training
-        
-      - name: place
-        run: pwd
-      
-      - name: Venv2
-        run: source venv/bin/activate
+
+      - name: Setup Pyenv and Install Dependencies
+        uses: gabrielfalcao/pyenv-action@v13
+        with:
+          default: 3.8.11
+          
+      - name: create venv
+        run: pyenv local 3.8.11 & python3 -m venv venv --prompt ai8x-training 
       
       - name: install dep
         #run: pip3 install -U pip wheel setuptools & pip3 install -r requirements.txt
@@ -34,3 +27,6 @@ jobs:
         
       - name: Training Mnist
         run: python train.py --lr 0.1 --optimizer SGD --epochs 1 --deterministic --compress policies/schedule.yaml --model ai85net5 --dataset MNIST --confusion --param-hist --pr-curves --embedding --device MAX78000 "$@"
+
+        
+        

@@ -2,7 +2,7 @@ name: auto-testing
 on: [push]
 jobs:
   build:
-    runs-on: maximintegrated1-MS-7C37
+    runs-on: self-hosted
     #container: docker://dvcorg/cml-py3:latest
     steps:
       - uses: actions/checkout@v2

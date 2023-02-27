@@ -25,6 +25,9 @@ jobs:
       - name: Run Tests
         run: python3 --version
         
+      - name: cuda version
+        run: nvcc --version
+        
       - name: Training Mnist
         run: python train.py --lr 0.1 --optimizer SGD --epochs 1 --deterministic --compress policies/schedule.yaml --model ai85net5 --dataset MNIST --confusion --param-hist --pr-curves --embedding --device MAX78000 "$@"
 

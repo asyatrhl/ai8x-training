@@ -2,22 +2,17 @@ name: auto-testing
 on: [push]
 jobs:
   build:
-    runs-on: [ubuntu-latest]
-    #runs-on: self-hosted
+    #runs-on: [ubuntu-latest]
+    runs-on: self-hosted
     #container: docker://dvcorg/cml-py3:latest
     steps:
       - uses: actions/checkout@v2
         name: trial-check
         with:
           submodules: recursive
-
-      - name: Setup Pyenv and Install Dependencies
-        uses: gabrielfalcao/pyenv-action@v13
-        with:
-          default: 3.8.11
           
-      - name: create venv
-        run: pyenv local 3.8.11 & python3 -m venv venv --prompt ai8x-training 
+      - name: activate venv
+        run: conda activate pytorch_18 
       
       - name: install dep
         run: pip3 install -U pip wheel setuptools && pip3 install -r requirements.txt

@@ -6,10 +6,10 @@ def joining(list):
     return str
 
 # Folder containing the files to be concatenated
-folder_path = r"C:\Users\aturhal\Desktop\ai\source\ai8x-training\scripts"
+folder_path = r"/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts"
 
 # Output file name and path
-output_file_path = r"C:\Users\aturhal\Desktop\ai\source\ai8x-training\scripts\output_file.sh"
+output_file_path = r"/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh"
 
 # Regular expression pattern to match the "asya" script with any number
 

@@ -6,10 +6,10 @@ def joining(list):
     return str
 
 # Folder containing the files to be concatenated
-folder_path = r"/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts"
+folder_path = r"C:\Users\aturhal\Desktop\ai\source\ai8x-training\scripts"
 
 # Output file name and path
-output_file_path = r"/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh"
+output_file_path = r"C:\Users\aturhal\Desktop\ai\source\ai8x-training\scripts\output_file.sh"
 
 # Regular expression pattern to match the "asya" script with any number
 
@@ -23,11 +23,11 @@ with open(output_file_path, "w") as output_file:
                 contents = input_file.read()
 
             temp = contents.split()
+            temp.insert(1, "\n")
             i = temp.index('--epochs')
             
-            
             #temp[i+1] = str(int(temp[i+1])*10/100) 
-            temp[i+1] = str(5)
+            temp[i+1] = str(54)
             temp.append("\n")
             contents = joining(temp)
             # Replace the number in the "--epochs" script

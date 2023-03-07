@@ -2,9 +2,9 @@ name: auto-testing
 on: [push]
 jobs:
   build:
-    #runs-on: [ubuntu-latest]
-    runs-on: self-hosted
-    #container: docker://dvcorg/cml-py3:latest
+    runs-on: [ubuntu-latest]
+    #runs-on: self-hosted
+    container: docker://dvcorg/cml-py3:latest
     steps:
       - uses: actions/checkout@v2
         name: trial-check

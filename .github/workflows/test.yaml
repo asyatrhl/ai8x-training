@@ -9,36 +9,3 @@ jobs:
         name: trial-check
         with:
           submodules: recursive
-
-      - name: Setup Pyenv and Install Dependencies
-        uses: gabrielfalcao/pyenv-action@v13
-        with:
-          default: 3.8.11
-          
-      - name: install venv
-        run: pip install virtualenv
-        
-      - name: create venv
-        run: pyenv local 3.8.11 & python3 -m venv venv --prompt ai8x-training 
-      
-      - name: activate venv
-        run: source venv/bin/activate
-      
-      - name: install dep
-        run: pip3 install -U pip wheel setuptools && pip3 install -r requirements-cu11.txt
-
-      #- name: Create Test Script
-       # run: python create_test_script.py
-
-       #- name: Training Cifar 0.50
-        #run: bash /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh
-        
-     # - name: Imagenet
-      #  run: python train.py --deterministic --epochs 5 --optimizer Adam --lr 0.001 --wd 0 --compress policies/schedule-imagenet-effnet2.yaml --model ai87imageneteffnetv2 --dataset ImageNet --data /data_ssd/raw/ --device MAX78002 --batch-size 32 --print-freq 100 --validation-split 0 --use-bias --qat-policy policies/qat_policy_imagenet.yaml "$@"
-
-      #- name: Camvid
-       # run: python train.py --deterministic --epochs 5 --optimizer Adam --lr 0.001 --wd 0 --model ai85unetlarge --out-fold-ratio 4 --use-bias --dataset CamVid_s352_c3 --data /data/raw/CamVid_All/ --device MAX78000 --batch-size 32 --qat-policy policies/qat_policy_camvid.yaml --compress policies/schedule-camvid.yaml --validation-split 0 
-
-
-      - name: AI_Segment
-        run: python train.py --deterministic --pr-curves --epochs 5 --optimizer Adam --lr 0.001 --wd 0 --model ai85unetlarge --out-fold-ratio 4 --use-bias --dataset AISegment_352 --data /data/raw/ --device MAX78000 --batch-size 32 --qat-policy policies/qat_policy_aisegment.yaml --compress policies/schedule-aisegment.yaml --validation-split 0 --print-freq 250   "$@"

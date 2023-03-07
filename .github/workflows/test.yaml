@@ -35,4 +35,4 @@ jobs:
       #  run: python train.py --deterministic --epochs 5 --optimizer Adam --lr 0.001 --wd 0 --compress policies/schedule-imagenet-effnet2.yaml --model ai87imageneteffnetv2 --dataset ImageNet --data /data_ssd/raw/ --device MAX78002 --batch-size 32 --print-freq 100 --validation-split 0 --use-bias --qat-policy policies/qat_policy_imagenet.yaml "$@"
 
       - name: Camvid
-        run: python train.py --deterministic --epochs 5 --optimizer Adam --lr 0.001 --wd 0 --model ai85unetlarge --out-fold-ratio 4 --use-bias --dataset CamVid_s352_c3 --data /data/raw/ --device MAX78000 --batch-size 32 --qat-policy policies/qat_policy_camvid.yaml --compress policies/schedule-camvid.yaml --validation-split 0 
+        run: python train.py --deterministic --epochs 5 --optimizer Adam --lr 0.001 --wd 0 --model ai85unetlarge --out-fold-ratio 4 --use-bias --dataset CamVid_s352_c3 --data /data/raw/CamVid_All/ --device MAX78000 --batch-size 32 --qat-policy policies/qat_policy_camvid.yaml --compress policies/schedule-camvid.yaml --validation-split 0 

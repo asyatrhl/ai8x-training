@@ -25,9 +25,8 @@ jobs:
       - name: install dep
         run: pip3 install -U pip wheel setuptools && pip3 install -r requirements-cu11.txt
         
-      - name: Test ONXX
-        run: python train.py --epochs 5 --optimizer Adam --lr 0.001 --wd 0 --compress policies/schedule-cifar100.yaml --model ai85simplenetwide2x --dataset CIFAR100 --device MAX78000 --batch-size 100 --print-freq 100 --validation-split 0 --qat-policy policies/qat_policy_cifar100.yaml --use-bias --summary onnx "$@"
-
+      - name: Test Training
+        run: bash train_test.sh
 
       #- name: Create Test Script
        # run: python create_test_script.py

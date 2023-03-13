@@ -32,7 +32,7 @@ jobs:
         run: python train.py --lr 0.1 --optimizer SGD --epochs 5 --deterministic --seed 1 --compress policies/schedule.yaml --model ai85net5 --dataset MNIST --confusion --param-hist --pr-curves --embedding --device MAX78000 --qat-policy policies/qat_policy_mnist.yaml "$@" 
     
       - name: Create ONNX script
-        run: python onnx_test_script.py
+        run: python create_onnx_scripts.py
         
       - name: Run ONNX
         run: bash /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/onnx_scripts.sh        

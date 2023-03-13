@@ -11,6 +11,8 @@ output_file_path = r"/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-tr
 train_path = r"/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh"
 
 logs_list = os.listdir(folder_path)
+print(logs_list[0])
+print(logs_list[1])
 
 models = []
 datasets = []
@@ -37,7 +39,7 @@ with open(output_file_path, "w") as onnx_scripts:
 
     final = []
     for i in range(len(models)):
-        temp = "python train.py --model --dataset --evaluate --exp-load-weights-from --device MAX78000 --summary onnx "
+        temp = "python train.py --model --dataset --evaluate --exp-load-weights-from --device MAX78000 --summary onnx --use-bias"
         temp = temp.split()
         temp.insert(3, models[i] )
         temp.insert(5, datasets[i])

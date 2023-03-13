@@ -6,9 +6,9 @@ def joining(list):
     str = ' '.join(list)
     return str
 
-folder_path= r"C:\Users\aturhal\Desktop\ai\source\ai8x-training\logs"
-output_file_path = r"C:\Users\aturhal\Desktop\ai\source\ai8x-training\scripts\onnx_scripts.sh"
-train_path = r"C:\Users\aturhal\Desktop\ai\source\ai8x-training\scripts\output_file.sh"
+folder_path= r"/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs"
+output_file_path = r"/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/onnx_scripts.sh"
+train_path = r"/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh"
 
 logs_list = os.listdir(folder_path)
 

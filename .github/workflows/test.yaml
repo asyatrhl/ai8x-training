@@ -26,7 +26,14 @@ jobs:
         run: pip3 install -U pip wheel setuptools && pip3 install -r requirements-cu11.txt
         
       - name: Test Training
-        run: bash /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/train_test.sh
+        run:  python train.py --epochs 5 --optimizer Adam --lr 0.00032 --wd 0 --compress policies/schedule-cifar100.yaml --model ai85simplenet --dataset CIFAR100 --device MAX78000 --batch-size 32 --print-freq 100 --validation-split 0 --qat-policy None --use-bias "$@" 
+              python train.py --lr 0.1 --optimizer SGD --epochs 5 --deterministic --seed 1 --compress policies/schedule.yaml --model ai85net5 --dataset MNIST --confusion --param-hist --pr-curves --embedding --device MAX78000 --qat-policy policies/qat_policy_mnist.yaml "$@" 
+  
+      - name: Create ONNX script
+        run: python onnx_test_script.py
+        
+      - name: Run ONNX
+        run: bash /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/onnx_scripts.sh        
 
       #- name: Create Test Script
        # run: python create_test_script.py
@@ -39,7 +46,6 @@ jobs:
 
       #- name: Camvid
        # run: python train.py --deterministic --epochs 5 --optimizer Adam --lr 0.001 --wd 0 --model ai85unetlarge --out-fold-ratio 4 --use-bias --dataset CamVid_s352_c3 --data /data/raw/CamVid_All/ --device MAX78000 --batch-size 32 --qat-policy policies/qat_policy_camvid.yaml --compress policies/schedule-camvid.yaml --validation-split 0 
-
-
+       
       #- name: SVHN
        # run: python train.py --deterministic --print-freq 200 --pr-curves --epochs 5 --optimizer Adam --lr 0.001 --wd 0 --model ai85tinierssd --use-bias --momentum 0.9 --weight-decay 5e-4 --dataset SVHN_74 --data /data/SVHN --device MAX78000 --obj-detection --obj-detection-params parameters/obj_detection_params_svhn.yaml --batch-size 16 --qat-policy policies/qat_policy_svhn.yaml --validation-split 0 "$@" 

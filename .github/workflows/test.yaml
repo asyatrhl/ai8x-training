@@ -4,7 +4,7 @@ jobs:
   build:
     #runs-on: [ubuntu-latest]
     runs-on: self-hosted
-    container: docker://dvcorg/cml-py3:latest
+    container: docker://ghcr.io/iterative/cml:0-dvc2-base1
     steps:
       - uses: actions/checkout@v2
         name: trial-check

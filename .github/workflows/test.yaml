@@ -21,10 +21,10 @@ jobs:
         #run: python3 -m venv venv --prompt ai8x-training 
         
       - name: where
-        run: pwd
+        run: /home/asyaturhal/Desktop/ai/source/ai8x-training/venv/bin/
       
       - name: activate venv
-        run: source /home/asyaturhal/Desktop/ai/source/ai8x-training/venv/bin/activate
+        run: pwd
       
       - name: Python version check
         run: python --version

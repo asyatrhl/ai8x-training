@@ -20,14 +20,14 @@ jobs:
         #run: pyenv local 3.8.11 & 
         #run: python3 -m venv venv --prompt ai8x-training 
       
-      #- name: activate venv
-       # run: source venv/bin/activate
+      - name: activate venv
+        run: source /home/asyaturhal/Desktop/ai/source/ai8x-training/venv/bin/activate
       
       - name: Python version check
         run: python --version
       
-      - name: install dep
-        run: pip3 install -U pip wheel setuptools && pip3 install -r requirements-cu11.txt
+      #- name: install dep
+        #run: pip3 install -U pip wheel setuptools && pip3 install -r requirements-cu11.txt
         
       - name: Test Training
         run:  python train.py --epochs 5 --optimizer Adam --lr 0.00032 --wd 0 --compress policies/schedule-cifar100.yaml --model ai85simplenet --dataset CIFAR100 --device MAX78000 --batch-size 32 --print-freq 100 --validation-split 0 --qat-policy None --use-bias "$@" 

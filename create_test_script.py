@@ -11,14 +11,11 @@ folder_path = r"/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-trainin
 # Output file name and path
 output_file_path = r"/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh"
 
-# Regular expression pattern to match the "asya" script with any number
-
 # Loop through all files in the folder
 with open(output_file_path, "w") as output_file:
     for filename in os.listdir(folder_path):
         # Check if the file is a text file
         if filename.startswith("train"):
-            # Open the file and read its contents
             with open(os.path.join(folder_path, filename)) as input_file:
                 contents = input_file.read()
 
@@ -30,7 +27,5 @@ with open(output_file_path, "w") as output_file:
             temp[i+1] = str(5)
             temp.append("\n")
             contents = joining(temp)
-            # Replace the number in the "--epochs" script
 
-            # Write the contents to the output file
             output_file.write(contents)

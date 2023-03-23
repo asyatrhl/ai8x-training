@@ -11,6 +11,9 @@ folder_path = r"/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-trainin
 # Output file name and path
 output_file_path = r"/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh"
 
+global log_file_names 
+log_file_names = []
+
 # Loop through all files in the folder
 with open(output_file_path, "w") as output_file:
     for filename in os.listdir(folder_path):
@@ -22,6 +25,8 @@ with open(output_file_path, "w") as output_file:
             temp = contents.split()
             temp.insert(1, "\n")
             i = temp.index('--epochs')
+            
+            log_file_names.append(filename[:-3])
             
             #temp[i+1] = str(int(temp[i+1])*10/100) 
             temp[i+1] = str(5)

@@ -41,7 +41,7 @@ jobs:
         run: python log_name.py
         
       - name: Save Log Files
-        run: cp -r /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/ /home/asyaturhal/desktop/ai/$(date +"%k-%M-%d-%m-%Y")
+        run: cp -r /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/ /home/asyaturhal/desktop/ai/test_logs/$(date +"%k-%M-%d-%m-%Y")
 
       #- name: Create Test Script
        # run: python create_test_script.py

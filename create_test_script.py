@@ -32,5 +32,7 @@ with open(output_file_path, "w") as output_file:
             temp[i+1] = str(5)
             temp.append("\n")
             contents = joining(temp)
-
+   
             output_file.write(contents)
+
+    log_file_names.remove("train_test")

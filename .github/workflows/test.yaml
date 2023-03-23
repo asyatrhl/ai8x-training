@@ -41,8 +41,12 @@ jobs:
       - name: Create ONNX script
         run: python create_onnx_scripts.py
         
-      - name: Run ONNX
-        run: bash ./scripts/onnx_scripts.sh   
+    
+      #- name: Run ONNX
+     #   run: bash ./scripts/onnx_scripts.sh 
+     
+      - name: Chane Log names
+        run: python log_name.py
         
       #- name: Save Log Files
         #run: cp -r /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/ /home/asyaturhal/desktop/ai/$(date +"%k-%M-%d-%m-%Y")

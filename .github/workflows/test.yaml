@@ -49,7 +49,7 @@ jobs:
        #- name: Training Cifar 0.50
         #run: bash /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh
         
-     # - name: Imagenet
+      #- name: Imagenet
       #  run: python train.py --deterministic --epochs 5 --optimizer Adam --lr 0.001 --wd 0 --compress policies/schedule-imagenet-effnet2.yaml --model ai87imageneteffnetv2 --dataset ImageNet --data /data_ssd/raw/ --device MAX78002 --batch-size 32 --print-freq 100 --validation-split 0 --use-bias --qat-policy policies/qat_policy_imagenet.yaml "$@"
 
       #- name: Camvid

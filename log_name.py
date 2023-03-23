@@ -1,7 +1,7 @@
 import os
 from create_test_script import log_file_names
 
-sh_path = r'/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/'
+sh_path = r'/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs'
 
 with open(sh_path, "r") as f:
     lines = f.readlines()

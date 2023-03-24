@@ -5,6 +5,8 @@ log_path = r'/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/l
 
 log_list = os.listdir(log_path)
 
+log_list = sorted(log_list)
+
 print(log_list)
 print(log_file_names)
 

@@ -37,8 +37,8 @@ jobs:
       #- name: Run ONNX
       #  run: bash /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/onnx_scripts.sh  
       
-     # - name: Change Log Names
-      #  run: python log_name.py
+      - name: Change Log Names
+        run: python log_name.py
         
       - name: Save Log Files
         run: cp -r /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/ /home/asyaturhal/desktop/ai/test_logs/$(date +"%Y-%m-%d-%k-%M-")

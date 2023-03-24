@@ -35,4 +35,4 @@ with open(output_file_path, "w") as output_file:
    
             output_file.write(contents)
 
-    log_file_names.remove("train_test")
+log_file_names.remove("train_test") if "train_test" in log_file_names else pass

@@ -34,5 +34,6 @@ with open(output_file_path, "w") as output_file:
             contents = joining(temp)
    
             output_file.write(contents)
-
-log_file_names.remove("train_test") if "train_test" in log_file_names else pass
+    
+if "train_test" in log_file_names:
+    log_file_names.remove("train_test") 

@@ -4,6 +4,7 @@ from create_test_script import log_file_names
 log_path = r'/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs'
 
 log_list = os.listdir(log_path)
+log_list = log_list.reverse()
 
 for (log, name) in zip(log_list, log_file_names) :
     path1 = log_path +  '/' + log

@@ -57,7 +57,7 @@ print(time)
 output_path = r"/home/asyaturhal/desktop/ai/log_diff/" + '/' + str(time)
 os.mkdir(output_path)
 
-loglist = os.listdir(log_asya)
+loglist = sorted(os.listdir(log_asya))
 old_logs_path = log_asya + '/' + loglist[-2]
 new_logs_path = log_asya + '/' + loglist[-1]
 
@@ -65,8 +65,8 @@ print(old_logs_path)
 print(new_logs_path)
 
 i=0
-for files_new in os.listdir(new_logs_path) :
-    if files_new not in os.listdir(old_logs_path):
+for files_new in sorted(os.listdir(new_logs_path)) :
+    if files_new not in sorted(os.listdir(old_logs_path)):
         print('.. not found')
     for files_old in os.listdir(old_logs_path):
         if (files_old == files_new):
@@ -76,8 +76,8 @@ for files_new in os.listdir(new_logs_path) :
             old_path = log_asya + '/' + loglist[-2] + '/' + files_old
             new_path = log_asya + '/' + loglist[-1] + '/' + files_new
 
-            old_files = os.listdir(old_path)
-            new_files = os.listdir(new_path)
+            old_files = sorted(os.listdir(old_path))
+            new_files = sorted(os.listdir(new_path))
 
             old_log_file = [file for file in old_files if file.endswith(".log")][0]
             new_log_file = [file for file in new_files if file.endswith(".log")][0]

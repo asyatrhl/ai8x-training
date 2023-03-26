@@ -1,6 +1,6 @@
 from tabulate import tabulate
 import os
-from termcolor import colored
+#from termcolor import colored
 import datetime
 
 def compare_logs(old_log, new_log, output_name, output_path ) :
@@ -67,7 +67,7 @@ print(new_logs_path)
 i=0
 for files_new in os.listdir(new_logs_path) :
     if files_new not in os.listdir(old_logs_path):
-        print(colored('hello', 'red'))
+        print('.. not found')
     for files_old in os.listdir(old_logs_path):
         if (files_old == files_new):
             print(files_new)

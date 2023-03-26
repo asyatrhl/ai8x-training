@@ -43,6 +43,5 @@ jobs:
       - name: Save Log Files
         run: cp -r /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/ /home/asyaturhal/desktop/ai/test_logs/$(date +"%Y-%m-%d-%k-%M-")
 
-
       - name: Log Diff
         run: python log_comparison.py

@@ -30,8 +30,11 @@ def check_top_value(file, threshold):
 
         print("\033[32m\u2714\033[0m Test passed for {} since in Top1 value changed {} at {}th epoch.".format(model_name, top1_diff, epoch_num))
         return True
-
+    
 for logs in os.listdir(log_path):
-    threshold = float(list(config['{}'.format(logs)]["threshold"])[0])
+    if logs in config:
+        threshold = float(list(config['{}'.format(logs)]["threshold"])[0])
+    else:
+        threshold = 0
     logs = log_path + '/' + str(logs)
     check_top_value(logs, threshold)

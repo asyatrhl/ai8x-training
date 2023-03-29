@@ -5,7 +5,7 @@ import configparser
 config_path = r'/home/asyaturhal/desktop/ai/test_config.conf'
 config = configparser.ConfigParser()
 config.read(config_path)
-log_path = r'/home/asyaturhal/desktop/ai/test_logs/'
+log_path = r'/home/asyaturhal/desktop/ai/test_logs'
 #log_path = r'C:\Users\aturhal\Desktop\test_logs'
 log_path = log_path + '/' + sorted(os.listdir(log_path))[-1]
 

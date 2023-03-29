@@ -45,3 +45,6 @@ jobs:
 
       - name: Log Diff
         run: python log_comparison.py
+        
+      - name: Test Results
+        run: python pass_fail.py

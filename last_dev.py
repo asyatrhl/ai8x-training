@@ -27,4 +27,4 @@ except FileNotFoundError:
 if commit_hash != saved_commit_hash:
     with open(r"/home/asyaturhal/desktop/ai/last_developed/commit_number.txt", "w") as f:
         f.write(commit_hash)
-        repo = git.Repo.clone_from(repo_url, local_path, branch="develop", recursive=True)
+        repo.remotes.origin.pull("develop")

@@ -26,6 +26,9 @@ jobs:
         run: pip3 install -U pip wheel setuptools && pip3 install -r requirements-cu11.txt
          
       - name: Last Develop Check
+        run: python last_dev.py
+      
+      - name: Last Develop Check
         run: python last_dev_train.py
         
       # - name: Create Test Script

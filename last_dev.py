@@ -69,7 +69,9 @@ def dev_checkout():
 
     cmd_cmd = "cd /home/asyaturhal/desktop/ai/last_developed/last_dev_logs/"
     cmd_command = "bash /home/asyaturhal/desktop/ai/last_developed/dev_scripts/last_dev_train.sh"
-
+    
+    subprocess.run(cmd_command, shell=True, check=True)
+    
     if commit_hash != saved_commit_hash:
         with open(r"/home/asyaturhal/desktop/ai/last_developed/commit_number.txt", "w") as f:
             f.write(commit_hash)

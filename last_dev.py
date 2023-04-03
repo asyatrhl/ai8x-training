@@ -38,7 +38,7 @@ log_file_names = []
 # Loop through all files in the folder
 def dev_scripts (script_path, output_file_path ):
     with open(output_file_path, "w") as output_file:
-        for filename in os.listdir(script_path):
+        for filename in sorted(os.listdir(script_path)):
             # Check if the file is a text file
             if filename.startswith("train"):
                     # Open the file and read its contents
@@ -60,7 +60,6 @@ def dev_scripts (script_path, output_file_path ):
 
                     # Write the contents to the output file
                     output_file.write(contents)
-                    return log_file_names
 
 def dev_checkout():
     # Define the URL of the repository and the local path to clone it to
@@ -83,8 +82,6 @@ def dev_checkout():
     except FileNotFoundError:
         saved_commit_hash = ""
 
-
-    log_file_names = dev_scripts(script_path, output_file_path)
     cmd_cmd = "cd /home/asyaturhal/desktop/ai/last_developed/last_dev_logs/"
     cmd_command = "bash /home/asyaturhal/desktop/ai/last_developed/dev_scripts/last_dev_train.sh"
     log_name(log_file_names)

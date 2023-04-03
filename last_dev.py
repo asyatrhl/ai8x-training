@@ -80,17 +80,6 @@ def dev_checkout():
             saved_commit_hash = f.read().strip()
     except FileNotFoundError:
         saved_commit_hash = ""
-        
-#     dev_scripts(script_path, output_file_path)
-    
-#     cmd_command = "bash /home/asyaturhal/desktop/ai/last_developed/dev_scripts/last_dev_train.sh"
-#     subprocess.run(cmd_command, shell=True, check=True)
-#     log_name(log_file_names)
-    
-#     source_path = "/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/"
-#     destination_path = "/home/asyaturhal/desktop/ai/last_developed/dev_logs/" + datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-
-#     subprocess.run(['mv', source_path, destination_path], check=True)
 
     if commit_hash != saved_commit_hash:
         with open(r"/home/asyaturhal/desktop/ai/last_developed/commit_number.txt", "w") as f:

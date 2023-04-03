@@ -82,9 +82,9 @@ def dev_checkout():
         saved_commit_hash = ""
         
     dev_scripts(script_path, output_file_path)
+    
     cmd_cmd = "cd /home/asyaturhal/desktop/ai/last_developed/last_dev_logs/"
     cmd_command = "bash /home/asyaturhal/desktop/ai/last_developed/dev_scripts/last_dev_train.sh"
-    move_cmd = "mv -r /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/ /home/asyaturhal/desktop/ai/last_developed/dev_logs/$(date +"%Y")"
     subprocess.run(cmd_command, shell=True, check=True)
     log_name(log_file_names)
     

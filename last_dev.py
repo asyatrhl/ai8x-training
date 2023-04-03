@@ -1,6 +1,7 @@
 import git
 import os
 import subprocess
+import datetime
 
 def log_name(log_file_names):
     log_path = r'/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs'
@@ -86,7 +87,11 @@ def dev_checkout():
     move_cmd = "mv -r /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/ /home/asyaturhal/desktop/ai/last_developed/dev_logs/$(date +"%Y")"
     subprocess.run(cmd_command, shell=True, check=True)
     log_name(log_file_names)
-    subprocess.run(move_cmd, shell=True, check=True)
+    
+    source_path = "/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/"
+    destination_path = "/home/asyaturhal/desktop/ai/last_developed/dev_logs/" + datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+
+    subprocess.run(['mv', '-r', source_path, destination_path], check=True)
 
     if commit_hash != saved_commit_hash:
         with open(r"/home/asyaturhal/desktop/ai/last_developed/commit_number.txt", "w") as f:

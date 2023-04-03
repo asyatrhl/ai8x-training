@@ -3,8 +3,6 @@ import os
 import subprocess
 
  # Replace with your desired cmd command
-subprocess.run(cmd_command, shell=True, check=True)
-
 
 def joining(list):
     # Join based on the ' ' delimiter

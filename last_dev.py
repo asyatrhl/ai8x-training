@@ -91,7 +91,7 @@ def dev_checkout():
     source_path = "/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/"
     destination_path = "/home/asyaturhal/desktop/ai/last_developed/dev_logs/" + datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
-    subprocess.run(['mv', '-r', source_path, destination_path], check=True)
+    subprocess.run(['mv', source_path, destination_path], check=True)
 
     if commit_hash != saved_commit_hash:
         with open(r"/home/asyaturhal/desktop/ai/last_developed/commit_number.txt", "w") as f:

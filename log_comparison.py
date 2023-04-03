@@ -84,7 +84,7 @@ for files_new in sorted(os.listdir(new_logs_path)) :
             old_log_file = [file for file in old_files if file.endswith(".log")][0]
             new_log_file = [file for file in new_files if file.endswith(".log")][0]
 
-            old_path_log = log_old + '/' + loglist_old[-2] + '/' + files_old + '/' + old_log_file
+            old_path_log = log_old + '/' + loglist_old[-1] + '/' + files_old + '/' + old_log_file
             new_path_log = log_asya + '/' + loglist[-1] + '/' + files_new + '/' + new_log_file
 
             #print(old_log_file)

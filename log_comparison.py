@@ -48,8 +48,7 @@ def compare_logs(old_log, new_log, output_name, output_path ) :
         output_file.write(tabulate(top1, headers=header))
 
 log_asya = r'/home/asyaturhal/desktop/ai/test_logs/'
-log_
-= r'/home/asyaturhal/desktop/ai/last_developed/dev_logs/'
+log_old = r'/home/asyaturhal/desktop/ai/last_developed/dev_logs/'
 
 time = str(datetime.datetime.now())
 

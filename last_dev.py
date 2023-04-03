@@ -98,7 +98,6 @@ def dev_checkout():
             repo.remotes.origin.pull("develop")
             
             dev_scripts(script_path, output_file_path)
-            subprocess.run(cmd_command, shell=True, check=True)
             
             log_name(log_file_names)
             

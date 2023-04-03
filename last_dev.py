@@ -67,6 +67,7 @@ def dev_checkout():
     except FileNotFoundError:
         saved_commit_hash = ""
 
+    cmd_cmd = "cd /home/asyaturhal/desktop/ai/last_developed/last_dev_logs/"
     cmd_command = "bash /home/asyaturhal/desktop/ai/last_developed/dev_scripts/last_dev_train.sh"
 
     if commit_hash != saved_commit_hash:
@@ -74,7 +75,7 @@ def dev_checkout():
             f.write(commit_hash)
             repo.remotes.origin.pull("develop")
             dev_scripts(script_path, output_file_path)
+            subprocess.run(cmd_cmd, shell=True, check=True)
             subprocess.run(cmd_command, shell=True, check=True)
-
 
 dev_checkout()

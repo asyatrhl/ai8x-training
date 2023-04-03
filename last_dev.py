@@ -61,10 +61,7 @@ def dev_scripts (script_path, output_file_path ):
                     output_file.write(contents)
 
 def dev_checkout():
-    # Define the URL of the repository and the local path to clone it to
-    # repo_url = "https://github.com/MaximIntegratedAI/ai8x-training.git"
-    # local_path = r"C:\Users\aturhal\Desktop\new-ai\source"
-
+    
     repo_url = "https://github.com/MaximIntegratedAI/ai8x-training.git"
     local_path = r'/home/asyaturhal/desktop/ai/last_developed/last_dev_source/'
 

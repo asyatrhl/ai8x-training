@@ -66,7 +66,7 @@ def dev_checkout():
     # local_path = r"C:\Users\aturhal\Desktop\new-ai\source"
 
     repo_url = "https://github.com/MaximIntegratedAI/ai8x-training.git"
-    local_path = r'/home/asyaturhal/desktop/ai/last_developed/last_dev_logs/'
+    local_path = r'/home/asyaturhal/desktop/ai/last_developed/last_dev_source/'
 
     try:
         repo = git.Repo(local_path)
@@ -81,27 +81,30 @@ def dev_checkout():
     except FileNotFoundError:
         saved_commit_hash = ""
         
-    dev_scripts(script_path, output_file_path)
+#     dev_scripts(script_path, output_file_path)
     
-    cmd_cmd = "cd /home/asyaturhal/desktop/ai/last_developed/last_dev_logs/"
-    cmd_command = "bash /home/asyaturhal/desktop/ai/last_developed/dev_scripts/last_dev_train.sh"
-    subprocess.run(cmd_command, shell=True, check=True)
-    log_name(log_file_names)
+#     cmd_command = "bash /home/asyaturhal/desktop/ai/last_developed/dev_scripts/last_dev_train.sh"
+#     subprocess.run(cmd_command, shell=True, check=True)
+#     log_name(log_file_names)
     
-    source_path = "/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/"
-    destination_path = "/home/asyaturhal/desktop/ai/last_developed/dev_logs/" + datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+#     source_path = "/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/"
+#     destination_path = "/home/asyaturhal/desktop/ai/last_developed/dev_logs/" + datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
-    subprocess.run(['mv', source_path, destination_path], check=True)
+#     subprocess.run(['mv', source_path, destination_path], check=True)
 
     if commit_hash != saved_commit_hash:
         with open(r"/home/asyaturhal/desktop/ai/last_developed/commit_number.txt", "w") as f:
             f.write(commit_hash)
             repo.remotes.origin.pull("develop")
+            
             dev_scripts(script_path, output_file_path)
-            subprocess.run(cmd_cmd, shell=True, check=True)
             subprocess.run(cmd_command, shell=True, check=True)
-
-
+            
+            log_name(log_file_names)
+            
+            source_path = "/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/"
+            destination_path = "/home/asyaturhal/desktop/ai/last_developed/dev_logs/" + datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            subprocess.run(['mv', source_path, destination_path], check=True)
 
 
 dev_checkout()

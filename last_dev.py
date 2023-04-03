@@ -1,31 +1,9 @@
 import git
 import os
+import subprocess
 
-def dev_checkout():
-    # Define the URL of the repository and the local path to clone it to
-    # repo_url = "https://github.com/MaximIntegratedAI/ai8x-training.git"
-    # local_path = r"C:\Users\aturhal\Desktop\new-ai\source"
-
-    repo_url = "https://github.com/MaximIntegratedAI/ai8x-training.git"
-    local_path = r'/home/asyaturhal/desktop/ai/last_developed/last_dev_logs/'
-
-    try:
-        repo = git.Repo(local_path)
-    except git.exc.InvalidGitRepositoryError:
-        repo = git.Repo.clone_from(repo_url, local_path, branch="develop", recursive=True)
-
-    commit_hash = repo.heads.develop.object.hexsha
-
-    try:
-        with open(r"/home/asyaturhal/desktop/ai/last_developed/commit_number.txt", "r") as f:
-            saved_commit_hash = f.read().strip()
-    except FileNotFoundError:
-        saved_commit_hash = ""
-
-    if commit_hash != saved_commit_hash:
-        with open(r"/home/asyaturhal/desktop/ai/last_developed/commit_number.txt", "w") as f:
-            f.write(commit_hash)
-            repo.remotes.origin.pull("develop")
+ # Replace with your desired cmd command
+subprocess.run(cmd_command, shell=True, check=True)
 
 
 def joining(list):
@@ -35,7 +13,7 @@ def joining(list):
 
 # Folder containing the files to be concatenated
 #script_path = r"/home/asyaturhal/desktop/ai/last_developed/ai8x-training/scripts_test"
-script_path = r"/home/asyaturhal/desktop/ai/last_developed/scripts_test"
+script_path = r"/home/asyaturhal/desktop/ai/last_developed/ai8x-training/scripts_test"
 
 # Output file name and path
 output_file_path = r"/home/asyaturhal/desktop/ai/last_developed/dev_scripts/last_dev_train.sh"
@@ -70,5 +48,35 @@ def dev_scripts (script_path, output_file_path ):
                     # Write the contents to the output file
                     output_file.write(contents)
 
+def dev_checkout():
+    # Define the URL of the repository and the local path to clone it to
+    # repo_url = "https://github.com/MaximIntegratedAI/ai8x-training.git"
+    # local_path = r"C:\Users\aturhal\Desktop\new-ai\source"
+
+    repo_url = "https://github.com/MaximIntegratedAI/ai8x-training.git"
+    local_path = r'/home/asyaturhal/desktop/ai/last_developed/last_dev_logs/'
+
+    try:
+        repo = git.Repo(local_path)
+    except git.exc.InvalidGitRepositoryError:
+        repo = git.Repo.clone_from(repo_url, local_path, branch="develop", recursive=True)
+
+    commit_hash = repo.heads.develop.object.hexsha
+
+    try:
+        with open(r"/home/asyaturhal/desktop/ai/last_developed/commit_number.txt", "r") as f:
+            saved_commit_hash = f.read().strip()
+    except FileNotFoundError:
+        saved_commit_hash = ""
+
+    cmd_command = "bash /home/asyaturhal/desktop/ai/last_developed/dev_scripts/last_dev_train.sh"
+
+    if commit_hash != saved_commit_hash:
+        with open(r"/home/asyaturhal/desktop/ai/last_developed/commit_number.txt", "w") as f:
+            f.write(commit_hash)
+            repo.remotes.origin.pull("develop")
+            dev_scripts(script_path, output_file_path)
+            subprocess.run(cmd_command, shell=True, check=True)
+
+
 dev_checkout()
-dev_scripts(script_path, output_file_path)

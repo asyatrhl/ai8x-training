@@ -98,6 +98,8 @@ def dev_checkout():
             repo.remotes.origin.pull("develop")
             
             dev_scripts(script_path, output_file_path)
+            cmd_command = "bash /home/asyaturhal/desktop/ai/last_developed/dev_scripts/last_dev_train.sh"
+            subprocess.run(cmd_command, shell=True, check=True)
             
             log_name(log_file_names)
             

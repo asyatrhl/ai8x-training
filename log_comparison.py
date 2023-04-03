@@ -48,7 +48,8 @@ def compare_logs(old_log, new_log, output_name, output_path ) :
         output_file.write(tabulate(top1, headers=header))
 
 log_asya = r'/home/asyaturhal/desktop/ai/test_logs/'
-log_old = r'/home/asyaturhal/desktop/ai/last_developed/dev_logs/'
+log_
+= r'/home/asyaturhal/desktop/ai/last_developed/dev_logs/'
 
 time = str(datetime.datetime.now())
 
@@ -60,7 +61,7 @@ os.mkdir(output_path)
 
 loglist = sorted(os.listdir(log_asya))
 loglist_old = sorted(os.listdir(log_old))
-old_logs_path = log_old + '/' + loglist[-1]
+old_logs_path = log_old + '/' + loglist_old[-1]
 new_logs_path = log_asya + '/' + loglist[-1]
 
 print(old_logs_path)

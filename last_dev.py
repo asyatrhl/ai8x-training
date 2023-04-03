@@ -1,23 +1,6 @@
 import git
 import os
 import subprocess
-import os
-
-def log_name(log_file_names):
-    log_path = r'/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs'
-
-    log_list = os.listdir(log_path)
-
-    log_list = sorted(log_list)
-
-    print(log_list)
-    print(log_file_names)
-
-    for (log, name) in zip(log_list, log_file_names) :
-        path1 = log_path +  '/' + log
-        new_path = log_path +  '/' + name
-        os.rename(path1, new_path)
-
 
 def joining(list):
     # Join based on the ' ' delimiter
@@ -85,7 +68,6 @@ def dev_checkout():
     cmd_cmd = "cd /home/asyaturhal/desktop/ai/last_developed/last_dev_logs/"
     cmd_command = "bash /home/asyaturhal/desktop/ai/last_developed/dev_scripts/last_dev_train.sh"
     subprocess.run(cmd_command, shell=True, check=True)
-    log_name(log_file_names)
 
     if commit_hash != saved_commit_hash:
         with open(r"/home/asyaturhal/desktop/ai/last_developed/commit_number.txt", "w") as f:

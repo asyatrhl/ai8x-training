@@ -27,6 +27,9 @@ with open(output_file_path, "w") as output_file:
             
             log_file_names.append(filename[:-3])
             
+            if '--deterministic' not in temp:
+                temp.insert(-2, '--deterministic')
+            
             #temp[i+1] = str(int(temp[i+1])*10/100) 
             temp[i+1] = str(5)
             temp.append("\n")

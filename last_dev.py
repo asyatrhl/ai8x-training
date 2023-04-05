@@ -33,7 +33,6 @@ output_file_path = r"/home/asyaturhal/desktop/ai/last_developed/dev_scripts/last
 global log_file_names 
 log_file_names = []
 
-
 # Loop through all files in the folder
 def dev_scripts (script_path, output_file_path ):
     with open(output_file_path, "w") as output_file:
@@ -50,7 +49,6 @@ def dev_scripts (script_path, output_file_path ):
 
                     log_file_names.append(filename[:-3])
                 
-            
                     #temp[i+1] = str(int(temp[i+1])*10/100) 
                     temp[i+1] = str(5)
                     temp.append("\n")
@@ -92,6 +90,5 @@ def dev_checkout():
             source_path = "/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/"
             destination_path = "/home/asyaturhal/desktop/ai/last_developed/dev_logs/" + datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
             subprocess.run(['mv', source_path, destination_path], check=True)
-
 
 dev_checkout()

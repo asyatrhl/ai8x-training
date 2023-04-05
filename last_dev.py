@@ -51,6 +51,10 @@ def dev_scripts (script_path, output_file_path ):
                 
                     #temp[i+1] = str(int(temp[i+1])*10/100) 
                     temp[i+1] = str(5)
+                    
+                    if '--deterministic' not in temp:
+                        temp.insert(-2, '--deterministic')
+                    
                     temp.append("\n")
                     contents = joining(temp)
                     # Replace the number in the "--epochs" script

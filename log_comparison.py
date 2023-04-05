@@ -1,9 +1,8 @@
 from tabulate import tabulate
 import os
-#from termcolor import colored
 import datetime
 
-def compare_logs(old_log, new_log, output_name, output_path ) :
+def compare_logs(old_log, new_log, output_name, output_path):
 
     header = ["Epoch number", "Top1 Diff", "Top5 Diff"]
 
@@ -32,8 +31,7 @@ def compare_logs(old_log, new_log, output_name, output_path ) :
 
         top1 = []
 
-    i = 0
-    
+    i = 0    
     for (list1, list2) in zip(log1_list, log2_list):
         i = i+1
 
@@ -51,10 +49,8 @@ log_asya = r'/home/asyaturhal/desktop/ai/test_logs/'
 log_old = r'/home/asyaturhal/desktop/ai/last_developed/dev_logs/'
 
 time = str(datetime.datetime.now())
-
 time = time.replace(' ', '.')
 time = time.replace(':', '.')
-print(time)
 output_path = r"/home/asyaturhal/desktop/ai/log_diff/" + '/' + str(time)
 os.mkdir(output_path)
 
@@ -63,18 +59,12 @@ loglist_old = sorted(os.listdir(log_old))
 old_logs_path = log_old + '/' + loglist_old[-1]
 new_logs_path = log_asya + '/' + loglist[-1]
 
-print(old_logs_path)
-print(new_logs_path)
-
 i=0
 for files_new in sorted(os.listdir(new_logs_path)) :
     if files_new not in sorted(os.listdir(old_logs_path)):
         print(files_new + ' not found')
     for files_old in os.listdir(old_logs_path):
         if (files_old == files_new):
-            print(files_new)
-            print('We can break the loop')
-
             old_path = log_old + '/' + loglist_old[-1] + '/' + files_old
             new_path = log_asya + '/' + loglist[-1] + '/' + files_new
 

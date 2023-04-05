@@ -1,7 +1,6 @@
 import os
 
 def joining(list):
-    # Join based on the ' ' delimiter
     str = ' '.join(list)
     return str
 
@@ -17,7 +16,7 @@ log_file_names = []
 # Loop through all files in the folder
 with open(output_file_path, "w") as output_file:
     for filename in os.listdir(folder_path):
-        # Check if the file is a text file
+        # Check if the file is a train file
         if filename.startswith("train"):
             with open(os.path.join(folder_path, filename)) as input_file:
                 contents = input_file.read()

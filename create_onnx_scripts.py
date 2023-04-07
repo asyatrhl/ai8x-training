@@ -56,5 +56,5 @@ with open(output_file_path, "w") as onnx_scripts:
         process = joining(temp)
         temp.append("\n")
 
-        onnx_scripts.write(temp)
+        onnx_scripts.write(joining(temp))
         subprocess.run(process)

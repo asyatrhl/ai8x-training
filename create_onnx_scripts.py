@@ -54,4 +54,7 @@ with open(output_file_path, "w") as onnx_scripts:
         temp.append(bias[i])
         temp.append("\n")
 
-        onnx_scripts.write(joining(temp))
+        temp = joining(temp)
+
+        onnx_scripts.write(temp)
+        subprocess.run(temp)

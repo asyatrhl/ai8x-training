@@ -53,9 +53,8 @@ with open(output_file_path, "w") as onnx_scripts:
         temp.insert(8, model_path[i])
         temp.append("--summary-filename {}{}onnx".format(models[i],datasets[i]))
         temp.append(bias[i])
+        process = joining(temp)
         temp.append("\n")
 
-        temp = joining(temp)
-
         onnx_scripts.write(temp)
-        subprocess.run(temp)
+        subprocess.run(process)

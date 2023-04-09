@@ -1,6 +1,6 @@
 import os
 import numpy as np
-#import subprocess
+import subprocess
 
 def joining(list):
     # Join based on the ' ' delimiter

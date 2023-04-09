@@ -28,11 +28,8 @@ jobs:
       - name: Last Develop Check
         run: python last_dev.py
         
-      - name: Last Develop Check
-        run: python last_dev.py
-        
       - name: Create Test Script
-        run: pwd
+        run: python create_test_script.py
 
       - name: Run Training Scripts
         run: bash /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh

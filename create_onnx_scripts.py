@@ -56,4 +56,5 @@ with open(output_file_path, "w") as onnx_scripts:
         temp.append("\n")
 
         onnx_scripts.write(joining(temp))
-subprocess.run("bash /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/onnx_scripts.sh")
+cmd_command = "bash /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/onnx_scripts.sh"
+subprocess.run(cmd_command, shell=True, check=True)

@@ -53,8 +53,7 @@ with open(output_file_path, "w") as onnx_scripts:
         temp.insert(8, model_path[i])
         temp.append("--summary-filename {}{}onnx".format(models[i],datasets[i]))
         temp.append(bias[i])
-        #process = joining(temp)
         temp.append("\n")
 
         onnx_scripts.write(joining(temp))
-        #subprocess.run(process)
+subprocess.run("bash /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/onnx_scripts.sh")

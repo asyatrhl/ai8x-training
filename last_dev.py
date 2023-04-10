@@ -37,7 +37,7 @@ def dev_scripts (script_path, output_file_path ):
         for filename in sorted(os.listdir(script_path)):
             # Check if the file is a text file
             if filename.startswith("train"):
-                with open(os.path.join(folder_path, filename)) as input_file:
+                with open(os.path.join(script_path, filename)) as input_file:
                     contents = input_file.read()
 
                 temp = contents.split()

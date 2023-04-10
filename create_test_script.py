@@ -24,11 +24,17 @@ with open(output_file_path, "w") as output_file:
             temp = contents.split()
             temp.insert(1, "\n")
             i = temp.index('--epochs')
+            j = temp.index('--model')
+            k = temp.index('--dataset')
+
+            log_name = temp[j+1] + '-' + temp[k+1]
             
             log_file_names.append(filename[:-3])
             
             if '--deterministic' not in temp:
                 temp.insert(-2, '--deterministic')
+            
+            temp.insert(-1, '--name ' + log_name)
             
             #temp[i+1] = str(int(temp[i+1])*10/100) 
             temp[i+1] = str(5)

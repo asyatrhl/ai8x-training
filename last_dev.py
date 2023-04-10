@@ -5,9 +5,7 @@ import datetime
 
 def log_name(log_file_names):
     log_path = r'/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs'
-
     log_list = os.listdir(log_path)
-
     log_list = sorted(log_list)
 
     print(log_list)
@@ -39,28 +37,30 @@ def dev_scripts (script_path, output_file_path ):
         for filename in sorted(os.listdir(script_path)):
             # Check if the file is a text file
             if filename.startswith("train"):
-                    # Open the file and read its contents
-                with open(os.path.join(script_path, filename)) as input_file:
+                with open(os.path.join(folder_path, filename)) as input_file:
                     contents = input_file.read()
 
-                    temp = contents.split()
-                    temp.insert(1, "\n")
-                    i = temp.index('--epochs')
+                temp = contents.split()
+                temp.insert(1, "\n")
+                i = temp.index('--epochs')
+                j = temp.index('--model')
+                k = temp.index('--dataset')
 
-                    log_file_names.append(filename[:-3])
+                log_name = temp[j+1] + '-' + temp[k+1]
                 
-                    #temp[i+1] = str(int(temp[i+1])*10/100) 
-                    temp[i+1] = str(5)
-                    
-                    if '--deterministic' not in temp:
-                        temp.insert(-2, '--deterministic')
-                    
-                    temp.append("\n")
-                    contents = joining(temp)
-                    # Replace the number in the "--epochs" script
+                log_file_names.append(filename[:-3])
+                
+                if '--deterministic' not in temp:
+                    temp.insert(-2, '--deterministic')
+                
+                temp.insert(-1, '--name ' + log_name)
+                
+                #temp[i+1] = str(int(temp[i+1])*10/100) 
+                temp[i+1] = str(5)
+                temp.append("\n")
+                contents = joining(temp)
 
-                    # Write the contents to the output file
-                    output_file.write(contents)
+                output_file.write(contents)
 
 def dev_checkout():
     

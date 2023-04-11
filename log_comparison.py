@@ -45,7 +45,13 @@ def compare_logs(old_log, new_log, output_name, output_path):
     with open(output_path_2, "w") as output_file:
         output_file.write(tabulate(top1, headers=header))
 
-log_asya = r'/home/asyaturhal/desktop/ai/test_logs/'
+def log_path_list(path):
+    list = []
+    for file in sorted(os.listdir(path)):
+        list.append(file.split("___")[0])
+    return list        
+        
+log_new = r'/home/asyaturhal/desktop/ai/test_logs/'
 log_old = r'/home/asyaturhal/desktop/ai/last_developed/dev_logs/'
 
 time = str(datetime.datetime.now())
@@ -54,19 +60,29 @@ time = time.replace(':', '.')
 output_path = r"/home/asyaturhal/desktop/ai/log_diff/" + '/' + str(time)
 os.mkdir(output_path)
 
-loglist = sorted(os.listdir(log_asya))
+loglist = sorted(os.listdir(log_new))
 loglist_old = sorted(os.listdir(log_old))
-old_logs_path = log_old + '/' + loglist_old[-1]
-new_logs_path = log_asya + '/' + loglist[-1]
+old_logs_path = log_old + '/' + loglist_old[0]
+new_logs_path = log_new + '/' + loglist[0]
 
-i=0
+print(old_logs_path)
+print(new_logs_path)
+
+new_log_list = log_path_list(new_logs_path)
+old_log_list = log_path_list(old_logs_path)
+
 for files_new in sorted(os.listdir(new_logs_path)) :
-    if files_new not in sorted(os.listdir(old_logs_path)):
-        print(files_new + ' not found')
-    for files_old in os.listdir(old_logs_path):
-        if (files_old == files_new):
-            old_path = log_old + '/' + loglist_old[-1] + '/' + files_old
-            new_path = log_asya + '/' + loglist[-1] + '/' + files_new
+    files_new_temp = files_new.split("___")[0]
+    if files_new_temp not in old_log_list:
+        print(files_new_temp + " not found in last developed log files.")
+    for files_old in sorted(os.listdir(old_logs_path)):
+        files_old_temp = files_old.split("___")[0]
+        if (files_old_temp == files_new_temp):
+            print(files_new)
+            print('We can break the loop')
+
+            old_path = old_logs_path + '/' + files_old
+            new_path = new_logs_path + '/' + files_new
 
             old_files = sorted(os.listdir(old_path))
             new_files = sorted(os.listdir(new_path))
@@ -74,12 +90,8 @@ for files_new in sorted(os.listdir(new_logs_path)) :
             old_log_file = [file for file in old_files if file.endswith(".log")][0]
             new_log_file = [file for file in new_files if file.endswith(".log")][0]
 
-            old_path_log = log_old + '/' + loglist_old[-1] + '/' + files_old + '/' + old_log_file
-            new_path_log = log_asya + '/' + loglist[-1] + '/' + files_new + '/' + new_log_file
-
-            #print(old_log_file)
-            #print(old_path_log)
-            #print(new_path_log)
+            old_path_log = old_path + '/' + old_log_file
+            new_path_log = new_path + '/' + new_log_file
         
             compare_logs(old_path_log, new_path_log, files_new, output_path)
             break

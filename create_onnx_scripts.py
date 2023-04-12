@@ -11,8 +11,8 @@ folder_path= r"/home/asyaturhal/desktop/ai/test_logs"
 output_file_path = r"/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/onnx_scripts.sh"
 train_path = r"/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh"
 
-logs_list = sorted(os.listdir(folder_path))[0]
-
+logs_list = folder_path +'/'+ sorted(os.listdir(folder_path))[0]
+print(logs_list)
 models = []
 datasets = []
 model_path = []
@@ -44,9 +44,9 @@ with open(output_file_path, "w") as onnx_scripts:
 #         temp = './logs/{}/checkpoint.pth.tar'.format(file)
 #         model_path.append(temp)
 
-    for file in logs_list:
-        temp = '{}_checkpoint.pth.tar'.format(file)
-        model_path.append(temp)
+    for file in sorted(os.listdir(logs_list)):
+        temp = logs_list + '/{}_checkpoint.pth.tar'.format(file)
+        model_path.append(temp))
 
     for i in range(len(models)):
         temp = "python train.py --model --dataset --evaluate --exp-load-weights-from --device MAX78000 --summary onnx "

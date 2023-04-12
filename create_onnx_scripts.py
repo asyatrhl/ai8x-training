@@ -7,11 +7,11 @@ def joining(list):
     str = ' '.join(list)
     return str
 
-folder_path= r"/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs"
+folder_path= r"/home/asyaturhal/desktop/ai/test_logs"
 output_file_path = r"/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/onnx_scripts.sh"
 train_path = r"/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh"
 
-logs_list = sorted(os.listdir(folder_path))
+logs_list = sorted(os.listdir(folder_path))[0]
 
 models = []
 datasets = []
@@ -40,8 +40,12 @@ with open(output_file_path, "w") as onnx_scripts:
         else:
             bias.append("")
 
+#     for file in logs_list:
+#         temp = './logs/{}/checkpoint.pth.tar'.format(file)
+#         model_path.append(temp)
+
     for file in logs_list:
-        temp = './logs/{}/checkpoint.pth.tar'.format(file)
+        temp = '{}_checkpoint.pth.tar'.format(file)
         model_path.append(temp)
 
     for i in range(len(models)):

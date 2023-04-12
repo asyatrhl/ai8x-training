@@ -1,67 +1,98 @@
+from tabulate import tabulate
 import os
-import numpy as np
-import subprocess
+import datetime
 
-def joining(list):
-    # Join based on the ' ' delimiter
-    str = ' '.join(list)
-    return str
+def compare_logs(old_log, new_log, output_name, output_path):
 
-folder_path= r"/home/asyaturhal/desktop/ai/test_logs"
-output_file_path = r"/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/onnx_scripts.sh"
-train_path = r"/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh"
+    header = ["Epoch number", "Top1 Diff", "Top5 Diff"]
 
-logs_list = folder_path +'/'+ sorted(os.listdir(folder_path))[0]
-print(logs_list)
-models = []
-datasets = []
-model_path = []
-bias = []
+    with open(old_log, 'r') as f1, open(new_log, 'r') as f2 :
+        file1_content = f1.readlines()
+        file2_content = f2.readlines()
 
-with open(output_file_path, "w") as onnx_scripts:
-    with open(train_path) as input_file:
-        contents = input_file.read()
-    lines = contents.split("#!/bin/sh ")
-    lines = lines[1:]
-    contents = contents.split()
-    contents = np.array(contents)
+        log1_list = []
+        log2_list = []
+        word = 'Best'
 
-    j = [i+1 for i in range(len(contents)) if contents[i]=='--model']
-    for index in j:
-        models.append(contents[index])
+        for line in file1_content:
+            if word in line :
+                list = line.split()
+                log1_list.append(list[5:])
 
-    j = [i+1 for i in range(len(contents)) if contents[i]=='--dataset']
-    for index in j:
-        datasets.append(contents[index])
+        for line in file2_content:
+            if word in line :
+                list = line.split()
+                log2_list.append(list[5:])
 
-    for i in range(len(lines)):
-        if "--use-bias" in lines[i]:
-            bias.append("--use-bias")
-        else:
-            bias.append("")
+        epoch_num = min(len(log1_list), len(log2_list))
 
-#     for file in logs_list:
-#         temp = './logs/{}/checkpoint.pth.tar'.format(file)
-#         model_path.append(temp)
+        log1_list = log1_list[:epoch_num]
+        log2_list = log2_list[:epoch_num]
 
-    for file in sorted(os.listdir(logs_list)):
-        temp_path = logs_list + "/" + file
-        for temp_file in sorted(os.listdir(temp_path)):
-            if temp_file.endswith("_checkpoint.pth.tar"):
-                temp = logs_list + '/{}_checkpoint.pth.tar'.format(temp_file)
-                model_path.append(temp)
+        top1 = []
 
-    for i in range(len(models)):
-        temp = "python train.py --model --dataset --evaluate --exp-load-weights-from --device MAX78000 --summary onnx "
+    i = 0    
+    for (list1, list2) in zip(log1_list, log2_list):
+        i = i+1
 
-        temp = temp.split()
-        temp.insert(3, models[i] )
-        temp.insert(5, datasets[i])
-        temp.insert(8, model_path[i])
-        temp.append("--summary-filename {}{}onnx".format(models[i],datasets[i]))
-        temp.append(bias[i])
-        temp.append("\n")
+        top1_diff = ((float(list2[1])-float(list1[1]))/float(list1[1]))*100
+        top5_diff = ((float(list2[3])-float(list1[3]))/float(list1[1]))*100
 
-        onnx_scripts.write(joining(temp))
-cmd_command = "bash /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/onnx_scripts.sh"
-subprocess.run(cmd_command, shell=True, check=True)
+        top1.append([i, top1_diff, top5_diff])
+
+    output_path_2 = output_path + '/' + output_name + '.txt'
+    print(output_path_2)
+    with open(output_path_2, "w") as output_file:
+        output_file.write(tabulate(top1, headers=header))
+
+def log_path_list(path):
+    list = []
+    for file in sorted(os.listdir(path)):
+        list.append(file.split("___")[0])
+    return list        
+        
+log_new = r'/home/asyaturhal/desktop/ai/test_logs/'
+log_old = r'/home/asyaturhal/desktop/ai/last_developed/dev_logs/'
+
+time = str(datetime.datetime.now())
+time = time.replace(' ', '.')
+time = time.replace(':', '.')
+output_path = r"/home/asyaturhal/desktop/ai/log_diff/" + '/' + str(time)
+os.mkdir(output_path)
+
+loglist = sorted(os.listdir(log_new))
+loglist_old = sorted(os.listdir(log_old))
+print(loglist)
+old_logs_path = log_old + loglist_old[-1]
+new_logs_path = log_new + loglist[-1]
+
+print(old_logs_path)
+print(new_logs_path)
+
+new_log_list = log_path_list(new_logs_path)
+old_log_list = log_path_list(old_logs_path)
+
+for files_new in sorted(os.listdir(new_logs_path)) :
+    files_new_temp = files_new.split("___")[0]
+    if files_new_temp not in old_log_list:
+        print(files_new_temp + " not found in last developed log files.")
+    for files_old in sorted(os.listdir(old_logs_path)):
+        files_old_temp = files_old.split("___")[0]
+        if (files_old_temp == files_new_temp):
+            print(files_new)
+            print('We can break the loop')
+
+            old_path = old_logs_path + '/' + files_old
+            new_path = new_logs_path + '/' + files_new
+
+            old_files = sorted(os.listdir(old_path))
+            new_files = sorted(os.listdir(new_path))
+
+            old_log_file = [file for file in old_files if file.endswith(".log")][0]
+            new_log_file = [file for file in new_files if file.endswith(".log")][0]
+
+            old_path_log = old_path + '/' + old_log_file
+            new_path_log = new_path + '/' + new_log_file
+        
+            compare_logs(old_path_log, new_path_log, files_new, output_path)
+            break

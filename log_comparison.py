@@ -62,8 +62,8 @@ os.mkdir(output_path)
 
 loglist = sorted(os.listdir(log_new))
 loglist_old = sorted(os.listdir(log_old))
-old_logs_path = log_old + '/' + loglist_old[0]
-new_logs_path = log_new + '/' + loglist[0]
+old_logs_path = log_old + loglist_old[0]
+new_logs_path = log_new + loglist[0]
 
 print(old_logs_path)
 print(new_logs_path)

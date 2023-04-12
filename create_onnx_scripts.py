@@ -48,7 +48,7 @@ with open(output_file_path, "w") as onnx_scripts:
         temp_path = logs_list + "/" + file
         for temp_file in sorted(os.listdir(temp_path)):
             if temp_file.endswith("_checkpoint.pth.tar"):
-                temp = logs_list + '/{}_checkpoint.pth.tar'.format(temp_file)
+                temp = logs_list + '/{}'.format(temp_file)
                 model_path.append(temp)
 
     for i in range(len(models)):

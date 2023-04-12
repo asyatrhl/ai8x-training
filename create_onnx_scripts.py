@@ -45,8 +45,11 @@ with open(output_file_path, "w") as onnx_scripts:
 #         model_path.append(temp)
 
     for file in sorted(os.listdir(logs_list)):
-        temp = logs_list + '/{}_checkpoint.pth.tar'.format(file)
-        model_path.append(temp)
+        temp_path = logs_list + "/" + file
+        for temp_file in sorted(os.listdir(temp_path)):
+            if temp_file.endswith("_checkpoint.pth.tar"):
+                temp = logs_list + '/{}_checkpoint.pth.tar'.format(temp_file)
+                model_path.append(temp)
 
     for i in range(len(models)):
         temp = "python train.py --model --dataset --evaluate --exp-load-weights-from --device MAX78000 --summary onnx "

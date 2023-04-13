@@ -20,7 +20,7 @@ def compare_logs(old_log, new_log, output_name, output_pth):
     """
     header = ["Epoch number", "Top1 Diff", "Top5 Diff"]
 
-    with open(old_log, 'r', encoding='utf-8') as f1, open(new_log, 'r', encoding='utf-8') as f2 :
+    with open(old_log, 'r', encoding='utf-8') as f1, open(new_log, 'r', encoding='utf-8') as f2:
         file1_content = f1.readlines()
         file2_content = f2.readlines()
 

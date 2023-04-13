@@ -13,12 +13,14 @@ import os
 import subprocess
 import numpy as np
 
+
 def joining(lst):
     """
     Join list based on the ' ' delimiter
     """
     joined_str = ' '.join(lst)
     return joined_str
+
 
 folder_path= r"/home/asyaturhal/desktop/ai/test_logs"
 output_file_path = (
@@ -29,7 +31,7 @@ train_path = (
     r"/home/asyaturhal/actions-runner/_work/"
     r"ai8x-training/ai8x-training/scripts/output_file.sh"
 )
-logs_list = folder_path +'/'+ sorted(os.listdir(folder_path))[-1]
+logs_list = folder_path + '/' + sorted(os.listdir(folder_path))[-1]
 print(logs_list)
 models = []
 datasets = []
@@ -44,11 +46,11 @@ with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
     contents = contents.split()
     contents = np.array(contents)
 
-    j = [i+1 for i in range(len(contents)) if contents[i]=='--model']
+    j = [i+1 for i in range(len(contents)) if contents[i] == '--model']
     for index in j:
         models.append(contents[index])
 
-    j = [i+1 for i in range(len(contents)) if contents[i]=='--dataset']
+    j = [i+1 for i in range(len(contents)) if contents[i] == '--dataset']
     for index in j:
         datasets.append(contents[index])
 

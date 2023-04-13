@@ -9,8 +9,8 @@
 """
 Check the test results
 """
-import os
 import configparser
+import os
 
 # config_path = r'C:\Users\aturhal\Desktop\ai\source\test_config.conf'
 config_path = r'/home/asyaturhal/desktop/ai/test_config.conf'

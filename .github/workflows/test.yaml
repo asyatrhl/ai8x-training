@@ -20,7 +20,7 @@ jobs:
         with:
           repository: asyatrhl/ai8x-training-test-codes
           ref: main
-#           path: test_codes
+          path: test_codes
         
 #     steps:
 #       - uses: actions/checkout@v2
@@ -43,10 +43,10 @@ jobs:
         run: pip3 install -U pip wheel setuptools && pip3 install -r requirements-cu11.txt
          
       - name: Last Develop Check
-        run: python last_dev.py
+        run: python ./test_codes/last_dev.py
         
       - name: Create Test Script
-        run: python create_test_script.py
+        run: python ./test_codes/create_test_script.py
 
       - name: Run Training Scripts
         run: bash /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh
@@ -58,13 +58,13 @@ jobs:
         run: cp -r /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/ /home/asyaturhal/desktop/ai/test_logs/$(date +"%Y-%m-%d-%k-%M-")
 
       - name: Log Diff
-        run: python log_comparison.py
+        run: python ./test_codes/log_comparison.py
         
       - name: Test Results
-        run: python pass_fail.py
+        run: python ./test_codes/pass_fail.py
       
       - name: Create ONNX script
-        run: python create_onnx_scripts.py
+        run: python ./test_codes/create_onnx_scripts.py
       
       - name: Run ONNX
         run: bash /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/onnx_scripts.sh  

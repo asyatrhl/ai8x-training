@@ -1,3 +1,14 @@
+###################################################################################################
+#
+# Copyright (C) 2020-2022 Maxim Integrated Products, Inc. All Rights Reserved.
+#
+# Maxim Integrated Products, Inc. Default Copyright Notice:
+# https://www.maximintegrated.com/en/aboutus/legal/copyrights.html
+#
+###################################################################################################
+"""
+Changing log names
+"""
 import os
 from create_test_script import log_file_names
 

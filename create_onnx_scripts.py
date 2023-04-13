@@ -1,6 +1,3 @@
-fix error:
-create_onnx_scripts.py:44: error: Incompatible types in assignment (expression has type "List[str]", variable has type "str")  [assignment] 
-for code:
 ###################################################################################################
 #
 # Copyright (C) 2020 Maxim Integrated Products, Inc. All Rights Reserved.

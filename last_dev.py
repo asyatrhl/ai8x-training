@@ -58,7 +58,7 @@ def dev_scripts (script_pth, output_file_pth ):
 
                 temp.insert(-1, '--name ' + log_name)
 
-                #temp[i+1] = str(int(temp[i+1])*10/100) 
+                #temp[i+1] = str(int(temp[i+1])*10/100)
                 temp[i+1] = str(5)
                 temp.append("\n")
                 contents = joining(temp)

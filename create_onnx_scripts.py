@@ -8,9 +8,14 @@ def joining(list):
     return str
 
 folder_path= r"/home/asyaturhal/desktop/ai/test_logs"
-output_file_path = r"/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/onnx_scripts.sh"
-train_path = r"/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh"
-
+output_file_path = (
+    r"/home/asyaturhal/actions-runner/_work/"
+    r"ai8x-training/ai8x-training/scripts/onnx_scripts.sh"
+)
+train_path = (
+    r"/home/asyaturhal/actions-runner/_work/"
+    r"ai8x-training/ai8x-training/scripts/output_file.sh"
+)
 logs_list = folder_path +'/'+ sorted(os.listdir(folder_path))[-1]
 print(logs_list)
 models = []
@@ -52,8 +57,15 @@ with open(output_file_path, "w") as onnx_scripts:
                 model_path.append(temp)
 
     for i in range(len(models)):
-        temp = "python train.py --model --dataset --evaluate --exp-load-weights-from --device MAX78000 --summary onnx "
-
+        temp = (
+            "python train.py "
+            "--model "
+            "--dataset "
+            "--evaluate "
+            "--exp-load-weights-from "
+            "--device MAX78000 "
+            "--summary onnx "
+        )
         temp = temp.split()
         temp.insert(3, models[i] )
         temp.insert(5, datasets[i])
@@ -63,5 +75,8 @@ with open(output_file_path, "w") as onnx_scripts:
         temp.append("\n")
 
         onnx_scripts.write(joining(temp))
-cmd_command = "bash /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/onnx_scripts.sh"
+cmd_command = (
+    "bash /home/asyaturhal/actions-runner/_work/"
+    "ai8x-training/ai8x-training/scripts/onnx_scripts.sh"
+)
 subprocess.run(cmd_command, shell=True, check=True)

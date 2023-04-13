@@ -1,6 +1,18 @@
+###################################################################################################
+#
+# Copyright (C) 2020-2022 Maxim Integrated Products, Inc. All Rights Reserved.
+#
+# Maxim Integrated Products, Inc. Default Copyright Notice:
+# https://www.maximintegrated.com/en/aboutus/legal/copyrights.html
+#
+###################################################################################################
+
 import os
 
 def joining(list):
+    """
+    Join list based on the ' ' delimiter
+    """
     str = ' '.join(list)
     return str
 

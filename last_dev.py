@@ -28,7 +28,7 @@ script_path = r"/home/asyaturhal/desktop/ai/last_developed/scripts_test"
 # Output file name and path
 output_file_path = r"/home/asyaturhal/desktop/ai/last_developed/dev_scripts/last_dev_train.sh"
 
-global log_file_names 
+#global log_file_names
 log_file_names = []
 
 # Loop through all files in the folder
@@ -100,7 +100,7 @@ def dev_checkout():
 
             source_path = "/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/"
             destination_path = (
-                "/home/asyaturhal/desktop/ai/last_developed/dev_logs/" 
+                "/home/asyaturhal/desktop/ai/last_developed/dev_logs/"
                 + datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
             )
             subprocess.run(['mv', source_path, destination_path], check=True)

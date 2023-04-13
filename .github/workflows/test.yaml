@@ -20,7 +20,7 @@ jobs:
         with:
           repository: asyatrhl/ai8x-training-test-codes
           ref: main
-          path: test_codes
+#           path: test_codes
         
 #     steps:
 #       - uses: actions/checkout@v2

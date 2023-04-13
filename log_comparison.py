@@ -9,8 +9,9 @@
 """
 Compare log files of the pulled code and the last developed
 """
-import os
 import datetime
+import os
+
 from tabulate import tabulate
 
 

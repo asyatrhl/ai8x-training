@@ -9,9 +9,10 @@
 """
 Create the last developed code logs for base testing source
 """
+import datetime
 import os
 import subprocess
-import datetime
+
 import git
 
 

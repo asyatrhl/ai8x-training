@@ -1,11 +1,22 @@
+###################################################################################################
+#
+# Copyright (C) 2020 Maxim Integrated Products, Inc. All Rights Reserved.
+#
+# Maxim Integrated Products, Inc. Default Copyright Notice:
+# https://www.maximintegrated.com/en/aboutus/legal/copyrights.html
+#
+###################################################################################################
+
 import os
 import numpy as np
 import subprocess
 
 def joining(list):
-    # Join based on the ' ' delimiter
-    str = ' '.join(list)
-    return str
+    """
+    Join list based on the ' ' delimiter
+    """
+    joined_str = ' '.join(lst)
+    return joined_str
 
 folder_path= r"/home/asyaturhal/desktop/ai/test_logs"
 output_file_path = (
@@ -23,7 +34,7 @@ datasets = []
 model_path = []
 bias = []
 
-with open(output_file_path, "w") as onnx_scripts:
+with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
     with open(train_path) as input_file:
         contents = input_file.read()
     lines = contents.split("#!/bin/sh ")

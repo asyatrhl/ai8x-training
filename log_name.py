@@ -21,7 +21,7 @@ log_list = sorted(log_list)
 print(log_list)
 print(log_file_names)
 
-for (log, name) in zip(log_list, log_file_names) :
-    path1 = log_path +  '/' + log
-    new_path = log_path +  '/' + name
+for (log, name) in zip(log_list, log_file_names):
+    path1 = log_path + '/' + log
+    new_path = log_path + '/' + name
     os.rename(path1, new_path)

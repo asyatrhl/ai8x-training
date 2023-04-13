@@ -12,13 +12,14 @@ Check the test results
 import os
 import configparser
 
-#config_path = r'C:\Users\aturhal\Desktop\ai\source\test_config.conf'
+# config_path = r'C:\Users\aturhal\Desktop\ai\source\test_config.conf'
 config_path = r'/home/asyaturhal/desktop/ai/test_config.conf'
 config = configparser.ConfigParser()
 config.read(config_path)
 log_path = r'/home/asyaturhal/desktop/ai/log_diff'
-#log_path = r'C:\Users\aturhal\Desktop\test_logs'
+# log_path = r'C:\Users\aturhal\Desktop\test_logs'
 log_path = log_path + '/' + sorted(os.listdir(log_path))[-1]
+
 
 def check_top_value(file, threshold):
     """
@@ -33,15 +34,16 @@ def check_top_value(file, threshold):
         top1 = lines[-1].split()
         epoch_num = int(top1[0])
         top1_diff = float(top1[1])
-        #top5_diff = float(top1[2])
+        # top5_diff = float(top1[2])
 
     if top1_diff < threshold:
-        print(f"\033[31m\u2718\033[0m Test failed for {model_name} since in Top1 value changed "
-             f"{top1_diff} at {epoch_num}th epoch.")         
+        print(f"\033[31m\u2718\033[0m Test failed for {model_name} since in"
+              f" Top1 value changed {top1_diff} at {epoch_num}th epoch.")
         return False
-    print(f"\033[31m\u2718\033[0m Test failed for {model_name} since in Top1 value changed "
-          f"{top1_diff} at {epoch_num}th epoch.")
+    print(f"\033[31m\u2718\033[0m Test failed for {model_name} since in"
+          f" Top1 value changed {top1_diff} at {epoch_num}th epoch.")
     return True
+
 
 for logs in os.listdir(log_path):
     if logs in config:

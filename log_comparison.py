@@ -13,7 +13,7 @@ import os
 import datetime
 from tabulate import tabulate
 
-def compare_logs(old_log, new_log, output_name, output_path):
+def compare_logs(old_log, new_log, output_name, output_pth):
     """
     Take diff top1 of log files of the pulled code and the last developed
     """
@@ -53,7 +53,7 @@ def compare_logs(old_log, new_log, output_name, output_path):
 
         top1.append([i, top1_diff, top5_diff])
 
-    output_path_2 = output_path + '/' + output_name + '.txt'
+    output_path_2 = output_pth + '/' + output_name + '.txt'
     print(output_path_2)
     with open(output_path_2, "w", encoding='utf-8') as output_file:
         output_file.write(tabulate(top1, headers=header))

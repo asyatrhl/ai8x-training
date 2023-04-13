@@ -30,7 +30,7 @@ output_file_path = (
     r"ai8x-training/ai8x-training/scripts/output_file.sh"
 )
 
-global log_file_names
+#global log_file_names
 log_file_names = []
 
 # Loop through all files in the folder

@@ -84,7 +84,7 @@ with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
             f"{bias_value}\n"
         )
         onnx_scripts.write(temp)
-        
+
 cmd_command = (
     "bash /home/asyaturhal/actions-runner/_work/"
     "ai8x-training/ai8x-training/scripts/onnx_scripts.sh"

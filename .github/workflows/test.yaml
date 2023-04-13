@@ -5,12 +5,29 @@ jobs:
     #runs-on: [ubuntu-latest]
     runs-on: self-hosted
     #container: docker://dvcorg/cml-py3:latest
-        
+    
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - uses: actions/checkout@v2
         name: trial-check
         with:
+          repository: rotx-maxim/ai8x-training
+          ref: pytorch-2.0
           submodules: recursive
+          
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+        name: trial-check-2
+        with:
+          repository: asyatrhl/ai8x-training-test-codes
+        
+#     steps:
+#       - uses: actions/checkout@v2
+#         name: trial-check
+#         with:
+#           submodules: recursive
 
       - name: Setup Pyenv and Install Dependencies
         uses: gabrielfalcao/pyenv-action@v13

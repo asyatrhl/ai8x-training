@@ -22,6 +22,7 @@ def joining(lst):
     join_str = ' '.join(lst)
     return join_str
 
+
 # Folder containing the files to be concatenated
 # script_path = r"/home/asyaturhal/desktop/ai/last_developed/ai8x-training/scripts_test"
 script_path = r"/home/asyaturhal/desktop/ai/last_developed/scripts_test"
@@ -34,7 +35,7 @@ log_file_names = []
 
 
 # Loop through all files in the folder
-def dev_scripts (script_pth, output_file_pth):
+def dev_scripts(script_pth, output_file_pth):
     """
     Create training scripts for the last developed code
     """
@@ -60,7 +61,7 @@ def dev_scripts (script_pth, output_file_pth):
 
                 temp.insert(-1, '--name ' + log_name)
 
-                #temp[i+1] = str(int(temp[i+1])*10/100)
+                # temp[i+1] = str(int(temp[i+1])*10/100)
                 temp[i+1] = str(5)
                 temp.append("\n")
                 contents = joining(temp)

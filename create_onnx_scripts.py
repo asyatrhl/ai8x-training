@@ -11,6 +11,7 @@ Create onnx bash scripts for test
 """
 import os
 import subprocess
+
 import numpy as np
 
 

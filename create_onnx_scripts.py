@@ -23,7 +23,7 @@ def joining(lst):
     return joined_str
 
 
-folder_path= r"/home/asyaturhal/desktop/ai/test_logs"
+folder_path = r"/home/asyaturhal/desktop/ai/test_logs"
 output_file_path = (
     r"/home/asyaturhal/actions-runner/_work/"
     r"ai8x-training/ai8x-training/scripts/onnx_scripts.sh"

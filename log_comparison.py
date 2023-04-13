@@ -13,6 +13,7 @@ import os
 import datetime
 from tabulate import tabulate
 
+
 def compare_logs(old_log, new_log, output_name, output_pth):
     """
     Take diff top1 of log files of the pulled code and the last developed
@@ -28,12 +29,12 @@ def compare_logs(old_log, new_log, output_name, output_pth):
         word = 'Best'
 
         for line in file1_content:
-            if word in line :
+            if word in line:
                 lst = line.split()
                 log1_list.append(lst[5:])
 
         for line in file2_content:
-            if word in line :
+            if word in line:
                 lst = line.split()
                 log2_list.append(lst[5:])
 
@@ -58,6 +59,7 @@ def compare_logs(old_log, new_log, output_name, output_pth):
     with open(output_path_2, "w", encoding='utf-8') as output_file:
         output_file.write(tabulate(top1, headers=header))
 
+
 def log_path_list(path):
     """
     Create log names
@@ -66,6 +68,7 @@ def log_path_list(path):
     for file in sorted(os.listdir(path)):
         lst.append(file.split("___")[0])
     return lst
+
 
 log_new = r'/home/asyaturhal/desktop/ai/test_logs/'
 log_old = r'/home/asyaturhal/desktop/ai/last_developed/dev_logs/'
@@ -88,7 +91,7 @@ print(new_logs_path)
 new_log_list = log_path_list(new_logs_path)
 old_log_list = log_path_list(old_logs_path)
 
-for files_new in sorted(os.listdir(new_logs_path)) :
+for files_new in sorted(os.listdir(new_logs_path)):
     files_new_temp = files_new.split("___")[0]
     if files_new_temp not in old_log_list:
         print(files_new_temp + " not found in last developed log files.")

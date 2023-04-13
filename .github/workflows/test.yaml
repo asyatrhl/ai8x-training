@@ -14,11 +14,13 @@ jobs:
           ref: pytorch-2.0
           submodules: recursive
           
-#       - name: Checkout
-#         uses: actions/checkout@v2
-#         with:
-#           repository: asyatrhl/ai8x-training-test-codes
-#           ref: main
+          
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          repository: asyatrhl/ai8x-training-test-codes
+          ref: main
+          path: test_codes
         
 #     steps:
 #       - uses: actions/checkout@v2

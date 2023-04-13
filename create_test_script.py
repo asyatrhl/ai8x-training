@@ -45,3 +45,4 @@ with open(output_file_path, "w") as output_file:
     
 if "train_test" in log_file_names:
     log_file_names.remove("train_test") 
+    

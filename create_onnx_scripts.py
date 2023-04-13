@@ -6,7 +6,9 @@
 # https://www.maximintegrated.com/en/aboutus/legal/copyrights.html
 #
 ###################################################################################################
-
+"""
+Create onnx bash scripts for test
+"""
 import os
 import subprocess
 import numpy as np
@@ -55,7 +57,7 @@ with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
             bias.append("--use-bias")
         else:
             bias.append("")
-            
+
 #     for file in logs_list:
 #         temp = './logs/{}/checkpoint.pth.tar'.format(file)
 #         model_path.append(temp)
@@ -67,7 +69,9 @@ with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
                 temp = f"{temp_path}/{temp_file}"
                 model_path.append(temp)
 
-    for i, (model, dataset, model_path, bias_value) in enumerate(zip(models, datasets, model_path, bias)):
+    for i, (model, dataset, model_path, bias_value) in enumerate(
+        zip(models, datasets, model_path, bias)
+    ):
         temp = (
             f"python train.py "
             f"--model {model} "
@@ -79,7 +83,6 @@ with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
             f"--summary-filename {model}{dataset}onnx "
             f"{bias_value}\n"
         )
-
         onnx_scripts.write(temp)
         
 cmd_command = (

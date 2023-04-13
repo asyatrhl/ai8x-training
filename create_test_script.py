@@ -11,6 +11,7 @@ Create training bash scripts for test
 """
 import os
 
+
 def joining(lst):
     """
     Join list based on the ' ' delimiter
@@ -18,11 +19,13 @@ def joining(lst):
     join_str = ' '.join(lst)
     return join_str
 
+
 # Folder containing the files to be concatenated
 folder_path = (
     r"/home/asyaturhal/actions-runner/_work/"
     r"ai8x-training/ai8x-training/scripts_test"
 )
+
 
 # Output file name and path
 output_file_path = (
@@ -30,7 +33,8 @@ output_file_path = (
     r"ai8x-training/ai8x-training/scripts/output_file.sh"
 )
 
-#global log_file_names
+
+# global log_file_names
 log_file_names = []
 
 # Loop through all files in the folder
@@ -56,7 +60,7 @@ with open(output_file_path, "w", encoding='utf-8') as output_file:
 
             temp.insert(-1, '--name ' + log_name)
 
-            #temp[i+1] = str(int(temp[i+1])*10/100)
+            # temp[i+1] = str(int(temp[i+1])*10/100)
             temp[i+1] = str(5)
             temp.append("\n")
             contents = joining(temp)

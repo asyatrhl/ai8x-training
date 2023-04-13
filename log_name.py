@@ -10,6 +10,7 @@
 Changing log names
 """
 import os
+
 from create_test_script import log_file_names
 
 log_path = r'/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs'

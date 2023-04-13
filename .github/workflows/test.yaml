@@ -41,6 +41,9 @@ jobs:
       
       - name: install dep
         run: pip3 install -U pip wheel setuptools && pip3 install -r requirements-cu11.txt
+        
+      - name: list pip
+        run: pip list
          
       - name: Last Develop Check
         run: python ./test_codes/last_dev.py

@@ -1,3 +1,6 @@
+fix error:
+create_onnx_scripts.py:44: error: Incompatible types in assignment (expression has type "List[str]", variable has type "str")  [assignment] 
+for code:
 ###################################################################################################
 #
 # Copyright (C) 2020 Maxim Integrated Products, Inc. All Rights Reserved.
@@ -45,15 +48,15 @@ with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
     lines = contents.split("#!/bin/sh ")
     lines = lines[1:]
     contents = contents.split()
-    contents = np.array(contents)
+    contents_temp = np.array(contents)
 
-    j = [i+1 for i in range(len(contents)) if contents[i] == '--model']
+    j = [i+1 for i in range(len(contents_temp)) if contents_temp[i] == '--model']
     for index in j:
-        models.append(contents[index])
+        models.append(contents_temp[index])
 
-    j = [i+1 for i in range(len(contents)) if contents[i] == '--dataset']
+    j = [i+1 for i in range(len(contents_temp)) if contents_temp[i] == '--dataset']
     for index in j:
-        datasets.append(contents[index])
+        datasets.append(contents_temp[index])
 
     for i, line in enumerate(lines):
         if "--use-bias" in line:

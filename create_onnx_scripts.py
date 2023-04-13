@@ -8,10 +8,10 @@
 ###################################################################################################
 
 import os
-import numpy as np
 import subprocess
+import numpy as np
 
-def joining(list):
+def joining(lst):
     """
     Join list based on the ' ' delimiter
     """
@@ -35,7 +35,7 @@ model_path = []
 bias = []
 
 with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
-    with open(train_path) as input_file:
+    with open(train_path, "r", encoding='utf-8') as input_file:
         contents = input_file.read()
     lines = contents.split("#!/bin/sh ")
     lines = lines[1:]
@@ -50,42 +50,38 @@ with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
     for index in j:
         datasets.append(contents[index])
 
-    for i in range(len(lines)):
-        if "--use-bias" in lines[i]:
+    for i, line in enumerate(lines):
+        if "--use-bias" in line:
             bias.append("--use-bias")
         else:
             bias.append("")
-
+            
 #     for file in logs_list:
 #         temp = './logs/{}/checkpoint.pth.tar'.format(file)
 #         model_path.append(temp)
 
     for file in sorted(os.listdir(logs_list)):
-        temp_path = logs_list + "/" + file
-        for temp_file in sorted(os.listdir(temp_path)):
-            if temp_file.endswith("_checkpoint.pth.tar"):
-                temp = temp_path + '/{}'.format(temp_file)
-                model_path.append(temp)
+    temp_path = logs_list + "/" + file
+    for temp_file in sorted(os.listdir(temp_path)):
+        if temp_file.endswith("_checkpoint.pth.tar"):
+            temp = f"{temp_path}/{temp_file}"
+            model_path.append(temp)
 
-    for i in range(len(models)):
+    for i, (model, dataset, model_path, bias_value) in enumerate(zip(models, datasets, model_path, bias)):
         temp = (
-            "python train.py "
-            "--model "
-            "--dataset "
-            "--evaluate "
-            "--exp-load-weights-from "
-            "--device MAX78000 "
-            "--summary onnx "
+            f"python train.py "
+            f"--model {model} "
+            f"--dataset {dataset} "
+            f"--evaluate "
+            f"--exp-load-weights-from {model_path} "
+            f"--device MAX78000 "
+            f"--summary onnx "
+            f"--summary-filename {model}{dataset}onnx "
+            f"{bias_value}\n"
         )
-        temp = temp.split()
-        temp.insert(3, models[i] )
-        temp.insert(5, datasets[i])
-        temp.insert(8, model_path[i])
-        temp.append("--summary-filename {}{}onnx".format(models[i],datasets[i]))
-        temp.append(bias[i])
-        temp.append("\n")
 
-        onnx_scripts.write(joining(temp))
+        onnx_scripts.write(temp)
+        
 cmd_command = (
     "bash /home/asyaturhal/actions-runner/_work/"
     "ai8x-training/ai8x-training/scripts/onnx_scripts.sh"

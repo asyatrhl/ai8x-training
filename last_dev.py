@@ -14,6 +14,7 @@ import subprocess
 import datetime
 import git
 
+
 def joining(lst):
     """
       Join based on the ' ' delimiter
@@ -22,17 +23,18 @@ def joining(lst):
     return join_str
 
 # Folder containing the files to be concatenated
-#script_path = r"/home/asyaturhal/desktop/ai/last_developed/ai8x-training/scripts_test"
+# script_path = r"/home/asyaturhal/desktop/ai/last_developed/ai8x-training/scripts_test"
 script_path = r"/home/asyaturhal/desktop/ai/last_developed/scripts_test"
 
 # Output file name and path
 output_file_path = r"/home/asyaturhal/desktop/ai/last_developed/dev_scripts/last_dev_train.sh"
 
-#global log_file_names
+# global log_file_names
 log_file_names = []
 
+
 # Loop through all files in the folder
-def dev_scripts (script_pth, output_file_pth ):
+def dev_scripts (script_pth, output_file_pth):
     """
     Create training scripts for the last developed code
     """
@@ -64,6 +66,7 @@ def dev_scripts (script_pth, output_file_pth ):
                 contents = joining(temp)
 
                 output_file.write(contents)
+
 
 def dev_checkout():
     """
@@ -104,5 +107,6 @@ def dev_checkout():
                 + datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
             )
             subprocess.run(['mv', source_path, destination_path], check=True)
+
 
 dev_checkout()

@@ -37,12 +37,11 @@ def check_top_value(file, threshold):
 
     if top1_diff < threshold:
         print(f"\033[31m\u2718\033[0m Test failed for {model_name} since in Top1 value changed "
-               "{top1_diff} at {epoch_num}th epoch.")         
+             f"{top1_diff} at {epoch_num}th epoch.")         
         return False
-    else:
-        print(f"\033[31m\u2718\033[0m Test failed for {model_name} since in Top1 value changed "
-               "{top1_diff} at {epoch_num}th epoch.")
-        return True
+    print(f"\033[31m\u2718\033[0m Test failed for {model_name} since in Top1 value changed "
+          f"{top1_diff} at {epoch_num}th epoch.")
+    return True
 
 for logs in os.listdir(log_path):
     if logs in config:

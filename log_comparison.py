@@ -1,12 +1,25 @@
-from tabulate import tabulate
+###################################################################################################
+#
+# Copyright (C) 2020-2022 Maxim Integrated Products, Inc. All Rights Reserved.
+#
+# Maxim Integrated Products, Inc. Default Copyright Notice:
+# https://www.maximintegrated.com/en/aboutus/legal/copyrights.html
+#
+###################################################################################################
+"""
+Compare log files of the pulled code and the last developed
+"""
 import os
 import datetime
+from tabulate import tabulate
 
 def compare_logs(old_log, new_log, output_name, output_path):
-
+    """
+    Take diff top1 of log files of the pulled code and the last developed
+    """
     header = ["Epoch number", "Top1 Diff", "Top5 Diff"]
 
-    with open(old_log, 'r') as f1, open(new_log, 'r') as f2 :
+    with open(old_log, 'r', encoding='utf-8') as f1, open(new_log, 'r', encoding='utf-8') as f2 :
         file1_content = f1.readlines()
         file2_content = f2.readlines()
 
@@ -16,13 +29,13 @@ def compare_logs(old_log, new_log, output_name, output_path):
 
         for line in file1_content:
             if word in line :
-                list = line.split()
-                log1_list.append(list[5:])
+                lst = line.split()
+                log1_list.append(lst[5:])
 
         for line in file2_content:
             if word in line :
-                list = line.split()
-                log2_list.append(list[5:])
+                lst = line.split()
+                log2_list.append(lst[5:])
 
         epoch_num = min(len(log1_list), len(log2_list))
 
@@ -31,7 +44,7 @@ def compare_logs(old_log, new_log, output_name, output_path):
 
         top1 = []
 
-    i = 0    
+    i = 0
     for (list1, list2) in zip(log1_list, log2_list):
         i = i+1
 
@@ -42,15 +55,18 @@ def compare_logs(old_log, new_log, output_name, output_path):
 
     output_path_2 = output_path + '/' + output_name + '.txt'
     print(output_path_2)
-    with open(output_path_2, "w") as output_file:
+    with open(output_path_2, "w", encoding='utf-8') as output_file:
         output_file.write(tabulate(top1, headers=header))
 
 def log_path_list(path):
-    list = []
+    """
+    Create log names
+    """
+    lst = []
     for file in sorted(os.listdir(path)):
-        list.append(file.split("___")[0])
-    return list        
-        
+        lst.append(file.split("___")[0])
+    return lst
+
 log_new = r'/home/asyaturhal/desktop/ai/test_logs/'
 log_old = r'/home/asyaturhal/desktop/ai/last_developed/dev_logs/'
 
@@ -78,7 +94,7 @@ for files_new in sorted(os.listdir(new_logs_path)) :
         print(files_new_temp + " not found in last developed log files.")
     for files_old in sorted(os.listdir(old_logs_path)):
         files_old_temp = files_old.split("___")[0]
-        if (files_old_temp == files_new_temp):
+        if files_old_temp == files_new_temp:
             print(files_new)
             print('We can break the loop')
 
@@ -93,6 +109,6 @@ for files_new in sorted(os.listdir(new_logs_path)) :
 
             old_path_log = old_path + '/' + old_log_file
             new_path_log = new_path + '/' + new_log_file
-        
+
             compare_logs(old_path_log, new_path_log, files_new, output_path)
             break

@@ -40,15 +40,15 @@ def check_top_value(file, threshold):
         print(f"\033[31m\u2718\033[0m Test failed for {model_name} since in"
               f" Top1 value changed {top1_diff} at {epoch_num}th epoch.")
         return False
-    print(f"\033[32m\u2714\033[0m Test passed for {model_name} since in Top1 value changed {top1_diff}"
-          f"at {epoch_num}th epoch.")
+    print(f"\033[32m\u2714\033[0m Test passed for {model_name} since in"
+          f" Top1 value changed {top1_diff} at {epoch_num}th epoch.")
     return True
 
 
 for logs in sorted(os.listdir(log_path)):
     log_name = (logs.split("___"))[0]
     if log_name in config:
-        threshold_temp = float(config['{log_name}']["threshold"])
+        threshold_temp = float(config[f'{log_name}']["threshold"])
         # threshold_temp = float(list(config['{log_name}']["threshold"])[0])
     else:
         threshold_temp = 0

@@ -39,7 +39,7 @@ jobs:
 #       - name: Install ONNX Module
 #         run: pip3 install onnx
       - name: Check Pytorch version
-        run: torch. __version__
+        run: pip list | grep torch
       - name: Last Develop Check
         run: python ./test_codes/last_dev.py
       - name: Create Test Script

@@ -44,8 +44,8 @@ with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
         contents = input_file.read()
     lines = contents.split("#!/bin/sh ")
     lines = lines[1:]
-    contents = contents.split()
-    contents_temp = np.array(contents)
+    contents_t = contents.split()
+    contents_temp = np.array(contents_t)
 
     j = [i+1 for i in range(len(contents_temp)) if contents_temp[i] == '--model']
     for index in j:

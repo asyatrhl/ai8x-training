@@ -33,7 +33,7 @@ train_path = (
     r"ai8x-training/ai8x-training/scripts/output_file.sh"
 )
 logs_list = folder_path + '/' + sorted(os.listdir(folder_path))[-1]
-print(logs_list)
+# print(logs_list)
 models = []
 datasets = []
 model_paths = []

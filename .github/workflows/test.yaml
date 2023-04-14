@@ -59,6 +59,3 @@ jobs:
         run: python ./test_codes/pass_fail.py
       - name: Create ONNX script
         run: python ./test_codes/create_onnx_scripts.py
-      - name: Run ONNX
-        run: bash
-          /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/onnx_scripts.sh

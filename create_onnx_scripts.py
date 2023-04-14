@@ -36,7 +36,7 @@ logs_list = folder_path + '/' + sorted(os.listdir(folder_path))[-1]
 print(logs_list)
 models = []
 datasets = []
-model_path = []
+model_paths = []
 bias = []
 
 with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
@@ -70,10 +70,10 @@ with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
         for temp_file in sorted(os.listdir(temp_path)):
             if temp_file.endswith("_checkpoint.pth.tar"):
                 temp = f"{temp_path}/{temp_file}"
-                model_path.append(temp)
+                model_paths.append(temp)
 
     for i, (model, dataset, model_path, bias_value) in enumerate(
-        zip(models, datasets, model_path, bias)
+        zip(models, datasets, model_paths, bias)
     ):
         temp = (
             f"python train.py "

@@ -39,7 +39,7 @@ jobs:
       - name: Install ONNX Module
         run: pip3 install onnx
       - name: Last Develop Check
-        run: ython ./test_codes/last_dev.py
+        run: python ./test_codes/last_dev.py
       - name: Create Test Script
         run: python ./test_codes/create_test_script.py
       - name: Run Training Scripts

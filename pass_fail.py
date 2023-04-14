@@ -48,9 +48,8 @@ def check_top_value(file, threshold):
 for logs in sorted(os.listdir(log_path)):
     log_name = (logs.split("___"))[0]
     if log_name in config:
-        threshold_temp = float(config['{}'.format(log_name)]["threshold"])
-        #threshold_temp = float(list(config['{log_name}']["threshold"])[0])
-        print(threshold_temp, logs)
+        threshold_temp = float(config['{log_name}']["threshold"])
+        # threshold_temp = float(list(config['{log_name}']["threshold"])[0])
     else:
         threshold_temp = 0
     logs = log_path + '/' + str(logs)

@@ -8,13 +8,13 @@ jobs:
     runs-on: self-hosted
     #container: docker://dvcorg/cml-py3:latest
     steps:
-      - name: Checkout
+      - name: Checkout rotx-maxim/ai8x-training
         uses: actions/checkout@v2
         with:
           repository: rotx-maxim/ai8x-training
           ref: pytorch-2.0
           submodules: recursive
-      - name: Checkout
+      - name: Checkout Test Codes
         uses: actions/checkout@v2
         with:
           repository: asyatrhl/ai8x-training-test-codes
@@ -29,17 +29,17 @@ jobs:
         uses: gabrielfalcao/pyenv-action@v13
         with:
           default: 3.8.11
-      - name: create venv
+      - name: Create Venv
         run: pyenv local 3.8.11 & python3 -m venv venv --prompt ai8x-training
-      - name: activate venv
+      - name: Activate Venv
         run: source venv/bin/activate
-      - name: install dep
+      - name: Install Dependencies
         run: pip3 install -U pip wheel setuptools && pip3 install -r
           requirements-cu11.txt
-      - name: install onnx
+      - name: Install ONNX Module
         run: pip3 install onnx
       - name: Last Develop Check
-        run: python ./test_codes/last_dev.py
+        run: ython ./test_codes/last_dev.py
       - name: Create Test Script
         run: python ./test_codes/create_test_script.py
       - name: Run Training Scripts

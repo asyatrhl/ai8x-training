@@ -36,8 +36,10 @@ jobs:
       - name: Install Dependencies
         run: pip3 install -U pip wheel setuptools && pip3 install -r
           requirements-cu11.txt
-      - name: Install ONNX Module
-        run: pip3 install onnx
+#       - name: Install ONNX Module
+#         run: pip3 install onnx
+      - name: Check Pytorch version
+        run: torch. __version__
       - name: Last Develop Check
         run: python ./test_codes/last_dev.py
       - name: Create Test Script

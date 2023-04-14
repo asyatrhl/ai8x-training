@@ -45,7 +45,7 @@ def check_top_value(file, threshold):
     return True
 
 
-for logs in os.listdir(log_path):
+for logs in sorted(os.listdir(log_path)):
     if logs in config:
         threshold_temp = float(list(config['{logs}']["threshold"])[0])
     else:

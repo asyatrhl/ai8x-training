@@ -41,12 +41,22 @@ jobs:
       - name: Check Pytorch version
         run: pip list | grep torch
       - name: Last Develop Check
-        run: python ./test_codes/last_dev.py
+        run: python /last_dev.py
       - name: Create Test Script
-        run: python ./test_codes/create_test_script.py
+        run: python /create_test_script.py
       - name: Run Training Scripts
         run: bash
           /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh
+
+#       - name: Last Develop Check
+#         run: python ./test_codes/last_dev.py
+#       - name: Create Test Script
+#         run: python ./test_codes/create_test_script.py
+#       - name: Run Training Scripts
+#         run: bash
+#           /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh
+
+
 #       - name: Change Log Names
 #         run: python log_name.py
       - name: Save Log Files

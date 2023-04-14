@@ -40,8 +40,8 @@ def check_top_value(file, threshold):
         print(f"\033[31m\u2718\033[0m Test failed for {model_name} since in"
               f" Top1 value changed {top1_diff} at {epoch_num}th epoch.")
         return False
-    print(f"\033[31m\u2718\033[0m Test failed for {model_name} since in"
-          f" Top1 value changed {top1_diff} at {epoch_num}th epoch.")
+    print(f"\033[32m\u2714\033[0m Test passed for {model_name} since in Top1 value changed {top1_diff}"
+          f"at {epoch_num}th epoch.")
     return True
 
 

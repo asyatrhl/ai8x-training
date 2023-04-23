@@ -94,7 +94,7 @@ old_log_list = log_path_list(old_logs_path)
 
 not_found_model = []
 
-for files_new in sorted(os.listdir(new_logs_path)) :
+for files_new in sorted(os.listdir(new_logs_path)):
     files_new_temp = files_new.split("___")[0]
     if files_new_temp not in old_log_list:
         not_found_model.append(files_new_temp + " not found in last developed log files.")

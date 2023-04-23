@@ -92,13 +92,15 @@ print(new_logs_path)
 new_log_list = log_path_list(new_logs_path)
 old_log_list = log_path_list(old_logs_path)
 
-for files_new in sorted(os.listdir(new_logs_path)):
+not_found_model = []
+
+for files_new in sorted(os.listdir(new_logs_path)) :
     files_new_temp = files_new.split("___")[0]
     if files_new_temp not in old_log_list:
-        print(files_new_temp + " not found in last developed log files.")
+        not_found_model.append(files_new_temp + " not found in last developed log files.")
     for files_old in sorted(os.listdir(old_logs_path)):
         files_old_temp = files_old.split("___")[0]
-        if files_old_temp == files_new_temp:
+        if (files_old_temp == files_new_temp):
             print(files_new)
             print('We can break the loop')
 

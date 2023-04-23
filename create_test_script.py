@@ -26,7 +26,7 @@ config = configparser.ConfigParser()
 config.read(config_path)
 
 # Folder containing the files to be concatenated
-folder_path = (
+script_path = (
     r"/home/asyaturhal/actions-runner/_work/"
     r"ai8x-training/ai8x-training/scripts_test"
 )
@@ -43,12 +43,12 @@ output_file_path = (
 log_file_names = []
 
 # Loop through all files in the folder
-with open(output_file_path, "w") as output_file:
+with open(output_file_path, "w", encoding='utf-8') as output_file:
     for filename in os.listdir(script_path):
         # Check if the file is a text file
         if filename.startswith("train"):
             # Open the file and read its contents
-            with open(os.path.join(script_path, filename)) as input_file:
+            with open(os.path.join(script_path, filename), encoding='utf-8') as input_file:
                 contents = input_file.read()
 
                 temp = contents.split()
@@ -60,14 +60,14 @@ with open(output_file_path, "w") as output_file:
                 log_name = temp[j+1] + '-' + temp[k+1]
                 log_file_names.append(filename[:-3])
 
-                # temp[i+1] = str(int(temp[i+1])*10/100) 
+                # temp[i+1] = str(int(temp[i+1])*10/100)
                 temp[i+1] = config[f'{log_name}']["epoch"]
 
                 if '--deterministic' not in temp:
                     temp.insert(-2, '--deterministic')
 
                 temp.insert(-1, '--name ' + log_name)
-                
+
                 data_name = temp[k+1]
                 if data_name in config:
                     path_data = config[f'{data_name}']["data_path"]

@@ -11,6 +11,7 @@ Check the test results
 """
 import configparser
 import os
+
 from log_check import not_found_model
 
 # config_path = r'C:\Users\aturhal\Desktop\ai\source\test_config.conf'
@@ -44,6 +45,7 @@ def check_top_value(file, threshold):
     print(f"\033[32m\u2714\033[0m Test passed for {model_name} since in"
           f" Top1 value changed {top1_diff} at {epoch_num}th epoch.")
     return True
+
 
 for item in not_found_model:
     print("\033[93m\u26A0\033[0m " + "Warning: " + item)

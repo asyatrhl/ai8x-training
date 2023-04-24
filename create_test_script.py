@@ -60,8 +60,7 @@ with open(output_file_path, "w", encoding='utf-8') as output_file:
                 log_name = temp[j+1] + '-' + temp[k+1]
                 log_file_names.append(filename[:-3])
 
-                # temp[i+1] = str(int(temp[i+1])*10/100)
-                temp[i+1] = config[f'{log_name}']["epoch"]
+                temp[i+1] = str(config[f'{log_data}'][f'{log_model}']["epoch"])
 
                 if '--deterministic' not in temp:
                     temp.insert(-2, '--deterministic')

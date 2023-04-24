@@ -57,6 +57,9 @@ with open(output_file_path, "w", encoding='utf-8') as output_file:
                 j = temp.index('--model')
                 k = temp.index('--dataset')
 
+                log_model = temp[j+1]
+                log_data = temp[k+1]
+
                 log_name = temp[j+1] + '-' + temp[k+1]
                 log_file_names.append(filename[:-3])
 

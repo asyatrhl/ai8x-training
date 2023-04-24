@@ -9,15 +9,18 @@
 """
 Check the test results
 """
-import configparser
 import os
+import yaml
 
 from log_check import not_found_model
 
-# config_path = r'C:\Users\aturhal\Desktop\ai\source\test_config.conf'
-config_path = r'/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/test_config.conf'
-config = configparser.ConfigParser()
-config.read(config_path)
+# yaml_path = r"C:\Users\aturhal\Desktop\ai\source\conf-test.yaml"
+yaml_path =  r'/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/test_config.yaml'
+# Open the YAML file
+with open(yaml_path, 'r') as file:
+    # Load the YAML content into a Python dictionary
+    config = yaml.safe_load(file)
+
 log_path = r'/home/asyaturhal/desktop/ai/log_diff'
 # log_path = r'C:\Users\aturhal\Desktop\test_logs'
 log_path = log_path + '/' + sorted(os.listdir(log_path))[-1]
@@ -52,9 +55,11 @@ for item in not_found_model:
 
 for logs in sorted(os.listdir(log_path)):
     log_name = (logs.split("___"))[0]
-    if log_name in config:
-        threshold_temp = float(config[f'{log_name}']["threshold"])
-        # threshold_temp = float(list(config['{log_name}']["threshold"])[0])
+    log_model = log_name.split("-")[0]
+    log_data = log_name.split("-")[1]
+
+    if log_data in config and log_model in config[log_data]:
+        threshold_temp = float(config[f'{log_data}'][f'{log_model}']['threshold'])
     else:
         threshold_temp = 0
     logs = log_path + '/' + str(logs)

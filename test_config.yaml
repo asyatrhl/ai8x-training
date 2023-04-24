@@ -1,6 +1,6 @@
 ---
 CIFAR100:
-  datapath: 'asya'
+  # datapath: ''
   ai85simplenet:
     threshold: 0
     epoch: 2

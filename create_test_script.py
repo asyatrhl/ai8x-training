@@ -69,8 +69,8 @@ with open(output_file_path, "w", encoding='utf-8') as output_file:
                 temp.insert(-1, '--name ' + log_name)
 
                 data_name = temp[k+1]
-                if data_name in config:
-                    path_data = config[f'{data_name}']["data_path"]
+                if data_name in config and "datapath" in config[data_name]:
+                    path_data = config[f'{log_data}']["datapath"]
                     temp.insert(-1, '--data ' + path_data)
 
                 temp.append("\n")

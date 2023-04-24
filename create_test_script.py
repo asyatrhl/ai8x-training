@@ -9,8 +9,8 @@
 """
 Create training bash scripts for test
 """
-import configparser
 import os
+import yaml
 
 
 def joining(lst):
@@ -21,9 +21,11 @@ def joining(lst):
     return join_str
 
 
-config_path = r'/home/asyaturhal/desktop/ai/test_config.conf'
-config = configparser.ConfigParser()
-config.read(config_path)
+yaml_path = r"C:\Users\aturhal\Desktop\ai\source\conf-test.yaml"
+# Open the YAML file
+with open(yaml_path, 'r') as file:
+    # Load the YAML content into a Python dictionary
+    config = yaml.safe_load(file)
 
 # Folder containing the files to be concatenated
 script_path = (

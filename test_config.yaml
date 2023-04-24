@@ -2,7 +2,7 @@
 CIFAR100:
   # datapath: ''
   ai85simplenet:
-    threshold: 0
+    threshold: 100
     epoch: 2
 MNIST:
   # datapath = ""

@@ -56,7 +56,6 @@ def compare_logs(old_log, new_log, output_name, output_pth):
         top1.append([i, top1_diff, top5_diff])
 
     output_path_2 = output_pth + '/' + output_name + '.txt'
-    print(output_path_2)
     with open(output_path_2, "w", encoding='utf-8') as output_file:
         output_file.write(tabulate(top1, headers=header))
 
@@ -82,12 +81,8 @@ os.mkdir(output_path)
 
 loglist = sorted(os.listdir(log_new))
 loglist_old = sorted(os.listdir(log_old))
-print(loglist)
 old_logs_path = log_old + loglist_old[-1]
 new_logs_path = log_new + loglist[-1]
-
-print(old_logs_path)
-print(new_logs_path)
 
 new_log_list = log_path_list(new_logs_path)
 old_log_list = log_path_list(old_logs_path)
@@ -101,8 +96,6 @@ for files_new in sorted(os.listdir(new_logs_path)):
     for files_old in sorted(os.listdir(old_logs_path)):
         files_old_temp = files_old.split("___")[0]
         if files_old_temp == files_new_temp:
-            print(files_new)
-            print('We can break the loop')
 
             old_path = old_logs_path + '/' + files_old
             new_path = new_logs_path + '/' + files_new

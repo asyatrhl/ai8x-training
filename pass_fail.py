@@ -12,7 +12,7 @@ Check the test results
 import os
 import yaml
 
-from log_check import not_found_model
+from log_comparison import not_found_model
 
 # yaml_path = r"C:\Users\aturhal\Desktop\ai\source\conf-test.yaml"
 yaml_path =  r'/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/test_config.yaml'

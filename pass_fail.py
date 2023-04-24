@@ -49,6 +49,7 @@ def check_top_value(file, threshold):
           f" Top1 value changed {top1_diff}% at {epoch_num}th epoch.")
     return True
 
+passing = []
 
 for item in not_found_model:
     print("\033[93m\u26A0\033[0m " + "Warning: " + item)
@@ -63,4 +64,8 @@ for logs in sorted(os.listdir(log_path)):
     else:
         threshold_temp = 0
     logs = log_path + '/' + str(logs)
-    check_top_value(logs, threshold_temp)
+    passing.append(check_top_value(logs, threshold_temp))
+
+if not all(passing):
+    print("\033[31mAll test did not passed. Cancelling github actions.")
+    exit(1)

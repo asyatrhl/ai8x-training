@@ -4,7 +4,6 @@ CIFAR100:
   ai85simplenet:
     threshold: 0
     epoch: 2
-
 MNIST:
   # datapath = ""
   ai85netextrasmall:

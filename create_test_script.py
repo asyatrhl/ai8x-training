@@ -21,7 +21,7 @@ def joining(lst):
     return join_str
 
 
-yaml_path = r"C:\Users\aturhal\Desktop\ai\source\conf-test.yaml"
+yaml_path = r""/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/test_config.yaml""
 # Open the YAML file
 with open(yaml_path, 'r') as file:
     # Load the YAML content into a Python dictionary

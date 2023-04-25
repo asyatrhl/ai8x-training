@@ -17,7 +17,7 @@ cats_vs_dogs:
     threshold: 0
     epoch: 15 
 
-CIFAR15:
+CIFAR10:
   datapath: "/data_ssd/"
   ai85nascifarnet:
     threshold: 0
@@ -32,7 +32,7 @@ CIFAR15:
     epoch: 15
 
 
-CIFAR150:
+CIFAR100:
   datapath: "/data_ssd/"
   ai85simplenet:
     threshold: 0

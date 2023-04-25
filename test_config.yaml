@@ -46,11 +46,11 @@ CIFAR100:
     threshold: 0
     epoch: 15
 
-  ai87netmobilenetv2cifar150_m0_5:
+  ai87netmobilenetv2cifar100_m0_5:
     threshold: 0
     epoch: 15
 
-  ai87netmobilenetv2cifar150_m0_75:
+  ai87netmobilenetv2cifar100_m0_75:
     threshold: 0
     epoch: 15
 

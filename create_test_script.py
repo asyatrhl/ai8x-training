@@ -9,6 +9,7 @@
 """
 Create training bash scripts for test
 """
+import argparse
 import os
 import yaml
 
@@ -21,10 +22,11 @@ def joining(lst):
     return join_str
 
 
-yaml_path = (
-    r"/home/asyaturhal/actions-runner/_work/"
-    r"ai8x-training/ai8x-training/test_config.yaml"
-)
+parser = argparse.ArgumentParser()
+parser.add_argument('--testconf', help='Enter the config file for the test', required=True)
+args = parser.parse_args()
+yaml_path = args.testconf
+
 # Open the YAML file
 with open(yaml_path, 'r') as file:
     # Load the YAML content into a Python dictionary

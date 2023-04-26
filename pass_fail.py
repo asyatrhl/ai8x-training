@@ -9,13 +9,18 @@
 """
 Check the test results
 """
+import argparse
 import os
 import yaml
 
 from log_comparison import not_found_model
 
-# yaml_path = r"C:\Users\aturhal\Desktop\ai\source\conf-test.yaml"
-yaml_path =  r'/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/test_config.yaml'
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--testconf', help='Enter the config file for the test', required=True)
+args = parser.parse_args()
+yaml_path = args.testconf
+
 # Open the YAML file
 with open(yaml_path, 'r') as file:
     # Load the YAML content into a Python dictionary

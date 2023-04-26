@@ -9,6 +9,7 @@
 """
 Create onnx bash scripts for test
 """
+import argparse
 import os
 import subprocess
 
@@ -22,6 +23,14 @@ def joining(lst):
     joined_str = ' '.join(lst)
     return joined_str
 
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--testconf', help='Enter the config file for the test', required=True)
+args = parser.parse_args()
+yaml_path = args.testconf
+
+if config[Onnx_Status]:
+    exit(0)
 
 folder_path = r"/home/asyaturhal/desktop/ai/test_logs"
 output_file_path = (

@@ -43,7 +43,7 @@ jobs:
       - name: Last Develop Check
         run: python last_dev.py
       - name: Create Test Script
-        run: python create_test_script.py
+        run: python create_test_script.py --testconf test_config.yaml
       - name: Run Training Scripts
         run: bash
           /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh
@@ -66,6 +66,6 @@ jobs:
       - name: Log Diff
         run: python log_comparison.py
       - name: Test Results
-        run: python pass_fail.py
+        run: python pass_fail.py  --testconf test_config.yaml
       - name: Create ONNX script
-        run: python create_onnx_scripts.py
+        run: python create_onnx_scripts.py  --testconf test_config.yaml

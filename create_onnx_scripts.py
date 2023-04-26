@@ -29,7 +29,7 @@ parser.add_argument('--testconf', help='Enter the config file for the test', req
 args = parser.parse_args()
 yaml_path = args.testconf
 
-if config[Onnx_Status]:
+if not config[Onnx_Status]:
     exit(0)
 
 folder_path = r"/home/asyaturhal/desktop/ai/test_logs"

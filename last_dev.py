@@ -40,34 +40,43 @@ def dev_scripts(script_pth, output_file_pth):
     """
     Create training scripts for the last developed code
     """
-    with open(output_file_pth, "w", encoding='utf-8') as output_file:
-        for filename in sorted(os.listdir(script_pth)):
+    with open(output_file_path, "w", encoding='utf-8') as output_file:
+        for filename in os.listdir(script_path):
             # Check if the file is a text file
             if filename.startswith("train"):
-                with open(os.path.join(script_pth, filename), "r", encoding='utf-8') as input_file:
+                # Open the file and read its contents
+                with open(os.path.join(script_path, filename), encoding='utf-8') as input_file:
                     contents = input_file.read()
 
-                temp = contents.split()
-                temp.insert(1, "\n")
-                i = temp.index('--epochs')
-                j = temp.index('--model')
-                k = temp.index('--dataset')
+                    temp = contents.split()
+                    temp.insert(1, "\n")
+                    i = temp.index('--epochs')
+                    j = temp.index('--model')
+                    k = temp.index('--dataset')
 
-                log_name = temp[j+1] + '-' + temp[k+1]
+                    log_model = temp[j+1]
+                    log_data = temp[k+1]
 
-                log_file_names.append(filename[:-3])
+                    log_name = temp[j+1] + '-' + temp[k+1]
+                    log_file_names.append(filename[:-3])
 
-                if '--deterministic' not in temp:
-                    temp.insert(-2, '--deterministic')
+                    if log_data == "FaceID":
+                        continue
 
-                temp.insert(-1, '--name ' + log_name)
+                    temp[i+1] = str(config[f'{log_data}'][f'{log_model}']["epoch"])
 
-                # temp[i+1] = str(int(temp[i+1])*10/100)
-                temp[i+1] = str(5)
-                temp.append("\n")
-                contents = joining(temp)
+                    if '--deterministic' not in temp:
+                        temp.insert(-2, '--deterministic')
 
-                output_file.write(contents)
+                    temp.insert(-1, '--name ' + log_name)
+                    temp.insert(-1, '--data ' + "/data_ssd/")
+
+                    temp.append("\n")
+                    contents = joining(temp)
+                    # Replace the number in the "--epochs" script
+
+                    # Write the contents to the output file
+                    output_file.write(contents)
 
 
 def dev_checkout():

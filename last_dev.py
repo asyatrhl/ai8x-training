@@ -63,7 +63,7 @@ def dev_scripts(script_pth, output_file_pth):
                     if log_data == "FaceID":
                         continue
 
-                    temp[i+1] = str(config[f'{log_data}'][f'{log_model}']["epoch"])
+                    temp[i+1] = "30"
 
                     if '--deterministic' not in temp:
                         temp.insert(-2, '--deterministic')

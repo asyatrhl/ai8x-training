@@ -29,8 +29,8 @@ jobs:
         run: cd /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/
       - name: aa
         run: source venv/bin/activate 
-      - name: where
-        run: ls
+      - name: git install
+        run: pip3 install gitpython
       - name: Last Develop Check
         run: python last_dev.py
   new-code:

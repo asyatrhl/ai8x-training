@@ -27,6 +27,8 @@ jobs:
       steps:
       - name: Activate Venv
         run: cd /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/ & source venv/bin/activate 
+      - name: Git install
+        run: pip install gitpython
       - name: Last Develop Check
         run: python last_dev.py
   new-code:

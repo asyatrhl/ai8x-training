@@ -25,8 +25,8 @@ def joining(lst):
 
 
 # Folder containing the files to be concatenated
-script_path = r"/home/asyaturhal/desktop/ai/last_developed/ai8x-training/scripts_test"
-# script_path = r"/home/asyaturhal/desktop/ai/last_developed/last_dev_source/scripts"
+# script_path = r"/home/asyaturhal/desktop/ai/last_developed/ai8x-training/scripts_test"
+script_path = r"/home/asyaturhal/desktop/ai/last_developed/last_dev_source/scripts"
 
 # Output file name and path
 output_file_path = r"/home/asyaturhal/desktop/ai/last_developed/dev_scripts/last_dev_train.sh"

@@ -27,8 +27,18 @@ jobs:
       runs-on: self-hosted
       needs: build
       steps:
+      - uses: actions/checkout@v2
+        name: trial-check
+        with:
+          submodules: recursive
+      - name: Setup Pyenv and Install Dependencies
+        uses: gabrielfalcao/pyenv-action@v13
+        with:
+          default: 3.8.11
+      - name: Create Venv
+        run: pyenv local 3.8.11 & python3 -m venv venv --prompt ai8x-training
       - name: Activate Venv
-        run: source /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/venv/bin/activate 
+        run: source venv/bin/activate
       - name: Install Dependencies
         run: pip3 install -U pip wheel setuptools && pip3 install -r
           requirements-cu11.txt

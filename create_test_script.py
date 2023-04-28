@@ -73,7 +73,7 @@ with open(output_file_path, "w", encoding='utf-8') as output_file:
                 if log_data == "FaceID":
                     continue
 
-                temp[i+1] = str(config[f'{log_data}'][f'{log_model}']["epoch"])
+                temp[i+1] = str(config[log_data][log_model]["epoch"])
 
                 if '--deterministic' not in temp:
                     temp.insert(-2, '--deterministic')
@@ -82,7 +82,7 @@ with open(output_file_path, "w", encoding='utf-8') as output_file:
 
                 data_name = temp[k+1]
                 if data_name in config and "datapath" in config[data_name]:
-                    path_data = config[f'{log_data}']["datapath"]
+                    path_data = config[log_data]["datapath"]
                     temp.insert(-1, '--data ' + path_data)
 
                 temp.append("\n")

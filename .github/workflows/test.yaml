@@ -4,22 +4,7 @@ on:
   push:
 jobs:
   build:
-    #runs-on: [ubuntu-latest]
     runs-on: self-hosted
-    #container: docker://dvcorg/cml-py3:latest
-#     steps:
-#       - name: Checkout rotx-maxim/ai8x-training
-#         uses: actions/checkout@v2
-#         with:
-#           repository: rotx-maxim/ai8x-training
-#           ref: pytorch-2.0
-#           submodules: recursive
-#       - name: Checkout Test Codes
-#         uses: actions/checkout@v2
-#         with:
-#           repository: asyatrhl/ai8x-training-test-codes
-#           ref: main
-#           path: test_codes
     steps:
       - uses: actions/checkout@v2
         name: trial-check
@@ -36,29 +21,19 @@ jobs:
       - name: Install Dependencies
         run: pip3 install -U pip wheel setuptools && pip3 install -r
           requirements-cu11.txt
-#       - name: Install ONNX Module
-#         run: pip3 install onnx
-      - name: Check Pytorch version
-        run: pip list | grep torch
+  last-dev:
+      runs-on: self-hosted
+      steps:
       - name: Last Develop Check
         run: python last_dev.py
+  new-code:
+      runs-on: self-hosted
+      steps:
       - name: Create Test Script
         run: python create_test_script.py --testconf test_config.yaml
       - name: Run Training Scripts
         run: bash
           /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh
-
-#       - name: Last Develop Check
-#         run: python ./test_codes/last_dev.py
-#       - name: Create Test Script
-#         run: python ./test_codes/create_test_script.py
-#       - name: Run Training Scripts
-#         run: bash
-#           /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh
-
-
-#       - name: Change Log Names
-#         run: python log_name.py
       - name: Save Log Files
         run: cp -r
           /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/

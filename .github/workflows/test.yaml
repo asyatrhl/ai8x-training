@@ -5,7 +5,6 @@ on:
 jobs:
   build:
     runs-on: self-hosted
-    timeout-minutes: 1000
     steps:
       - uses: actions/checkout@v2
         name: trial-check
@@ -27,7 +26,6 @@ jobs:
   new-code:
       runs-on: self-hosted
       needs: build
-      timeout-minutes: 1000
       steps:
       - uses: actions/checkout@v2
         name: trial-check
@@ -51,7 +49,7 @@ jobs:
           /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh
   test-results:
       runs-on: self-hosted
-      needs: new-code
+      needs: build
       steps:
       - name: Save Log Files
         run: cp -r

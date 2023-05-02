@@ -33,7 +33,6 @@ CIFAR10:
     threshold: 0
     epoch: 15
 
-
 CIFAR100:
   datapath: "/data_ssd/"
   ai85simplenet:

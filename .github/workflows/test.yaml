@@ -48,7 +48,7 @@ jobs:
           /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh
   test-results:
       runs-on: self-hosted
-      needs: build
+      needs: [build, new-code]
       steps:
       - name: Save Log Files
         run: cp -r

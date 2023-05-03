@@ -32,7 +32,7 @@ jobs:
         run: pip3 install -U pip wheel setuptools && pip3 install -r
           requirements-cu11.txt
       - name: Last Develop Check
-        run: python /last-dev/last_dev.py
+        run: python ./last-dev/last_dev.py
 #   new-code:
 #       runs-on: self-hosted
 #       needs: [build]

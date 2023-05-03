@@ -21,6 +21,7 @@ jobs:
         with:
           repository: asyatrhl/regression-test
           ref: main
+          path: last-dev
       - name: WHERE
         run: pwd   
       - name: Setup Pyenv and Install Dependencies

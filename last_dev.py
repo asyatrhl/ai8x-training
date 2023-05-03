@@ -128,7 +128,8 @@ def dev_checkout():
             
             result = subprocess.run(['pwd'], stdout=subprocess.PIPE)
             current_dir = result.stdout.decode('utf-8').strip()
-
+            
+            print("-----Asya---------")
             print(current_dir)
             
 #             source_path = "/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/"

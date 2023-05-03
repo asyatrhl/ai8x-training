@@ -15,7 +15,7 @@ jobs:
           path: last-dev
       - name: Do something with repo1
         run: |
-          cd last-dev
+          cd /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/last-dev
           # Run some commands in repo1
       - name: WHERE
         run: pwd   

@@ -79,7 +79,7 @@ def dev_scripts(script_pth, output_file_pth):
 
                     data_name = temp[k+1]
 
-                    temp.insert(-1, '--data ' + path_data)
+                    # temp.insert(-1, '--data ' + path_data)
 
                     temp.append("\n")
                     contents = joining(temp)

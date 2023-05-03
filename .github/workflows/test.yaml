@@ -25,6 +25,7 @@ jobs:
         run: python last_dev.py
   new-code:
       runs-on: self-hosted
+      needs: [build]
       steps:
       - uses: actions/checkout@v2
         name: trial-check

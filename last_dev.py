@@ -9,12 +9,10 @@
 """
 Create the last developed code logs for base testing source
 """
-import argparse
 import datetime
 import git
 import os
 import subprocess
-import yaml
 
 
 def joining(lst):
@@ -24,15 +22,15 @@ def joining(lst):
     join_str = ' '.join(lst)
     return join_str
 
-parser = argparse.ArgumentParser()
-parser.add_argument('--testconf', help='Enter the config file for the test', required=True)
-args = parser.parse_args()
-yaml_path = args.testconf
+# parser = argparse.ArgumentParser()
+# parser.add_argument('--testconf', help='Enter the config file for the test', required=True)
+# args = parser.parse_args()
+# yaml_path = args.testconf
 
-# Open the YAML file
-with open(yaml_path, 'r') as file:
-    # Load the YAML content into a Python dictionary
-    config = yaml.safe_load(file)
+# # Open the YAML file
+# with open(yaml_path, 'r') as file:
+#     # Load the YAML content into a Python dictionary
+#     config = yaml.safe_load(file)
 
 # Folder containing the files to be concatenated
 # script_path = r"/home/asyaturhal/desktop/ai/last_developed/ai8x-training/scripts_test"
@@ -124,12 +122,21 @@ def dev_checkout():
             )
             subprocess.run(cmd_command, shell=True, check=True)
 
-            source_path = "/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/"
-            destination_path = (
-                "/home/asyaturhal/desktop/ai/last_developed/dev_logs/"
-                + datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-            )
-            subprocess.run(['mv', source_path, destination_path], check=True)
+            path_command = ("cd  /home/asyaturhal/desktop/ai/last_developed/last_dev_source/")
+            
+            subprocess.run(path_command, shell=True, check=True)
+            
+            result = subprocess.run(['pwd'], stdout=subprocess.PIPE)
+            current_dir = result.stdout.decode('utf-8').strip()
+
+            print(current_dir)
+            
+#             source_path = "/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/"
+#             destination_path = (
+#                 "/home/asyaturhal/desktop/ai/last_developed/dev_logs/"
+#                 + datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+#             )
+#             subprocess.run(['mv', source_path, destination_path], check=True)
 
 
 dev_checkout() 

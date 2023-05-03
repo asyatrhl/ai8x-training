@@ -6,10 +6,10 @@ jobs:
   build:
     runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v2
-        name: trial-check
-        with:
-          submodules: recursive
+#       - uses: actions/checkout@v2
+#         name: trial-check
+#         with:
+#           submodules: recursive
       - name: Setup Pyenv and Install Dependencies
         uses: gabrielfalcao/pyenv-action@v13
         with:

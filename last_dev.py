@@ -62,7 +62,7 @@ def dev_scripts(script_pth, output_file_pth):
                     if log_data == "FaceID":
                         continue
 
-                    temp[i+1] = str(config[log_data][log_model]["epoch"])
+                    temp[i+1] = "15"
 
                     if '--deterministic' not in temp:
                         temp.insert(-2, '--deterministic')
@@ -70,9 +70,8 @@ def dev_scripts(script_pth, output_file_pth):
                     temp.insert(-1, '--name ' + log_name)
 
                     data_name = temp[k+1]
-                    if data_name in config and "datapath" in config[data_name]:
-                        path_data = config[log_data]["datapath"]
-                        temp.insert(-1, '--data ' + path_data)
+
+                    temp.insert(-1, '--data ' + path_data)
 
                     temp.append("\n")
                     contents = joining(temp)

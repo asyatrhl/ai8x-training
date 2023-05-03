@@ -16,6 +16,11 @@ jobs:
           ref: master
           submodules: recursive
           path: last-dev
+      - name: Checkout Test Codes
+        uses: actions/checkout@v2
+        with:
+          repository: asyatrhl/regression-test
+          ref: main
       - name: WHERE
         run: pwd   
       - name: Setup Pyenv and Install Dependencies

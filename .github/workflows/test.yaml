@@ -15,7 +15,7 @@ jobs:
           repository: MaximIntegratedAI/ai8x-training
           ref: master
           submodules: recursive
-         # path: last-dev
+          path: last-dev
       - name: WHERE
         run: pwd   
       - name: Setup Pyenv and Install Dependencies

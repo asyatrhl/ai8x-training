@@ -5,9 +5,6 @@ on:
 jobs:
   build:
     runs-on: self-hosted
-    defaults:
-      run:
-        working-directory: ./last-dev
     steps:
       - name: Checkout last-dev
         uses: actions/checkout@v2
@@ -36,7 +33,7 @@ jobs:
         run: pip3 install -U pip wheel setuptools && pip3 install -r
           requirements-cu11.txt
       - name: Last Develop Check
-        run: python last_dev.py
+        run: python ./last-dev/last_dev.py
 #   new-code:
 #       runs-on: self-hosted
 #       needs: [build]

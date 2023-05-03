@@ -35,11 +35,10 @@ output_file_path = r"/home/asyaturhal/desktop/ai/last_developed/dev_scripts/last
 log_file_names = []
 
 
-# Loop through all files in the folder
 def dev_scripts(script_pth, output_file_pth):
     """
     Create training scripts for the last developed code
-    """
+    """                                  
     with open(output_file_path, "w", encoding='utf-8') as output_file:
         for filename in os.listdir(script_path):
             # Check if the file is a text file
@@ -63,13 +62,17 @@ def dev_scripts(script_pth, output_file_pth):
                     if log_data == "FaceID":
                         continue
 
-                    temp[i+1] = "30"
+                    temp[i+1] = str(config[log_data][log_model]["epoch"])
 
                     if '--deterministic' not in temp:
                         temp.insert(-2, '--deterministic')
 
                     temp.insert(-1, '--name ' + log_name)
-                    temp.insert(-1, '--data ' + "/data_ssd/")
+
+                    data_name = temp[k+1]
+                    if data_name in config and "datapath" in config[data_name]:
+                        path_data = config[log_data]["datapath"]
+                        temp.insert(-1, '--data ' + path_data)
 
                     temp.append("\n")
                     contents = joining(temp)

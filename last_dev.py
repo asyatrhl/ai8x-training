@@ -9,11 +9,12 @@
 """
 Create the last developed code logs for base testing source
 """
+import argparse
 import datetime
+import git
 import os
 import subprocess
-
-import git
+import yaml
 
 
 def joining(lst):
@@ -23,6 +24,15 @@ def joining(lst):
     join_str = ' '.join(lst)
     return join_str
 
+parser = argparse.ArgumentParser()
+parser.add_argument('--testconf', help='Enter the config file for the test', required=True)
+args = parser.parse_args()
+yaml_path = args.testconf
+
+# Open the YAML file
+with open(yaml_path, 'r') as file:
+    # Load the YAML content into a Python dictionary
+    config = yaml.safe_load(file)
 
 # Folder containing the files to be concatenated
 # script_path = r"/home/asyaturhal/desktop/ai/last_developed/ai8x-training/scripts_test"
@@ -122,4 +132,4 @@ def dev_checkout():
             subprocess.run(['mv', source_path, destination_path], check=True)
 
 
-dev_checkout()
+dev_checkout() 

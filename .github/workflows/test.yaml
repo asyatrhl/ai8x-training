@@ -6,10 +6,19 @@ jobs:
   build:
     runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v2
-        name: trial-check
+      - name: Checkout last-dev
+        uses: actions/checkout@v2
         with:
+          repository: MaximIntegratedAI/ai8x-training
+          ref: master
           submodules: recursive
+          path: last-dev
+      - name: Do something with repo1
+        run: |
+          cd last-dev
+          # Run some commands in repo1
+      - name: WHERE
+        run: pwd   
       - name: Setup Pyenv and Install Dependencies
         uses: gabrielfalcao/pyenv-action@v13
         with:
@@ -21,10 +30,6 @@ jobs:
       - name: Install Dependencies
         run: pip3 install -U pip wheel setuptools && pip3 install -r
           requirements-cu11.txt
-      - name: Change path
-        run: cd /home/asyaturhal/desktop/ai/last_developed/last_dev_source/
-      - name: WHERE
-        run: pwd
       - name: Last Develop Check
         run: python last_dev.py
 #   new-code:

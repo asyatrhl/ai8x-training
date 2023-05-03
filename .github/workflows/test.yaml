@@ -12,7 +12,6 @@ jobs:
           repository: MaximIntegratedAI/ai8x-training
           ref: master
           submodules: recursive
-          path: last-dev
       - name: Checkout Test Codes
         uses: actions/checkout@v2
         with:

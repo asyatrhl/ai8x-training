@@ -33,7 +33,8 @@ jobs:
         run: pip3 install -U pip wheel setuptools && pip3 install -r
           requirements-cu11.txt
       - name: Last Develop Check
-        run: python ./last-dev/last_dev.py --testconf ./last-dev/test_config.yaml
+       # run: python ./last-dev/last_dev.py --testconf ./last-dev/test_config.yaml
+        run:  python3 train.py --deterministic --epochs 30 --optimizer Adam --lr 0.001 --wd 0 --compress policies/schedule-imagenet-effnet2.yaml --model ai87imageneteffnetv2 --dataset ImageNet --device MAX78002 --batch-size 256 --print-freq 100 --validation-split 0 --use-bias --qat-policy policies/qat_policy_imagenet.yaml --name ai87imageneteffnetv2-ImageNet --data /data_ssd/ "$@"
   new-code:
       runs-on: self-hosted
       needs: [build]

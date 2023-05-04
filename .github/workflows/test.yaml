@@ -55,8 +55,6 @@ jobs:
           requirements-cu11.txt
       - name: Create Test Script
         run: python create_test_script.py --testconf test_config.yaml
-      - name: name
-        run:  python3 train.py --deterministic --epochs 30 --optimizer Adam --lr 0.001 --wd 0 --compress policies/schedule-imagenet-effnet2.yaml --model ai87imageneteffnetv2 --dataset ImageNet --device MAX78002 --batch-size 256 --print-freq 100 --validation-split 0 --use-bias --qat-policy policies/qat_policy_imagenet.yaml --name ai87imageneteffnetv2-ImageNet --data /data_ssd/ "$@"
       - name: Run Training Scripts
         run: bash
          /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh

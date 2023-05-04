@@ -5,7 +5,7 @@ on:
 jobs:
   build:
     runs-on: self-hosted
-    timeout-minutes: 700
+    timeout-minutes: 1500
     steps:
       - name: Checkout last-dev
         uses: actions/checkout@v2

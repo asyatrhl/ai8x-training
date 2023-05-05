@@ -29,7 +29,12 @@ parser.add_argument('--testconf', help='Enter the config file for the test', req
 args = parser.parse_args()
 yaml_path = args.testconf
 
-if not yaml_path[Onnx_Status]:
+# Open the YAML file
+with open(yaml_path, 'r') as file:
+    # Load the YAML content into a Python dictionary
+    config = yaml.safe_load(file)
+
+if not config[Onnx_Status]:
     exit(0)
 
 folder_path = r"/home/asyaturhal/desktop/ai/test_logs"

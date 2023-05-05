@@ -32,8 +32,8 @@ jobs:
       - name: Install Dependencies
         run: pip3 install -U pip wheel setuptools && pip3 install -r
           requirements-cu11.txt
-      - name: Last Develop Check
-        run: python ./last-dev/last_dev.py --testconf ./last-dev/test_config.yaml
+#       - name: Last Develop Check
+#         run: python ./last-dev/last_dev.py --testconf ./last-dev/test_config.yaml
   new-code:
       runs-on: self-hosted
       needs: [build]

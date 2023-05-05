@@ -35,7 +35,7 @@ with open(yaml_path, 'r') as file:
     # Load the YAML content into a Python dictionary
     config = yaml.safe_load(file)
 
-if not config[Onnx_Status]:
+if not config["Onnx_Status"]:
     exit(0)
 
 folder_path = r"/home/asyaturhal/desktop/ai/test_logs"

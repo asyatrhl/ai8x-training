@@ -70,6 +70,12 @@ jobs:
         name: trial-check
         with:
           submodules: recursive
+      - name: Checkout Test Codes
+        uses: actions/checkout@v2
+        with:
+          repository: asyatrhl/regression-test
+          ref: main
+          path: last-dev
       - name: Setup Pyenv and Install Dependencies
         uses: gabrielfalcao/pyenv-action@v13
         with:
@@ -86,4 +92,4 @@ jobs:
       - name: Test Results
         run: python pass_fail.py  --testconf test_config.yaml
       - name: Create ONNX script
-        run: python create_onnx_scripts.py  --testconf test_config.yaml
+        run: python create_onnx_scripts.py  --testconf ./last-dev/test_config.yaml

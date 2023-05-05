@@ -12,6 +12,7 @@ Create onnx bash scripts for test
 import argparse
 import os
 import subprocess
+import yaml
 
 import numpy as np
 

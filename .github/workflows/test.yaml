@@ -32,8 +32,8 @@ jobs:
       - name: Install Dependencies
         run: pip3 install -U pip wheel setuptools && pip3 install -r
           requirements-cu11.txt
-#       - name: Last Develop Check
-#         run: python ./last-dev/last_dev.py --testconf ./last-dev/test_config.yaml
+      - name: Last Develop Check
+        run: python ./last-dev/last_dev.py --testconf ./last-dev/test_config.yaml
   new-code:
       runs-on: self-hosted
       needs: [build]
@@ -57,13 +57,13 @@ jobs:
         run: python create_test_script.py --testconf test_config.yaml
       - name: Create ONNX script
         run: python create_onnx_scripts.py  --testconf test_config.yaml
-#       - name: Run Training Scripts
-#         run: bash
-#          /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh
-#       - name: Save Log Files
-#         run: cp -r
-#           /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/
-#           /home/asyaturhal/desktop/ai/test_logs/$(date +%Y-%m-%d_%H-%M-%S)
+      - name: Run Training Scripts
+        run: bash
+         /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh
+      - name: Save Log Files
+        run: cp -r
+          /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/
+          /home/asyaturhal/desktop/ai/test_logs/$(date +%Y-%m-%d_%H-%M-%S)
   test-results:
       runs-on: self-hosted
       needs: [build, new-code]
@@ -95,4 +95,3 @@ jobs:
         run: python pass_fail.py  --testconf test_config.yaml
       - name: Create Test Script
         run: python create_test_script.py --testconf test_config.yaml
-

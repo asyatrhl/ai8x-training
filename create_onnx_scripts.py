@@ -9,6 +9,7 @@
 """
 Create onnx bash scripts for test
 """
+import datetime
 import argparse
 import os
 import subprocess
@@ -25,6 +26,17 @@ def joining(lst):
     return joined_str
 
 
+def time_stamp():
+    """
+    Take time stamp as string
+    """
+    time = str(datetime.datetime.now())
+    time = time.replace(' ', '.')
+    time = time.replace(':', '.')
+    return time
+
+
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--testconf', help='Enter the config file for the test', required=True)
 args = parser.parse_args()
@@ -38,14 +50,12 @@ with open(yaml_path, 'r') as file:
 if not config["Onnx_Status"]:
     exit(0)
 
-folder_path = r"/home/asyaturhal/desktop/ai/test_logs"
+folder_path = r"/home/asyaturhal/desktop/ai/last_developed/dev_logs"
 output_file_path = (
-    r"/home/asyaturhal/actions-runner/_work/"
-    r"ai8x-training/ai8x-training/scripts/onnx_scripts.sh"
+    r"./scripts/onnx_scripts.sh"
 )
 train_path = (
-    r"/home/asyaturhal/actions-runner/_work/"
-    r"ai8x-training/ai8x-training/scripts/output_file.sh"
+    r"./scripts/output_file.sh"
 )
 logs_list = folder_path + '/' + sorted(os.listdir(folder_path))[-1]
 # print(logs_list)
@@ -53,6 +63,11 @@ models = []
 datasets = []
 model_paths = []
 bias = []
+tar_names = []
+
+time = str(datetime.datetime.now())
+time = time.replace(' ', '.')
+time = time.replace(':', '.')
 
 with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
     with open(train_path, "r", encoding='utf-8') as input_file:
@@ -76,9 +91,6 @@ with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
         else:
             bias.append("")
 
-#     for file in logs_list:
-#         temp = './logs/{}/checkpoint.pth.tar'.format(file)
-#         model_path.append(temp)
 
     for file in sorted(os.listdir(logs_list)):
         temp_path = logs_list + "/" + file
@@ -86,25 +98,29 @@ with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
             if temp_file.endswith("_checkpoint.pth.tar"):
                 temp = f"{temp_path}/{temp_file}"
                 model_paths.append(temp)
+                tar_names.append(temp_file)
 
-    for i, (model, dataset, model_path, bias_value) in enumerate(
-        zip(models, datasets, model_paths, bias)
+    for i, (model, dataset, bias_value) in enumerate(
+        zip(models, datasets, bias)
     ):
-        temp = (
-            f"python train.py "
-            f"--model {model} "
-            f"--dataset {dataset} "
-            f"--evaluate "
-            f"--exp-load-weights-from {model_path} "
-            f"--device MAX78000 "
-            f"--summary onnx "
-            f"--summary-filename {model}{dataset}onnx "
-            f"{bias_value}\n"
-        )
-        onnx_scripts.write(temp)
-
+        for tar in model_paths:
+            if model in tar and dataset in tar:
+                model_paths.remove(tar)
+                tar_path = tar
+                timestamp = time_stamp()
+                temp = (
+                    f"python train.py "
+                    f"--model {model} "
+                    f"--dataset {dataset} "
+                    f"--evaluate "
+                    f"--exp-load-weights-from {tar_path} "
+                    f"--device MAX78000 "
+                    f"--summary onnx "
+                    f"--summary-filename {model}_{dataset}_{timestamp}_onnx "
+                    f"{bias_value}\n"
+                )
+                onnx_scripts.write(temp)
 cmd_command = (
-    "bash /home/asyaturhal/actions-runner/_work/"
-    "ai8x-training/ai8x-training/scripts/onnx_scripts.sh"
+    "bash ./scripts/onnx_scripts.sh"
 )
 subprocess.run(cmd_command, shell=True, check=True)

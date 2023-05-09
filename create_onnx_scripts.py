@@ -65,10 +65,6 @@ model_paths = []
 bias = []
 tar_names = []
 
-time = str(datetime.datetime.now())
-time = time.replace(' ', '.')
-time = time.replace(':', '.')
-
 with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
     with open(train_path, "r", encoding='utf-8') as input_file:
         contents = input_file.read()

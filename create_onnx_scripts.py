@@ -49,7 +49,7 @@ with open(yaml_path, 'r') as file:
 if not config["Onnx_Status"]:
     exit(0)
 
-folder_path = r"/home/asyaturhal/desktop/ai/last_developed/dev_logs"
+folder_path = r"./logs"
 output_file_path = (
     r"./scripts/onnx_scripts.sh"
 )

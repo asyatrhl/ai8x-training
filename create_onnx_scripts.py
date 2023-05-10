@@ -15,7 +15,7 @@ import os
 import subprocess
 import yaml
 
-import numpy as np
+import numpy as np			 
 
 
 def joining(lst):
@@ -34,7 +34,6 @@ def time_stamp():
     time = time.replace(' ', '.')
     time = time.replace(':', '.')
     return time
-
 
 
 parser = argparse.ArgumentParser()
@@ -57,13 +56,15 @@ output_file_path = (
 train_path = (
     r"./scripts/output_file.sh"
 )
+										
 logs_list = folder_path + '/' + sorted(os.listdir(folder_path))[-1]
-# print(logs_list)
+
 models = []
 datasets = []
 model_paths = []
 bias = []
 tar_names = []
+
 
 with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
     with open(train_path, "r", encoding='utf-8') as input_file:
@@ -71,15 +72,14 @@ with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
     lines = contents.split("#!/bin/sh ")
     lines = lines[1:]
     contents_t = contents.split()
-    contents_temp = np.array(contents_t)
 
-    j = [i+1 for i in range(len(contents_temp)) if contents_temp[i] == '--model']
+    j = [i+1 for i in range(len(contents_t)) if contents_t[i] == '--model']
     for index in j:
-        models.append(contents_temp[index])
+        models.append(contents_t[index])
 
-    j = [i+1 for i in range(len(contents_temp)) if contents_temp[i] == '--dataset']
+    j = [i+1 for i in range(len(contents_t)) if contents_t[i] == '--dataset']
     for index in j:
-        datasets.append(contents_temp[index])
+        datasets.append(contents_t[index])
 
     for i, line in enumerate(lines):
         if "--use-bias" in line:
@@ -87,6 +87,9 @@ with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
         else:
             bias.append("")
 
+#     for file in logs_list:
+#         temp = './logs/{}/checkpoint.pth.tar'.format(file)
+#         model_path.append(temp)
 
     for file in sorted(os.listdir(logs_list)):
         temp_path = logs_list + "/" + file
@@ -100,7 +103,10 @@ with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
         zip(models, datasets, bias)
     ):
         for tar in model_paths:
-            if model in tar and dataset in tar:
+            element = tar.split('-')
+            modelsearch = element[-4][3:]
+            datasearch = element[-3].split('_')[0]
+            if datasearch == dataset.split('_')[0] and modelsearch == model:
                 model_paths.remove(tar)
                 tar_path = tar
                 timestamp = time_stamp()
@@ -115,8 +121,10 @@ with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
                     f"--summary-filename {model}_{dataset}_{timestamp}_onnx "
                     f"{bias_value}\n"
                 )
-                onnx_scripts.write(temp)
+                onnx_scripts.write(temp)			
+
 cmd_command = (
+												   
     "bash ./scripts/onnx_scripts.sh"
 )
 subprocess.run(cmd_command, shell=True, check=True)

@@ -76,7 +76,7 @@ with open(output_file_path, "w", encoding='utf-8') as output_file:
                 temp[i+1] = str(config[log_data][log_model]["epoch"])
 
                 if '--deterministic' not in temp:
-                    temp.insert(-2, '--deterministic')
+                    temp.insert(-1, '--deterministic')
 
                 temp.insert(-1, '--name ' + log_name)
 

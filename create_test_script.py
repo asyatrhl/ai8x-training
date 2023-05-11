@@ -70,7 +70,7 @@ with open(output_file_path, "w", encoding='utf-8') as output_file:
                 
                 if log_model == "ai87imageneteffnetv2" :
                     num = temp.index("--batch-size")
-                    temp[num+1] = "128
+                    temp[num+1] = "128"
 
                 if log_data == "FaceID":
                     continue

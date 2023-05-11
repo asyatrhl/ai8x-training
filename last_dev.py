@@ -120,24 +120,16 @@ def dev_checkout():
                 "bash /home/asyaturhal/desktop/ai/"
                 "last_developed/dev_scripts/last_dev_train.sh"
             )
-            # subprocess.run(cmd_command, shell=True, check=True)
+            subprocess.run(cmd_command, shell=True, check=True)
 
-            path_command = ("cd  /home/asyaturhal/desktop/ai/last_developed/last_dev_source/")
+)
             
-            subprocess.run(path_command, shell=True, check=True)
-            
-            result = subprocess.run(['pwd'], stdout=subprocess.PIPE)
-            current_dir = result.stdout.decode('utf-8').strip()
-            
-            print("-----Asya---------")
-            print(current_dir)
-            
-#             source_path = "/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/"
-#             destination_path = (
-#                 "/home/asyaturhal/desktop/ai/last_developed/dev_logs/"
-#                 + datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-#             )
-#             subprocess.run(['mv', source_path, destination_path], check=True)
+            source_path = "/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/"
+            destination_path = (
+                "/home/asyaturhal/desktop/ai/last_developed/dev_logs/"
+                + datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            )
+            subprocess.run(['mv', source_path, destination_path], check=True)
 
 
 dev_checkout() 

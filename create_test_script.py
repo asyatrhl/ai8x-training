@@ -64,6 +64,10 @@ with open(output_file_path, "w", encoding='utf-8') as output_file:
 
                 log_model = temp[j+1]
                 log_data = temp[k+1]
+                
+                if log_model == "ai87imageneteffnetv2" :
+                    num = temp.index("--batch-size")
+                    temp[num+1] = "128"
 
                 log_name = temp[j+1] + '-' + temp[k+1]
                 log_file_names.append(filename[:-3])

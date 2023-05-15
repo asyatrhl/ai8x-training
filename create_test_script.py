@@ -67,10 +67,6 @@ with open(output_file_path, "w", encoding='utf-8') as output_file:
 
                 log_name = temp[j+1] + '-' + temp[k+1]
                 log_file_names.append(filename[:-3])
-                
-                if log_model == "ai87imageneteffnetv2" :
-                    num = temp.index("--batch-size")
-                    temp[num+1] = "128"
 
                 if log_data == "FaceID":
                     continue
@@ -89,6 +85,7 @@ with open(output_file_path, "w", encoding='utf-8') as output_file:
 
                 temp.append("\n")
                 contents = joining(temp)
+                # Replace the number in the "--epochs" script
 
                 # Write the contents to the output file
                 output_file.write(contents)

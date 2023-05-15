@@ -127,4 +127,5 @@ cmd_command = (
 												   
     "bash ./scripts/onnx_scripts.sh"
 )
+
 subprocess.run(cmd_command, shell=True, check=True)

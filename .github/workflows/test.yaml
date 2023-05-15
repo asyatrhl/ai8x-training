@@ -65,7 +65,7 @@ jobs:
         run: python create_onnx_scripts.py  --testconf test_config.yaml
   test-results:
       runs-on: self-hosted
-      needs: [build, new-code]
+      needs: [new-code]
       steps:
       - uses: actions/checkout@v2
         name: trial-check

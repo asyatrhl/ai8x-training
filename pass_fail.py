@@ -13,7 +13,7 @@ import argparse
 import os
 import yaml
 
-from log_comparison import not_found_model
+from log_comparison import not_found_model, map_value
 
 
 parser = argparse.ArgumentParser()
@@ -31,28 +31,49 @@ log_path = r'/home/asyaturhal/desktop/ai/log_diff'
 log_path = log_path + '/' + sorted(os.listdir(log_path))[-1]
 
 
-def check_top_value(file, threshold):
+def check_top_value(file, threshold, map_value):
     """
     Compare Top1 value with threshold
     """
-    with open(file, 'r', encoding='utf-8') as f:
+    if not map_value:
+        with open(file, 'r', encoding='utf-8') as f:
 
-        model_name = file.split('/')[-1].split('___')[0]
-        # Read all lines in the file
-        lines = f.readlines()
-        # Extract the last line and convert it to a float
-        top1 = lines[-1].split()
-        epoch_num = int(top1[0])
-        top1_diff = float(top1[1])
-        # top5_diff = float(top1[2])
+            model_name = file.split('/')[-1].split('___')[0]
+            # Read all lines in the file
+            lines = f.readlines()
+            # Extract the last line and convert it to a float
+            top1 = lines[-1].split()
+            epoch_num = int(top1[0])
+            top1_diff = float(top1[1])
+            # top5_diff = float(top1[2])
 
-    if top1_diff < threshold:
-        print(f"\033[31m\u2718\033[0m Test failed for {model_name} since"
-              f" Top1 value changed {top1_diff}% at {epoch_num}th epoch.")
-        return False
-    print(f"\033[32m\u2714\033[0m Test passed for {model_name} since"
-          f" Top1 value changed {top1_diff}% at {epoch_num}th epoch.")
-    return True
+        if top1_diff < threshold:
+            print(f"\033[31m\u2718\033[0m Test failed for {model_name} since"
+                  f" Top1 value changed {top1_diff} % at {epoch_num}th epoch.")
+            return False
+        print(f"\033[32m\u2714\033[0m Test passed for {model_name} since"
+              f" Top1 value changed {top1_diff} % at {epoch_num}th epoch.")
+        return True
+    if map_value:
+        with open(file, 'r', encoding='utf-8') as f:
+
+            model_name = file.split('/')[-1].split('___')[0]
+            # Read all lines in the file
+            lines = f.readlines()
+            # Extract the last line and convert it to a float
+            top1 = lines[-1].split()
+            epoch_num = int(top1[0])
+            top1_diff = float(top1[1])
+            # top5_diff = float(top1[2])
+
+        if top1_diff < threshold:
+            print(f"\033[31m\u2718\033[0m Test failed for {model_name} since"
+                  f" mAP value changed {top1_diff} % at {epoch_num}th epoch.")
+            return False
+        print(f"\033[32m\u2714\033[0m Test passed for {model_name} since"
+              f" mAP value changed {top1_diff} % at {epoch_num}th epoch.")
+        return True
+
 
 passing = []
 
@@ -69,8 +90,8 @@ for logs in sorted(os.listdir(log_path)):
     else:
         threshold_temp = 0
     logs = log_path + '/' + str(logs)
-    passing.append(check_top_value(logs, threshold_temp))
+    passing.append(check_top_value(logs, threshold_temp, map))
 
 if not all(passing):
-    print("\033[31mAll test did not passed. Cancelling github actions.")
+    print("\033[31mAll tests did not passed. Cancelling github actions.")
     exit(1)

@@ -35,7 +35,7 @@ jobs:
 
   new-code:
       runs-on: self-hosted
-      needs: [build]
+#       needs: [build]
       steps:
       - uses: actions/checkout@v2
         name: trial-check

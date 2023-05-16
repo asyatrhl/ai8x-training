@@ -112,13 +112,13 @@ with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
                 tar_path = tar
                 timestamp = time_stamp()
                 temp = (
-                    f"python train.py "
+                    "python train.py "
                     f"--model {model} "
                     f"--dataset {dataset} "
-                    f"--evaluate "
+                    "--evaluate "
                     f"--exp-load-weights-from {tar_path} "
-                    f"--device MAX78000 "
-                    f"--summary onnx "
+                    "--device MAX78000 "
+                    "--summary onnx "
                     f"--summary-filename {model}_{dataset}_{timestamp}_onnx "
                     f"{bias_value}\n"
                 )

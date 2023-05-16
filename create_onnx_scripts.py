@@ -111,17 +111,7 @@ with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
                 model_paths.remove(tar)
                 tar_path = tar
                 timestamp = time_stamp()
-                temp = (
-                    "python train.py "
-                    f"--model {model} "
-                    f"--dataset {dataset} "
-                    "--evaluate "
-                    f"--exp-load-weights-from {tar_path} "
-                    "--device MAX78000 "
-                    "--summary onnx "
-                    f"--summary-filename {model}_{dataset}_{timestamp}_onnx "
-                    f"{bias_value}\n"
-                )
+                temp = "python train.py --model {model} --dataset {dataset} --evaluate --exp-load-weights-from {tar_path} --device MAX78000 --summary onnx --summary-filename {model}_{dataset}_{timestamp}_onnx {bias_value}\n"
                 onnx_scripts.write(temp)			
 
 cmd_command = (

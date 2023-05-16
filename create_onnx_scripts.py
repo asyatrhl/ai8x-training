@@ -50,7 +50,7 @@ if not config["Onnx_Status"]:
     exit(0)
 
 #  folder_path = r"./logs"
-folder_path = r"/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs"
+folder_path = r"/home/asyaturhal/desktop/ai/test_logs/"
 output_file_path = (
     r"./scripts/onnx_scripts.sh"
 )

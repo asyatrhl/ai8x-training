@@ -34,7 +34,7 @@ with open(yaml_path, 'r') as file:
 
 # Folder containing the files to be concatenated
 script_path = (
-    r"./scripts_test"
+    r"./scripts"
 )
 
 

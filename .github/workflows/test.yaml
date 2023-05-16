@@ -65,8 +65,12 @@ jobs:
         run: cp -r
           /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh
           /home/asyaturhal/desktop/ai/test_scripts/
-#       - name: Create ONNX script
-#         run: python create_onnx_scripts.py  --testconf test_config.yaml
+  onnx:
+      runs-on: self-hosted
+      needs: [new-code]
+      steps:
+      - name: Create ONNX script
+        run: python create_onnx_scripts.py  --testconf test_config.yaml
   test-results:
       runs-on: self-hosted
       needs: [new-code]

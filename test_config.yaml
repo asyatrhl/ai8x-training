@@ -92,15 +92,15 @@ KWS_20:
 MNIST:
   datapath: "/data_ssd"
   ai85netextrasmall:
-    threshold: 1500
+    threshold: 20
     epoch: 1
 
   ai85net5:
-    threshold: -500
+    threshold: 20
     epoch: 1
 
 SVHN_74:
   datapath: "/data_ssd"
   ai85tinierssd:
-    threshold: -500
+    threshold: 20
     epoch: 1

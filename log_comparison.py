@@ -125,6 +125,7 @@ def log_path_list(path):
 
 log_new = r'/home/asyaturhal/desktop/ai/test_logs/'
 log_old = r'/home/asyaturhal/desktop/ai/last_developed/dev_logs/'
+script_path = r"/home/asyaturhal/desktop/ai/test_scripts/output_file.sh"
 
 time = str(datetime.datetime.now())
 time = time.replace(' ', '.')

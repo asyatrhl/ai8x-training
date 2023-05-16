@@ -122,8 +122,7 @@ with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
                     f"--summary-filename {model}_{dataset}_{timestamp}_onnx "
                     f"{bias_value}\n"
                 )
-	    	onnx_scripts.write(temp)			
-
+	    	onnx_scripts.write(temp)
 cmd_command = (
 												   
     "bash ./scripts/onnx_scripts.sh"

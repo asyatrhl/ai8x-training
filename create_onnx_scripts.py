@@ -88,43 +88,45 @@ with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
         else:
             bias.append("")
 
+
+            
+
 #     for file in logs_list:
 #         temp = './logs/{}/checkpoint.pth.tar'.format(file)
 #         model_path.append(temp)
 
-    for file in sorted(os.listdir(logs_list)):
-        temp_path = logs_list + "/" + file
-        for temp_file in sorted(os.listdir(temp_path)):
-            if temp_file.endswith("_checkpoint.pth.tar"):
-                temp = temp_path + "/" + temp_file
-                model_paths.append(temp)
-                tar_names.append(temp_file)
+for file in sorted(os.listdir(logs_list)):
+    temp_path = logs_list + "/" + file
+    for temp_file in sorted(os.listdir(temp_path)):
+        if temp_file.endswith("_checkpoint.pth.tar"):
+            temp = temp_path + "/" + temp_file
+            model_paths.append(temp)
+            tar_names.append(temp_file)
 
-    for i, (model, dataset, bias_value) in enumerate(
-        zip(models, datasets, bias)
-    ):
-        for tar in model_paths:
-            element = tar.split('-')
-            modelsearch = element[-4][3:]
-            datasearch = element[-3].split('_')[0]
-            if datasearch == dataset.split('_')[0] and modelsearch == model:
-                model_paths.remove(tar)
-                tar_path = tar
-                timestamp = time_stamp()
-                temp = (
-                    f"python train.py "
-                    f"--model {model} "
-                    f"--dataset {dataset} "
-                    f"--evaluate "
-                    f"--exp-load-weights-from {tar_path} "
-                    f"--device MAX78000 "
-                    f"--summary onnx "
-                    f"--summary-filename {model}_{dataset}_{timestamp}_onnx "
-                    f"{bias_value}\n"
+for i, (model, dataset, bias_value) in enumerate(
+    zip(models, datasets, bias)
+):
+    for tar in model_paths:
+        element = tar.split('-')
+        modelsearch = element[-4][3:]
+        datasearch = element[-3].split('_')[0]
+        if datasearch == dataset.split('_')[0] and modelsearch == model:
+            model_paths.remove(tar)
+            tar_path = tar
+            timestamp = time_stamp()
+            temp = (
+                f"python train.py "
+                f"--model {model} "
+                f"--dataset {dataset} "
+                f"--evaluate "
+                f"--exp-load-weights-from {tar_path} "
+                f"--device MAX78000 "
+                f"--summary onnx "
+                f"--summary-filename {model}_{dataset}_{timestamp}_onnx "
+                f"{bias_value}\n"
                 )
-	    	onnx_scripts.write(temp)
+            onnx_scripts.write(temp)
 cmd_command = (
-												   
     "bash ./scripts/onnx_scripts.sh"
 )
 

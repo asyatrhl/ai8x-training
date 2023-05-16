@@ -55,7 +55,7 @@ output_file_path = (
     r"./scripts/onnx_scripts.sh"
 )
 train_path = (
-    r"./scripts/output_file.sh"
+    r"/home/asyaturhal/desktop/ai/test_scripts/output_file.sh"
 )
 										
 logs_list = folder_path + '/' + sorted(os.listdir(folder_path))[-1]

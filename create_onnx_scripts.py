@@ -60,6 +60,7 @@ logs_list = folder_path + '/' + sorted(os.listdir(folder_path))[-1]
 
 models = []
 datasets = []
+devices = []
 model_paths = []
 bias = []
 tar_names = []
@@ -80,15 +81,15 @@ with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
     for index in j:
         datasets.append(contents_t[index])
 
+    j = [i+1 for i in range(len(contents_t)) if contents_t[i] == '--device']
+    for index in j:
+        devices.append(contents_t[index])
+
     for i, line in enumerate(lines):
         if "--use-bias" in line:
             bias.append("--use-bias")
         else:
             bias.append("")
-
-#     for file in logs_list:
-#         temp = './logs/{}/checkpoint.pth.tar'.format(file)
-#         model_path.append(temp)
 
     for file in sorted(os.listdir(logs_list)):
         temp_path = logs_list + "/" + file
@@ -98,8 +99,8 @@ with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
                 model_paths.append(temp)
                 tar_names.append(temp_file)
 
-    for i, (model, dataset, bias_value) in enumerate(
-        zip(models, datasets, bias)
+    for i, (model, dataset, bias_value, device_name) in enumerate(
+        zip(models, datasets, bias, devices)
     ):
         for tar in model_paths:
             element = tar.split('-')
@@ -115,7 +116,7 @@ with open(output_file_path, "w", encoding='utf-8') as onnx_scripts:
                     f"--dataset {dataset} "
                     f"--evaluate "
                     f"--exp-load-weights-from {tar_path} "
-                    f"--device MAX78000 "
+                    f"--device {device_name} "
                     f"--summary onnx "
                     f"--summary-filename {model}_{dataset}_{timestamp}_onnx "
                     f"{bias_value}\n"

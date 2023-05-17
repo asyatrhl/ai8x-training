@@ -32,10 +32,9 @@ jobs:
           requirements-cu11.txt
       - name: Last Develop Check
         run: python ./last-dev/last_dev.py --testconf ./last-dev/test_config.yaml
-
   new-code:
       runs-on: self-hosted
-     # needs: [build]
+      needs: [build]
       steps:
       - uses: actions/checkout@v2
         name: trial-check
@@ -65,8 +64,8 @@ jobs:
         run: cp -r
           /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh
           /home/asyaturhal/desktop/ai/test_scripts/
-#       - name: Create ONNX script
-#         run: python create_onnx_scripts.py  --testconf test_config.yaml
+      - name: Create ONNX script
+        run: python create_onnx_scripts.py  --testconf test_config.yaml
   test-results:
       runs-on: self-hosted
       needs: [new-code]

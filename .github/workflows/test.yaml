@@ -34,7 +34,7 @@ jobs:
 #         run: python ./last-dev/last_dev.py --testconf ./last-dev/test_config.yaml
   new-code:
       runs-on: self-hosted
-      needs: [build]
+      # needs: [build]
       steps:
       - uses: actions/checkout@v2
         name: trial-check

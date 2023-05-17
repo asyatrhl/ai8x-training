@@ -121,9 +121,6 @@ def dev_checkout():
                 "last_developed/dev_scripts/last_dev_train.sh"
             )
             subprocess.run(cmd_command, shell=True, check=True)
-
-)
-            
             source_path = "/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/"
             destination_path = (
                 "/home/asyaturhal/desktop/ai/last_developed/dev_logs/"

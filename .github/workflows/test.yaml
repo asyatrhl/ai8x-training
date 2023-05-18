@@ -8,12 +8,18 @@ jobs:
     runs-on: self-hosted
     #container: docker://dvcorg/cml-py3:latest
     steps:
-      - name: Checkout rotx-maxim/ai8x-training
+#       - name: Checkout rotx-maxim/ai8x-training
+#         uses: actions/checkout@v2
+#         with:
+#           repository: rotx-maxim/ai8x-training
+#           ref: pytorch-2.0
+#           submodules: recursive
+      - name: Checkout MaximIntegratedAI/ai8x-training
         uses: actions/checkout@v2
         with:
-          repository: rotx-maxim/ai8x-training
+          repository: MaximIntegratedAI/ai8x-training
           ref: pytorch-2.0
-          submodules: recursive
+          submodules: recursive         
       - name: Checkout Test Codes
         uses: actions/checkout@v2
         with:

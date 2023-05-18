@@ -1,31 +1,18 @@
 ---
 name: auto-testing
 on:
-  - push
+  push:
 jobs:
   build:
-    #runs-on: [ubuntu-latest]
     runs-on: self-hosted
-    #container: docker://dvcorg/cml-py3:latest
+    timeout-minutes: 1500
     steps:
-#       - name: Checkout rotx-maxim/ai8x-training
-#         uses: actions/checkout@v2
-#         with:
-#           repository: rotx-maxim/ai8x-training
-#           ref: pytorch-2.0
-#           submodules: recursive
-      - name: Checkout MaximIntegratedAI/ai8x-training
+      - name: Checkout last-dev
         uses: actions/checkout@v2
         with:
           repository: MaximIntegratedAI/ai8x-training
-          ref: pytorch-2.0
-          submodules: recursive         
-      - name: Checkout Test Codes
-        uses: actions/checkout@v2
-        with:
-          repository: asyatrhl/ai8x-training-test-codes
-          ref: main
-          path: test_codes
+          ref: develop
+          submodules: recursive
       - name: Checkout Test Codes
         uses: actions/checkout@v2
         with:
@@ -43,27 +30,69 @@ jobs:
       - name: Install Dependencies
         run: pip3 install -U pip wheel setuptools && pip3 install -r
           requirements-cu11.txt
-      - name: Check Pytorch version
-        run: pip list | grep torch
       - name: Last Develop Check
-        run: python ./test_codes/last_dev.py --testconf ./last-dev/test_config.yaml
-      - name: deneme
-        run: python train.py --epochs 1 --deterministic --optimizer Adam --lr 0.00064 --wd 0 --compress policies/schedule-cifar100-ressimplenet.yaml --model ai85ressimplenet --dataset CIFAR100 --device MAX78000 --batch-size 32 --print-freq 100 --validation-split 0 --name ai85ressimplenet-CIFAR100 --data /data_ssd "$@" 
+        run: python ./last-dev/last_dev.py --testconf ./last-dev/test_config.yaml
+
+  new-code:
+      runs-on: self-hosted
+     # needs: [build]
+      steps:
+      - uses: actions/checkout@v2
+        name: trial-check
+        with:
+          submodules: recursive
+      - name: Setup Pyenv and Install Dependencies
+        uses: gabrielfalcao/pyenv-action@v13
+        with:
+          default: 3.8.11
+      - name: Create Venv
+        run: pyenv local 3.8.11 & python3 -m venv venv --prompt ai8x-training
+      - name: Activate Venv
+        run: source venv/bin/activate
+      - name: Install Dependencies
+        run: pip3 install -U pip wheel setuptools && pip3 install -r
+          requirements-cu11.txt
       - name: Create Test Script
-        run: python ./test_codes/create_test_script.py --testconf ./last-dev/test_config.yaml
+        run: python create_test_script.py --testconf test_config.yaml
       - name: Run Training Scripts
         run: bash
-          /home/asyaturhal/desktop/ai/test_scripts/output_file.sh
+         /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh
       - name: Save Log Files
         run: cp -r
           /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/
-          /home/asyaturhal/desktop/ai/test_logs/$(date +"%Y-%m-%d-%k-%M-")
-      - name: Log Diff
-        run: python ./test_codes/log_comparison.py
-      - name: Test Results
-        run: python ./test_codes/pass_fail.py --testconf ./last-dev/test_config.yaml
+          /home/asyaturhal/desktop/ai/test_logs/$(date +%Y-%m-%d_%H-%M-%S)
+      - name: Save test scripts
+        run: cp -r
+          /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh
+          /home/asyaturhal/desktop/ai/test_scripts/
       - name: Create ONNX script
-        run: python ./test_codes/create_onnx_scripts.py --testconf ./last-dev/test_config.yaml
-      - name: Run ONNX
-        run: bash
-          /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/onnx_scripts.sh
+        run: python create_onnx_scripts.py  --testconf test_config.yaml
+  test-results:
+      runs-on: self-hosted
+      needs: [new-code]
+      steps:
+      - uses: actions/checkout@v2
+        name: trial-check
+        with:
+          submodules: recursive
+      - name: Checkout Test Codes
+        uses: actions/checkout@v2
+        with:
+          repository: asyatrhl/regression-test
+          ref: main
+          path: last-dev
+      - name: Setup Pyenv and Install Dependencies
+        uses: gabrielfalcao/pyenv-action@v13
+        with:
+          default: 3.8.11
+      - name: Create Venv
+        run: pyenv local 3.8.11 & python3 -m venv venv --prompt ai8x-training
+      - name: Activate Venv
+        run: source venv/bin/activate
+      - name: Install Dependencies
+        run: pip3 install -U pip wheel setuptools && pip3 install -r
+          requirements-cu11.txt
+      - name: Log Diff
+        run: python log_comparison.py
+      - name: Test Results
+        run: python pass_fail.py  --testconf test_config.yaml

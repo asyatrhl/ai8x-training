@@ -53,8 +53,8 @@ jobs:
 #         run: python train.py --epochs 1 --deterministic --optimizer Adam --lr 0.00064 --wd 0 --compress policies/schedule-cifar100-ressimplenet.yaml --model ai85ressimplenet --dataset CIFAR100 --device MAX78000 --batch-size 32 --print-freq 100 --validation-split 0 --name ai85ressimplenet-CIFAR100 --data /data_ssd "$@"
 #       - name: deneme
 #         run:  python train.py --deterministic --print-freq 200 --cpu --epochs 1 --optimizer Adam --lr 0.001 --wd 0 --model ai85tinierssd --use-bias --momentum 0.9 --weight-decay 5e-4 --dataset SVHN_74 --device MAX78000 --obj-detection --obj-detection-params parameters/obj_detection_params_svhn.yaml --batch-size 16 --qat-policy policies/qat_policy_svhn.yaml --validation-split 0 --name ai85tinierssd-SVHN_74 --data /data_ssd "$@"
-      - name: Create Test Script
-        run: python ./test_codes/create_test_script.py --testconf ./last-dev/test_config.yaml
+#       - name: Create Test Script
+#         run: python ./test_codes/create_test_script.py --testconf ./last-dev/test_config.yaml
       - name: Run Training Scripts
         run: bash
           /home/asyaturhal/desktop/ai/test_scripts/output_file.sh

@@ -47,6 +47,8 @@ jobs:
         run: pip install facenet-pytorch
       - name: Check Pytorch version
         run: pip list | grep torch
+      - name: installnumpy 1.22.4
+        run: pip install numpy==1.22.4
       - name: Check Numpy version
         run: pip show numpy --version
       - name: Last Develop Check

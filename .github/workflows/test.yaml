@@ -42,7 +42,7 @@ jobs:
         run: source venv/bin/activate
       - name: Install Dependencies
         run: pip3 install -U pip wheel setuptools && pip3 install -r
-          /requirements-cu11.txt
+          requirements-cu11.txt
       - name: Install Facenet-pytorch
         run: pip install facenet-pytorch
       - name: Check Pytorch version

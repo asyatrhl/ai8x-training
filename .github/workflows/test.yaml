@@ -42,11 +42,13 @@ jobs:
         run: source venv/bin/activate
       - name: Install Dependencies
         run: pip3 install -U pip wheel setuptools && pip3 install -r
-          requirements-cu11.txt
+          ./test_codes/requirements-cu11.txt
       - name: Install Facenet-pytorch
         run: pip install facenet-pytorch
       - name: Check Pytorch version
         run: pip list | grep torch
+      - name: Check Numpy version
+        run: pip show numpy --version
       - name: Last Develop Check
         run: python ./test_codes/last_dev.py --testconf ./last-dev/test_config.yaml
 #       - name: deneme

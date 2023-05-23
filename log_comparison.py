@@ -25,6 +25,7 @@ def compare_logs(old_log, new_log, output_name, output_pth):
     word = 'Best'
     word2 = 'Top1'
     word3 = 'mAP'
+    ex_list = [False]
 
     with open(new_log, 'r', encoding='utf-8') as f2:
         file2 = f2.read()
@@ -33,7 +34,11 @@ def compare_logs(old_log, new_log, output_name, output_pth):
         if word2 not in file2 and word3 not in file2:
             print(f"\033[31m\u2718\033[0m {log_name} does not have any trained results."
                   " There is an error in training.")
-            exit(1)  
+            ex_list.append(True)
+
+    if all(ex_list):
+        print("\033[31m Cancelling github actions.")
+        exit(1)    
 
     with open(old_log, 'r', encoding='utf-8') as f1, open(new_log, 'r', encoding='utf-8') as f2:
         file1_content = f1.readlines()
@@ -138,6 +143,7 @@ loglist = sorted(os.listdir(log_new))
 loglist_old = sorted(os.listdir(log_old))
 old_logs_path = log_old + loglist_old[-1]
 new_logs_path = log_new + loglist[-1]
+
 new_log_list = log_path_list(new_logs_path)
 old_log_list = log_path_list(old_logs_path)
 
@@ -147,11 +153,16 @@ with open(script_path, 'r') as f:
 name_indices = [i+1 for i, x in enumerate(scripts) if x == "--name"]
 values = [scripts[j] for j in name_indices]
 
+ex_list2 = [False]
 for log in values:
     if log not in new_log_list:
         print(f"\033[31m\u2718\033[0m {log} does not have any trained log file."
               " There is an error in training.")
-        exit(1)				 
+        ex_list2.append(True)
+
+if all(ex_list2):
+    print("\033[31m Cancelling github actions.")
+    exit(1)    
 
 not_found_model = []
 map_value_list = {}
@@ -175,5 +186,6 @@ for files_new in sorted(os.listdir(new_logs_path)):
 
             old_path_log = old_path + '/' + old_log_file
             new_path_log = new_path + '/' + new_log_file
+
             map_value_list[files_new_temp] = compare_logs(old_path_log, new_path_log, files_new, output_path)
             break

@@ -51,13 +51,13 @@ jobs:
         run: python ./test_codes/last_dev.py --testconf ./last-dev/test_config.yaml
 #       - name: deneme
 #         run:  python train.py --cpu --deterministic --print-freq 200 --epochs 1 --optimizer Adam --lr 0.001 --wd 0 --model ai85tinierssd --use-bias --momentum 0.9 --weight-decay 5e-4 --dataset SVHN_74 --device MAX78000 --obj-detection --obj-detection-params parameters/obj_detection_params_svhn.yaml --batch-size 16 --qat-policy policies/qat_policy_svhn.yaml --validation-split 0 --name ai85tinierssd-SVHN_74 --data /data_ssd "$@" 
-#       - name: deneme
-#         run:  python train.py --cpu --deterministic --print-freq 200 --pr-curves --epochs 1 --optimizer Adam --lr 0.001 --wd 0 --model ai85tinierssd --use-bias --momentum 0.9 --weight-decay 5e-4 --dataset SVHN_74 --device MAX78000 --obj-detection --obj-detection-params parameters/obj_detection_params_svhn.yaml --batch-size 16 --qat-policy policies/qat_policy_svhn.yaml --validation-split 0 --name ai85tinierssd-SVHN_74 --data /data_ssd "$@" 
+      - name: deneme
+        run:  python train.py --deterministic --pr-curves --epochs 1 --optimizer Adam --lr 0.001 --wd 0 --model ai85unetlarge --out-fold-ratio 4 --use-bias --dataset AISegment_352 --device MAX78000 --batch-size 32 --qat-policy policies/qat_policy_aisegment.yaml --compress policies/schedule-aisegment.yaml --validation-split 0 --print-freq 250 --name ai85unetlarge-AISegment_352 --data /data_ssd "$@" 
       - name: Create Test Script
         run: python ./test_codes/create_test_script.py --testconf ./last-dev/test_config.yaml
-      - name: Run Training Scripts
-        run: bash
-          /home/asyaturhal/desktop/ai/test_scripts/output_file.sh
+#       - name: Run Training Scripts
+#         run: bash
+#           /home/asyaturhal/desktop/ai/test_scripts/output_file.sh
       - name: Save Log Files
         run: cp -r
           /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/

@@ -59,7 +59,7 @@ jobs:
 #         run: bash
 #          /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh
       - name: Run imagenet
-        run: python3 train.py --deterministic --epochs 25 --optimizer Adam --lr 0.001 --wd 0 --compress policies/schedule-imagenet-effnet2.yaml --model ai87imageneteffnetv2 --dataset ImageNet --device MAX78002 --batch-size 128 --print-freq 100 --validation-split 0 --use-bias --qat-policy policies/qat_policy.yaml --name ai87imageneteffnetv2-ImageNet --data /data_ssd "$@
+        run: python3 train.py --deterministic --epochs 25 --optimizer Adam --lr 0.001 --wd 0 --compress policies/schedule-imagenet-effnet2.yaml --model ai87imageneteffnetv2 --dataset ImageNet --device MAX78002 --batch-size 128 --print-freq 100 --validation-split 0 --use-bias --qat-policy policies/qat_policy.yaml --name ai87imageneteffnetv2-ImageNet --data /data_ssd "$@"
       - name: Save Log Files
         run: cp -r
           /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/

@@ -19,7 +19,7 @@ def compare_logs(old_log, new_log, output_name, output_pth):
     """
     Take diff top1 of log files of the pulled code and the last developed
     """
-    header = ["Epoch number", "Top1 Diff(%)", "Top5 Diff"]
+    header = ["Epoch number", "Top1 Diff(%)", "Top5 Diff(%)"]
     header_map = ["Epoch number", "mAP Diff(%)"]
 
     word = 'Best'
@@ -92,11 +92,11 @@ def compare_logs(old_log, new_log, output_name, output_pth):
             if '[Top1:' in list2:
                 top1_diff = ((float(list2[1])-float(list1[1]))/float(list1[1]))*100
                 top1.append([i])
-                top1[0].append(top1_diff)
+                top1[i-1].append(top1_diff)
             
             if 'Top5:' in list2:
                 top5_diff = ((float(list2[3])-float(list1[3]))/float(list1[1]))*100
-                top1[0].append(top5_diff)
+                top1[i-1].append(top5_diff)
 
         output_path_2 = output_pth + '/' + output_name + '.txt'
         with open(output_path_2, "w", encoding='utf-8') as output_file:

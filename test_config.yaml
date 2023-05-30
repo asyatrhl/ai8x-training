@@ -92,7 +92,7 @@ KWS_20:
 MNIST:
   datapath: "/data_ssd"
   ai85netextrasmall:
-    threshold: 1500
+    threshold: -5
     epoch: 15
 
   ai85net5:

@@ -110,7 +110,7 @@ def compare_logs(old_log, new_log, output_name, output_pth):
             if '[mAP:' in map2:
                 map_diff = ((float(map2[1])-float(map1[1]))/float(map1[1]))*100
                 map_list.append([i])
-                map_list[0].append(map_diff)
+                map_list[i-1].append(map_diff)
 
         output_path_2 = output_pth + '/' + output_name + '.txt'
         with open(output_path_2, "w", encoding='utf-8') as output_file:

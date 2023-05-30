@@ -33,46 +33,46 @@ jobs:
       - name: Last Develop Check
         run: python ./last-dev/last_dev.py --testconf ./last-dev/test_config.yaml
 
-  new-code:
-      runs-on: self-hosted
-      needs: [build]
-      timeout-minutes: 345600
-      steps:
-      - uses: actions/checkout@v2
-        name: trial-check
-        with:
-          submodules: recursive
-      - name: Setup Pyenv and Install Dependencies
-        uses: gabrielfalcao/pyenv-action@v13
-        with:
-          default: 3.8.11
-      - name: Create Venv
-        run: pyenv local 3.8.11 & python3 -m venv venv --prompt ai8x-training
-      - name: Activate Venv
-        run: source venv/bin/activate
-      - name: Install Dependencies
-        run: pip3 install -U pip wheel setuptools && pip3 install -r
-          requirements-cu11.txt
-      - name: Create Test Script
-        run: python create_test_script.py --testconf test_config.yaml
-      - name: Run Training Scripts
-        run: bash
-         /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh
-#       - name: Run imagenet
-#         run: python3 train.py --deterministic --epochs 25 --optimizer Adam --lr 0.001 --wd 0 --compress policies/schedule-imagenet-effnet2.yaml --model ai87imageneteffnetv2 --dataset ImageNet --device MAX78002 --batch-size 128 --print-freq 100 --validation-split 0 --use-bias --qat-policy policies/qat_policy.yaml --name ai87imageneteffnetv2-ImageNet --data /data_ssd "$@
-      - name: Save Log Files
-        run: cp -r
-          /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/
-          /home/asyaturhal/desktop/ai/test_logs/$(date +%Y-%m-%d_%H-%M-%S)
-      - name: Save test scripts
-        run: cp -r
-          /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh
-          /home/asyaturhal/desktop/ai/test_scripts/
-      - name: Create ONNX script
-        run: python create_onnx_scripts.py  --testconf test_config.yaml
+#   new-code:
+#       runs-on: self-hosted
+#       needs: [build]
+#       timeout-minutes: 345600
+#       steps:
+#       - uses: actions/checkout@v2
+#         name: trial-check
+#         with:
+#           submodules: recursive
+#       - name: Setup Pyenv and Install Dependencies
+#         uses: gabrielfalcao/pyenv-action@v13
+#         with:
+#           default: 3.8.11
+#       - name: Create Venv
+#         run: pyenv local 3.8.11 & python3 -m venv venv --prompt ai8x-training
+#       - name: Activate Venv
+#         run: source venv/bin/activate
+#       - name: Install Dependencies
+#         run: pip3 install -U pip wheel setuptools && pip3 install -r
+#           requirements-cu11.txt
+#       - name: Create Test Script
+#         run: python create_test_script.py --testconf test_config.yaml
+#       - name: Run Training Scripts
+#         run: bash
+#          /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh
+# #       - name: Run imagenet
+# #         run: python3 train.py --deterministic --epochs 25 --optimizer Adam --lr 0.001 --wd 0 --compress policies/schedule-imagenet-effnet2.yaml --model ai87imageneteffnetv2 --dataset ImageNet --device MAX78002 --batch-size 128 --print-freq 100 --validation-split 0 --use-bias --qat-policy policies/qat_policy.yaml --name ai87imageneteffnetv2-ImageNet --data /data_ssd "$@
+#       - name: Save Log Files
+#         run: cp -r
+#           /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/
+#           /home/asyaturhal/desktop/ai/test_logs/$(date +%Y-%m-%d_%H-%M-%S)
+#       - name: Save test scripts
+#         run: cp -r
+#           /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh
+#           /home/asyaturhal/desktop/ai/test_scripts/
+#       - name: Create ONNX script
+#         run: python create_onnx_scripts.py  --testconf test_config.yaml
   test-results:
       runs-on: self-hosted
-      needs: [new-code]
+#       needs: [new-code]
       timeout-minutes: 345600
       steps:
       - uses: actions/checkout@v2

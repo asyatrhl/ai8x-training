@@ -104,3 +104,9 @@ SVHN_74:
   ai85tinierssd:
     threshold: -500
     epoch: 15
+
+PascalVOC_2007_2012_256_320_augmented:
+  datapath: "/data_ssd"
+  ai87fpndetector:
+    threshold: -500
+    epoch: 15

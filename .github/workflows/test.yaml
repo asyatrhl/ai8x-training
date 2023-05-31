@@ -52,6 +52,8 @@ jobs:
         run: pip show numpy --version
       - name: Last Develop Check
         run: python ./test_codes/last_dev.py --testconf ./last-dev/test_config.yaml
+      - name: Create Test Script
+        run: python ./test_codes/create_test_script.py --testconf ./last-dev/test_config.yaml
       - name: Run Training Scripts
         run: bash
           /home/asyaturhal/desktop/ai/test_scripts/output_file.sh

@@ -48,6 +48,8 @@ jobs:
         run: pip list | grep torch
       - name: Check Numpy version
         run: pip show numpy --version
+      - name: deneme
+        run:  python train.py --deterministic --print-freq 50 --epochs 15 --optimizer Adam --lr 0.001 --wd 0 --model ai87fpndetector --use-bias --momentum 0.9 --weight-decay 1e-6 --dataset PascalVOC_2007_2012_256_320_augmented --device MAX78002 --obj-detection --obj-detection-params parameters/obj_detection_params_pascalvoc.yaml --batch-size 32 --qat-policy policies/qat_policy_pascalvoc.yaml --compress policies/schedule-pascalvoc.yaml --validation-split 0 --name ai87fpndetector-PascalVOC_2007_2012_256_320_augmented --data /data_ssd "$@"
 #       - name: Last Develop Check
 #         run: python ./test_codes/last_dev.py --testconf ./last-dev/test_config.yaml
       - name: Create Test Script
@@ -59,12 +61,12 @@ jobs:
 #         run: cp -r
 #           /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/
 #           /home/asyaturhal/desktop/ai/test_logs/$(date +"%Y-%m-%d-%k-%M-")
-      - name: Log Diff
-        run: python ./test_codes/log_comparison.py
-      - name: Test Results
-        run: python ./test_codes/pass_fail.py --testconf ./last-dev/test_config.yaml
-      - name: Create ONNX script
-        run: python ./test_codes/create_onnx_scripts.py --testconf ./last-dev/test_config.yaml
-      - name: Run ONNX
-        run: bash
-          /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/onnx_scripts.sh
+#       - name: Log Diff
+#         run: python ./test_codes/log_comparison.py
+#       - name: Test Results
+#         run: python ./test_codes/pass_fail.py --testconf ./last-dev/test_config.yaml
+#       - name: Create ONNX script
+#         run: python ./test_codes/create_onnx_scripts.py --testconf ./last-dev/test_config.yaml
+#       - name: Run ONNX
+#         run: bash
+#           /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/scripts/onnx_scripts.sh

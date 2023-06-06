@@ -52,10 +52,10 @@ jobs:
 #       - name: Run Training Scripts
 #         run: bash
 #           /home/asyaturhal/desktop/ai/test_scripts/output_file.sh
-      - name: Save Log Files
-        run: cp -r
-          /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/
-          /home/asyaturhal/desktop/ai/test_logs/$(date +"%Y-%m-%d-%k-%M-")
+#       - name: Save Log Files
+#         run: cp -r
+#           /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/
+#           /home/asyaturhal/desktop/ai/test_logs/$(date +"%Y-%m-%d-%k-%M-")
       - name: Log Diff
         run: python ./test_codes/log_comparison.py
       - name: Test Results

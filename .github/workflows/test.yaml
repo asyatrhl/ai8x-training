@@ -52,8 +52,7 @@ jobs:
 #       - name: Deneme
 #         run: python train.py --deterministic --epochs 15 --optimizer Adam --lr 0.001 --wd 0 --compress policies/schedule-cifar-nas.yaml --model ai85nascifarnet --dataset CIFAR100 --device MAX78000 --batch-size 100 --print-freq 100 --validation-split 0 --use-bias --qat-policy /home/asyaturhal/desktop/ai/test_scripts/qat_policy.yaml --name ai85nascifarnet-CIFAR100 --data /data_ssd "$@" 
       - name: Run Training Scripts
-        run: bash
-          /home/asyaturhal/desktop/ai/test_scripts/output_file.sh
+        run: bash output_file.sh
       - name: Save Log Files
         run: cp -r
           /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/

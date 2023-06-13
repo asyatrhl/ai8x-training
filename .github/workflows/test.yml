@@ -43,8 +43,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          repository: MaximIntegratedAI/ai8x-training
-          ref: develop
+          ref: test_reg
           submodules: recursive
       - name: Setup Pyenv and Install Dependencies
         uses: gabrielfalcao/pyenv-action@v13
@@ -76,15 +75,14 @@ jobs:
     needs: [new-code]
     timeout-minutes: 345600
     steps:
-      - uses: actions/checkout@v2
-        name: trial-check
-        with:
-          submodules: recursive
+#       - uses: actions/checkout@v2
+#         name: trial-check
+#         with:
+#           submodules: recursive
       - name: Checkout Test Codes
         uses: actions/checkout@v2
         with:
-          repository: MaximIntegratedAI/ai8x-training
-          ref: develop
+          ref: test_reg
           submodules: recursive
       - name: Setup Pyenv and Install Dependencies
         uses: gabrielfalcao/pyenv-action@v13

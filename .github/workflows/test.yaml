@@ -13,12 +13,12 @@ jobs:
     runs-on: self-hosted
     timeout-minutes: 345600
     steps:
-      - name: Checkout rotx-maxim/ai8x-training
-        uses: actions/checkout@v2
-        with:
-          repository: rotx-maxim/ai8x-training
-          ref: feature/mAP-speedup
-          submodules: recursive
+#       - name: Checkout rotx-maxim/ai8x-training
+#         uses: actions/checkout@v2
+#         with:
+#           repository: rotx-maxim/ai8x-training
+#           ref: feature/mAP-speedup
+#           submodules: recursive
       - name: Checkout MaximIntegratedAI/ai8x-training
         uses: actions/checkout@v2
         with:

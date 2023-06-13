@@ -41,7 +41,7 @@ parser.add_argument('--testconf', help='Enter the config file for the test', req
 parser.add_argument('--testpaths', help='Enter the paths for the test', required=True)
 args = parser.parse_args()
 yaml_path = args.testconf
-test_path = args.testconf
+test_path = args.testpaths
 
 # Open the YAML file
 with open(yaml_path, 'r', encoding='utf-8') as file:

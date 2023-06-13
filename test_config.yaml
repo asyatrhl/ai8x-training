@@ -96,23 +96,23 @@ MNIST:
     epoch: 15
 
   ai85net5:
-    threshold: -500
+    threshold: -5
     epoch: 15
 
 SVHN_74:
   datapath: "/data_ssd"
   ai85tinierssd:
-    threshold: -500
+    threshold: -5
     epoch: 15
 
 PascalVOC_2007_2012_256_320_augmented:
   datapath: "/data_ssd"
   ai87fpndetector:
-    threshold: -500
+    threshold: -5
     epoch: 15
     
 Kinetics400:
-  datapath: "/data_ssd"
+  datapath: "/data/alican_data/"
   ai85actiontcn:
-    threshold: -500
+    threshold: -5
     epoch: 15

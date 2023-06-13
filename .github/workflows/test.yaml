@@ -55,8 +55,8 @@ jobs:
 #         run: python ./test_codes/last_dev.py --testconf ./last-dev/test_config.yaml
       - name: Create Test Script
         run: python ./test_codes/create_test_script.py --testconf ./last-dev/test_config.yaml
-#       - name: Deneme
-#         run: python train.py --deterministic --epochs 15 --optimizer Adam --lr 0.001 --wd 0 --compress policies/schedule-cifar-nas.yaml --model ai85nascifarnet --dataset CIFAR100 --device MAX78000 --batch-size 100 --print-freq 100 --validation-split 0 --use-bias --qat-policy /home/asyaturhal/desktop/ai/test_scripts/qat_policy.yaml --name ai85nascifarnet-CIFAR100 --data /data_ssd "$@" 
+      - name: Deneme
+        run: python train.py --deterministic --print-freq 50 --epochs 15 --optimizer Adam --lr 0.001 --wd 0 --model ai87fpndetector --use-bias --momentum 0.9 --weight-decay 1e-6 --dataset PascalVOC_2007_2012_256_320_augmented --device MAX78002 --obj-detection --obj-detection-params parameters/obj_detection_params_pascalvoc.yaml --batch-size 32 --qat-policy /home/asyaturhal/desktop/ai/test_scripts/qat_policy.yaml --compress policies/schedule-pascalvoc.yaml --validation-split 0 --name ai87fpndetector-PascalVOC_2007_2012_256_320_augmented --data /data_ssd "$@" 
 #       - name: Run Training Scripts
 #         run: bash /home/asyaturhal/desktop/source/ai8x-training/scripts/output_file.sh
 #       - name: Save Log Files

@@ -1,0 +1,34 @@
+---
+# Create_onnx_script.py
+folder_path: r"/home/asyaturhal/desktop/ai/test_logs/"
+output_file_path: r"./scripts/onnx_scripts.sh"
+train_path: r"/home/asyaturhal/desktop/ai/test_scripts/output_file.sh
+
+
+# create_test_script.py
+# Folder containing the files to be concatenated
+script_path : r"./scripts"
+# Output file name and path
+output_file_path : r"./scripts/output_file.sh"
+
+
+#last_dev.py
+# Folder containing the files to be concatenated
+script_path : r"/home/asyaturhal/desktop/ai/last_developed/last_dev_source/scripts"
+# Output file name and path
+output_file_path : r"/home/asyaturhal/desktop/ai/last_developed/dev_scripts/last_dev_train.sh"
+cmd_command : "bash /home/asyaturhal/desktop/ai/last_developed/dev_scripts/last_dev_train.sh"
+source_path : "/home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/"
+destination_path : "/home/asyaturhal/desktop/ai/last_developed/dev_logs/"
+path_command : "cd  /home/asyaturhal/desktop/ai/last_developed/last_dev_source/"
+
+
+#log_comparison.py
+log_new : r'/home/asyaturhal/desktop/ai/test_logs/'
+log_old : r'/home/asyaturhal/desktop/ai/last_developed/dev_logs/'
+script_path : r"/home/asyaturhal/desktop/ai/test_scripts/output_file.sh"
+output_path : r"/home/asyaturhal/desktop/ai/log_diff/"
+
+
+#pass_fail.py
+log_path : r'/home/asyaturhal/desktop/ai/log_diff'

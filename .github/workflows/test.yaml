@@ -13,18 +13,18 @@ jobs:
     runs-on: self-hosted
     timeout-minutes: 345600
     steps:
-#       - name: Checkout rotx-maxim/ai8x-training
-#         uses: actions/checkout@v2
-#         with:
-#           repository: rotx-maxim/ai8x-training
-#           ref: feature/mAP-speedup
-#           submodules: recursive
-      - name: Checkout MaximIntegratedAI/ai8x-training
+      - name: Checkout rotx-maxim/ai8x-training
         uses: actions/checkout@v2
         with:
-          repository: MaximIntegratedAI/ai8x-training
-          ref: pytorch-2.0
-          submodules: recursive         
+          repository: rotx-maxim/ai8x-training
+          ref: feature/mAP-speedup
+          submodules: recursive
+#       - name: Checkout MaximIntegratedAI/ai8x-training
+#         uses: actions/checkout@v2
+#         with:
+#           repository: MaximIntegratedAI/ai8x-training
+#           ref: pytorch-2.0
+#           submodules: recursive         
       - name: Checkout Test Codes
         uses: actions/checkout@v2
         with:
@@ -55,10 +55,10 @@ jobs:
 #         run: python ./test_codes/last_dev.py --testconf ./last-dev/test_config.yaml
       - name: Create Test Script
         run: python ./test_codes/create_test_script.py --testconf ./last-dev/test_config.yaml
-      - name: Deneme
-        run: bash scripts/train_kinetics.sh --data /data/alican_data/ --gpus 1
-#       - name: Run Training Scripts
-#         run: bash /home/asyaturhal/desktop/source/ai8x-training/scripts/output_file.sh
+#       - name: Deneme
+#         run: bash scripts/train_kinetics.sh --data /data/alican_data/ --gpus 1
+      - name: Run Training Scripts
+        run: bash ./scripts/output_file.sh
       - name: Save Log Files
         run: cp -r
           /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/

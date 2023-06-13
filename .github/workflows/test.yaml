@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: rotx-maxim/ai8x-training
-          ref: pytorch-2.0
+          ref: feature/mAP-speedup
           submodules: recursive
       - name: Checkout MaximIntegratedAI/ai8x-training
         uses: actions/checkout@v2
@@ -56,13 +56,13 @@ jobs:
       - name: Create Test Script
         run: python ./test_codes/create_test_script.py --testconf ./last-dev/test_config.yaml
       - name: Deneme
-        run: python train.py --deterministic --print-freq 50 --epochs 15 --optimizer Adam --lr 0.001 --wd 0 --model ai87fpndetector --use-bias --momentum 0.9 --weight-decay 1e-6 --dataset PascalVOC_2007_2012_256_320_augmented --device MAX78002 --obj-detection --obj-detection-params parameters/obj_detection_params_pascalvoc.yaml --batch-size 16 --qat-policy /home/asyaturhal/desktop/ai/test_scripts/qat_policy.yaml --compress policies/schedule-pascalvoc.yaml --validation-split 0 --name ai87fpndetector-PascalVOC_2007_2012_256_320_augmented --data /data_ssd "$@" 
+        run: bash scripts/train_kinetics.sh --data /data/alican_data/ --gpus 1
 #       - name: Run Training Scripts
 #         run: bash /home/asyaturhal/desktop/source/ai8x-training/scripts/output_file.sh
-#       - name: Save Log Files
-#         run: cp -r
-#           /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/
-#           /home/asyaturhal/desktop/ai/test_logs/$(date +"%Y-%m-%d-%k-%M")
+      - name: Save Log Files
+        run: cp -r
+          /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/
+          /home/asyaturhal/desktop/ai/test_logs/$(date +"%Y-%m-%d-%k-%M")
       - name: Log Diff
         run: python ./test_codes/log_comparison.py
       - name: Test Results

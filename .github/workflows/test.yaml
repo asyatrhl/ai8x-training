@@ -55,8 +55,8 @@ jobs:
 #         run: python ./test_codes/last_dev.py --testconf ./last-dev/test_config.yaml
       - name: Create Test Script
         run: python ./test_codes/create_test_script.py --testconf ./last-dev/test_config.yaml
-#       - name: Deneme
-#         run: bash scripts/train_kinetics.sh --data /data/alican_data/ --gpus 1
+      - name: Deneme
+        run: python train.py --epochs 15 --batch-size 32 --optimizer Adam --lr 0.001 --wd 0.001 --use-bias --deterministic --model ai85actiontcn --dataset Kinetics400 --compress policies/schedule_kinetics.yaml --qat-policy /home/asyaturhal/desktop/ai/test_scripts/qat_policy.yaml --device MAX78000 --validation-split 0 --name ai85actiontcn-Kinetics400 --data /data/alican_data/ --gpus 1
 #       - name: Run Training Scripts
 #         run: bash ./scripts/output_file.sh
 #       - name: Save Log Files

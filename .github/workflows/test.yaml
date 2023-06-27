@@ -19,12 +19,12 @@ jobs:
           repository: rotx-maxim/ai8x-training
           ref: feature/mAP-speedup
           submodules: recursive
-#       - name: Checkout MaximIntegratedAI/ai8x-training
-#         uses: actions/checkout@v2
-#         with:
-#           repository: MaximIntegratedAI/ai8x-training
-#           ref: pytorch-2.0
-#           submodules: recursive         
+      - name: Checkout MaximIntegratedAI/ai8x-training
+        uses: actions/checkout@v2
+        with:
+          repository: MaximIntegratedAI/ai8x-training
+          ref: pytorch-2.0
+          submodules: recursive         
       - name: Checkout Test Codes
         uses: actions/checkout@v2
         with:
@@ -51,19 +51,19 @@ jobs:
         run: pip list | grep torch
       - name: Check Numpy version
         run: pip show numpy --version
-#       - name: Last Develop Check
-#         run: python ./test_codes/last_dev.py --testconf ./last-dev/test_config.yaml
+      - name: Last Develop Check
+        run: python ./test_codes/last_dev.py --testconf ./last-dev/test_config.yml
       - name: Create Test Script
-        run: python ./test_codes/create_test_script.py --testconf ./last-dev/test_config.yaml
-#       - name: Deneme
-#         run: python train.py --epochs 15 --batch-size 32 --optimizer Adam --lr 0.001 --wd 0.001 --use-bias --deterministic --model ai85actiontcn --dataset Kinetics400 --compress policies/schedule_kinetics.yaml --qat-policy /home/asyaturhal/desktop/ai/test_scripts/qat_policy.yaml --device MAX78000 --validation-split 0 --name ai85actiontcn-Kinetics400 --data /data/alican_data/ --gpus 1
-#       - name: Run Training Scripts
-#         run: bash ./scripts/output_file.sh
-#       - name: Save Log Files
-#         run: cp -r
-#           /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/
-#           /home/asyaturhal/desktop/ai/test_logs/$(date +"%Y-%m-%d-%k-%M")
+        run: python ./test_codes/create_test_script.py --testconf ./last-dev/test_config.yml
+      - name: Deneme
+        run: python train.py --epochs 15 --batch-size 32 --optimizer Adam --lr 0.001 --wd 0.001 --use-bias --deterministic --model ai85actiontcn --dataset Kinetics400 --compress policies/schedule_kinetics.yaml --qat-policy /home/asyaturhal/desktop/ai/test_scripts/qat_policy.yaml --device MAX78000 --validation-split 0 --name ai85actiontcn-Kinetics400 --data /data/alican_data/ --gpus 1
+      - name: Run Training Scripts
+        run: bash ./scripts/output_file.sh
+      - name: Save Log Files
+        run: cp -r
+          /home/asyaturhal/actions-runner/_work/ai8x-training/ai8x-training/logs/
+          /home/asyaturhal/desktop/ai/test_logs/$(date +"%Y-%m-%d-%k-%M")
       - name: Log Diff
         run: python ./test_codes/log_comparison.py
       - name: Test Results
-        run: python ./test_codes/pass_fail.py --testconf ./last-dev/test_config.yaml
+        run: python ./test_codes/pass_fail.py --testconf ./last-dev/test_config.yml

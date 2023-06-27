@@ -51,13 +51,6 @@ train():
         compression_scheduler.before_parameter_optimization(epoch)
         optimizer.step()
         compression_scheduler.on_minibatch_end(epoch)
-
-
-This example application can be used with torchvision's ImageNet image classification
-models, or with the provided sample models:
-
-- ResNet for CIFAR: https://github.com/junyuseu/pytorch-cifar-models
-- MobileNet for ImageNet: https://github.com/marvis/pytorch-mobilenet
 """
 
 import copy
@@ -103,6 +96,7 @@ from distiller.data_loggers.collector import (QuantCalibrationStatsCollector,
                                               RecordsActivationStatsCollector,
                                               SummaryActivationStatsCollector, collectors_context)
 from distiller.quantization.range_linear import PostTrainLinearQuantizer
+from torchmetrics.detection.map import MAP as MeanAveragePrecision
 
 # pylint: enable=no-name-in-module
 import ai8x
@@ -214,7 +208,7 @@ def main():
         args.deterministic = True
     if args.deterministic:
         # torch.set_deterministic(True)
-        distiller.set_deterministic(args.seed)  # For experiment reproducability
+        distiller.set_deterministic(args.seed)  # For experiment reproducibility
         if args.seed is not None:
             distiller.set_seed(args.seed)
     else:
@@ -275,12 +269,15 @@ def main():
     args.visualize_fn = selected_source['visualize'] \
         if 'visualize' in selected_source else datasets.visualize_data
 
-    if args.regression and args.display_confusion:
-        raise ValueError('ERROR: Argument --confusion cannot be used with regression')
-    if args.regression and args.display_prcurves:
-        raise ValueError('ERROR: Argument --pr-curves cannot be used with regression')
-    if args.regression and args.display_embedding:
-        raise ValueError('ERROR: Argument --embedding cannot be used with regression')
+    if (args.regression or args.obj_detection) and args.display_confusion:
+        raise ValueError('ERROR: Argument --confusion cannot be used with regression '
+                         'or object detection')
+    if (args.regression or args.obj_detection) and args.display_prcurves:
+        raise ValueError('ERROR: Argument --pr-curves cannot be used with regression '
+                         'or object detection')
+    if (args.regression or args.obj_detection) and args.display_embedding:
+        raise ValueError('ERROR: Argument --embedding cannot be used with regression '
+                         'or object detection')
 
     model = create_model(supported_models, dimensions, args)
 
@@ -369,10 +366,9 @@ def main():
 
         # .module is added to model for access in multi GPU environments
         # as https://github.com/pytorch/pytorch/issues/16885 has not been merged yet
-        if isinstance(model, nn.DataParallel):
-            model = model.module
+        m = model.module if isinstance(model, nn.DataParallel) else model
 
-        criterion = MultiBoxLoss(priors_cxcy=model.priors_cxcy,
+        criterion = MultiBoxLoss(priors_cxcy=m.priors_cxcy,
                                  alpha=obj_detection_params['multi_box_loss']['alpha'],
                                  neg_pos_ratio=obj_detection_params['multi_box_loss']
                                  ['neg_pos_ratio'], device=args.device).to(args.device)
@@ -404,9 +400,7 @@ def main():
         args.datasets_fn, (os.path.expanduser(args.data), args), args.batch_size,
         args.workers, args.validation_split, args.deterministic,
         args.effective_train_size, args.effective_valid_size, args.effective_test_size,
-        collate_fn=args.collate_fn, cpu=args.device == 'cpu')
-    msglogger.info('Dataset sizes:\n\ttraining=%d\n\tvalidation=%d\n\ttest=%d',
-                   len(train_loader.sampler), len(val_loader.sampler), len(test_loader.sampler))
+        test_only=args.evaluate, collate_fn=args.collate_fn, cpu=args.device == 'cpu')
 
     if args.sensitivity is not None:
         sensitivities = np.arange(args.sensitivity_range[0], args.sensitivity_range[1],
@@ -414,8 +408,12 @@ def main():
         return sensitivity_analysis(model, criterion, test_loader, pylogger, args, sensitivities)
 
     if args.evaluate:
+        msglogger.info('Dataset sizes:\n\ttest=%d', len(test_loader.sampler))
         return evaluate_model(model, criterion, test_loader, pylogger, activations_collectors,
                               args, compression_scheduler)
+
+    msglogger.info('Dataset sizes:\n\ttraining=%d\n\tvalidation=%d\n\ttest=%d',
+                   len(train_loader.sampler), len(val_loader.sampler), len(test_loader.sampler))
 
     if args.compress:
         # The main use-case for this sample application is CNN compression. Compression
@@ -613,7 +611,7 @@ def create_model(supported_models, dimensions, args):
     if not Model:
         raise RuntimeError("Model " + args.cnn + " not found\n")
 
-    # Set model paramaters
+    # Set model parameters
     if args.act_mode_8bit:
         weight_bits = 8
         bias_bits = 8
@@ -836,7 +834,7 @@ def train(train_loader, model, criterion, optimizer, epoch,
 
         # measure elapsed time
         batch_time.add(time.time() - end)
-        steps_completed = (train_step+1)
+        steps_completed = train_step + 1
 
         if steps_completed % args.print_freq == 0 or steps_completed == steps_per_epoch:
             # Log some statistics
@@ -970,7 +968,13 @@ def _validate(data_loader, model, criterion, loggers, args, epoch=-1, tflogger=N
     """Execute the validation/test loop."""
     losses = {'objective_loss': tnt.AverageValueMeter()}
     if args.obj_detection:
-        detection_metrics = {'mAP': tnt.AverageValueMeter()}
+        map_calculator = MeanAveragePrecision(
+            # box_format='xyxy',  # Enable in torchmetrics > 0.6
+            # iou_type='bbox',  # Enable in torchmetrics > 0.6
+            class_metrics=False,
+            # iou_thresholds=[0.5],  # Enable in torchmetrics > 0.6
+        )
+        mAP = 0.00
     if not args.regression:
         classerr = tnt.ClassErrorMeter(accuracy=True, topk=(1, min(args.num_classes, 5)))
     else:
@@ -1033,23 +1037,23 @@ def _validate(data_loader, model, criterion, loggers, args, epoch=-1, tflogger=N
     obj_detection_params = parse_obj_detection_yaml.parse(args.obj_detection_params) \
         if args.obj_detection_params else None
 
-    for validation_step, (inputs, target) in enumerate(data_loader):
-
-        with torch.no_grad():
-
+    mAP = 0.0
+    have_mAP = False
+    with torch.no_grad():
+        for validation_step, (inputs, target) in enumerate(data_loader):
             if args.obj_detection:
+                if not object_detection_utils.check_target_exists(target):
+                    print(f'No target in batch. Ep: {epoch}, validation_step: {validation_step}')
+                    continue
 
-                boxes_list = [elem[0] for elem in target]
-                labels_list = [elem[1] for elem in target]
+                boxes_list = [elem[0].to(args.device) for elem in target]
+                labels_list = [elem[1].to(args.device) for elem in target]
+                filtered_all_images_boxes = None
 
-                difficulties = []
-                for label_objects in labels_list:
-                    difficulties.append(torch.zeros_like(label_objects))
+                # Adjust ground truth index as mAP calculator uses 0-indexed class labels
+                labels_list_for_map = [elem[1].to(args.device) - 1 for elem in target]
 
                 inputs = inputs.to(args.device)
-                boxes_list = [boxes.to(args.device) for boxes in boxes_list]
-                labels_list = [labels.to(args.device) for labels in labels_list]
-                difficulties = [d.to(args.device) for d in difficulties]
 
                 target = (boxes_list, labels_list)
 
@@ -1059,33 +1063,59 @@ def _validate(data_loader, model, criterion, loggers, args, epoch=-1, tflogger=N
                 # correct output for accurate loss calculation
                 if args.act_mode_8bit:
                     output_boxes /= 128.
-                    for key in model.__dict__['_modules'].keys():
-                        if (hasattr(model.__dict__['_modules'][key], 'wide')
-                                and model.__dict__['_modules'][key].wide):
-                            output_boxes /= 256.
-                if args.regression:
-                    target /= 128.
+                    output_conf /= 128.
+
+                    if (hasattr(model, 'are_locations_wide') and model.are_locations_wide):
+                        output_boxes /= 128.
+
+                    if (hasattr(model, 'are_scores_wide') and model.are_scores_wide):
+                        output_conf /= 128.
 
                 output = (output_boxes, output_conf)
 
-                # .module is added to model for access in multi GPU environments
-                # as https://github.com/pytorch/pytorch/issues/16885 has not been merged yet
-                if isinstance(model, nn.DataParallel):
-                    model = model.module
+                if boxes_list:
+                    # .module is added to model for access in multi GPU environments
+                    # as https://github.com/pytorch/pytorch/issues/16885 has not been merged yet
+                    m = model.module if isinstance(model, nn.DataParallel) else model
 
-                det_boxes_batch, det_labels_batch, det_scores_batch = \
-                    model.detect_objects(output_boxes, output_conf,
+                    det_boxes_batch, det_labels_batch, det_scores_batch = \
+                        m.detect_objects(output_boxes, output_conf,
                                          min_score=obj_detection_params['nms']['min_score'],
                                          max_overlap=obj_detection_params['nms']['max_overlap'],
                                          top_k=obj_detection_params['nms']['top_k'])
-                # Calculate mAP per batch
-                if boxes_list:
-                    _, mAP = object_detection_utils.calculate_mAP(det_boxes_batch,
-                                                                  det_labels_batch,
-                                                                  det_scores_batch, boxes_list,
-                                                                  labels_list, difficulties)
-                    detection_metrics['mAP'].add(mAP)
 
+                    # Filter images with only background box
+                    filtered_list = list(
+                        filter(lambda elem: not (len(elem[1]) == 1 and elem[1][0] == 0),
+                               zip(det_boxes_batch, det_labels_batch, det_scores_batch))
+                    )
+
+                    # Update mAP Calculator
+                    if filtered_list:
+                        filtered_all_images_boxes, filtered_all_images_labels, \
+                            filtered_all_images_scores = zip(*filtered_list)
+
+                        # mAP calculator uses 0-indexed class labels
+                        filtered_all_images_labels = [e - 1 for e in filtered_all_images_labels]
+
+                        # Prepare truths
+                        boxes = torch.cat(boxes_list)
+                        labels = torch.cat(labels_list_for_map)
+
+                        gt = [{'boxes': boxes, 'labels': labels}]
+
+                        # Prepare predictions
+                        pred_boxes = torch.cat(filtered_all_images_boxes)
+                        pred_scores = torch.cat(filtered_all_images_scores)
+                        pred_labels = torch.cat(filtered_all_images_labels)
+
+                        preds = [
+                            {'boxes': pred_boxes, 'scores': pred_scores, 'labels': pred_labels}
+                        ]
+
+                        # Update mAP calculator
+                        map_calculator.update(preds=preds, target=gt)
+                        have_mAP = True
             else:
                 inputs, target = inputs.to(args.device), target.to(args.device)
                 # compute output from model
@@ -1100,6 +1130,8 @@ def _validate(data_loader, model, criterion, loggers, args, epoch=-1, tflogger=N
                         if (hasattr(model.__dict__['_modules'][key], 'wide')
                                 and model.__dict__['_modules'][key].wide):
                             output /= 256.
+                    if args.regression:
+                        target /= 128.
 
             if args.generate_sample is not None and args.act_mode_8bit and not sample_saved:
                 sample.generate(args.generate_sample, inputs, target, output, args.dataset, False)
@@ -1132,21 +1164,26 @@ def _validate(data_loader, model, criterion, loggers, args, epoch=-1, tflogger=N
             batch_time.add(time.time() - end)
             end = time.time()
 
-            steps_completed = (validation_step+1)
+            steps_completed = validation_step + 1
             if steps_completed % args.print_freq == 0 or steps_completed == total_steps:
                 if args.display_prcurves and tflogger is not None:
+                    # TODO PR Curve generation for Object Detection case is NOT implemented yet
                     class_probs_batch = [torch.nn.functional.softmax(el, dim=0) for el in output]
                     _, class_preds_batch = torch.max(output, 1)
                     class_probs.append(class_probs_batch)
                     class_preds.append(class_preds_batch)
 
                 if not args.earlyexit_thresholds:
-
                     if args.obj_detection:
+                        # Only run compute() if there is at least one new update()
+                        if have_mAP:
+                            # Remove [0] in new torchmetrics
+                            mAP = map_calculator.compute()['map_50'][0]
+                            have_mAP = False
                         stats = (
                             '',
                             OrderedDict([('Loss', losses['objective_loss'].mean),
-                                         ('mAP', detection_metrics['mAP'].mean)])
+                                         ('mAP', mAP)])
                         )
                     else:
                         if not args.regression:
@@ -1231,10 +1268,10 @@ def _validate(data_loader, model, criterion, loggers, args, epoch=-1, tflogger=N
         if args.obj_detection:
 
             msglogger.info('==> mAP: %.5f    Loss: %.3f\n',
-                           detection_metrics['mAP'].mean,
+                           mAP,
                            losses['objective_loss'].mean)
 
-            return 0, 0, losses['objective_loss'].mean, detection_metrics['mAP'].mean
+            return 0, 0, losses['objective_loss'].mean, mAP
 
         if not args.regression:
             if args.num_classes > 5:
@@ -1503,7 +1540,7 @@ def summarize_model(model, dataset, which_summary, filename='model'):
         model_summaries.draw_img_classifier_to_file(model, filename + '.png', dataset,
                                                     which_summary == 'png_w_params')
     elif which_summary in ['onnx', 'onnx_simplified']:
-        ai8x.onnx_export_prep(model, simplify=(which_summary == 'onnx_simplified'))
+        ai8x.onnx_export_prep(model, simplify=which_summary == 'onnx_simplified')
         model_summaries.export_img_classifier_to_onnx(
             model,
             filename + '.onnx',
@@ -1518,7 +1555,7 @@ def summarize_model(model, dataset, which_summary, filename='model'):
 def sensitivity_analysis(model, criterion, data_loader, loggers, args, sparsities):
     """
     This sample application can be invoked to execute Sensitivity Analysis on your
-    model.  The ouptut is saved to CSV and PNG.
+    model. The output is saved to CSV and PNG.
     """
     msglogger.info("Running sensitivity tests")
     if not isinstance(loggers, list):

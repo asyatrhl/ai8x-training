@@ -1,19 +1,17 @@
 name: auto-testing
 on:
-  pull_request:
-    branches:
-      - develop
+  - push
 
 jobs:
   build:
     runs-on: self-hosted
     timeout-minutes: 345600
     steps:
-      - name: Checkout last-dev
+      - name: Checkout rotx-maxim/ai8x-training
         uses: actions/checkout@v2
         with:
-          repository: MaximIntegratedAI/ai8x-training
-          ref: develop
+          repository: rotx-maxim/ai8x-training
+          ref: feature/fpn-eval
           submodules: recursive
       - name: Setup Pyenv and Install Dependencies
         uses: gabrielfalcao/pyenv-action@v13

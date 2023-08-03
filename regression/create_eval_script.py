@@ -11,7 +11,7 @@ import argparse
 import os
 
 import yaml
-from create_onnx_script import tar_names, model_paths
+from create_onnx_script import model_paths
 
 
 def joining(lst):
@@ -28,9 +28,6 @@ parser.add_argument('--testpaths', help='Enter the paths for the test', required
 args = parser.parse_args()
 yaml_path = args.testconf
 test_path = args.testpaths
-
-# yaml_path = r"/home/asyaturhal/desktop/eval/ai8x-training/regression/test_config.yaml"
-# test_path = r"/home/asyaturhal/desktop/eval/ai8x-training/regression/paths.yaml"
 
 # Open the YAML file
 with open(yaml_path, 'r', encoding='utf-8') as yaml_file:

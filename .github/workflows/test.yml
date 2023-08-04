@@ -57,8 +57,8 @@ jobs:
       - name: Create Test Script
         run: python ./regression/create_test_script.py --testconf ./regression/test_config.yaml --testpaths ./regression/paths.yaml
       - name: Run Training Scripts
-        run: bash /home/test/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh
-      - name: Save Log Files
+#         run: bash /home/test/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh
+#       - name: Save Log Files
         run: cp -r /home/test/actions-runner/_work/ai8x-training/ai8x-training/logs/ /home/test/max7800x/test_logs/$(date +%Y-%m-%d_%H-%M-%S)
       - name: Save Test Scripts
         run: cp -r /home/test/actions-runner/_work/ai8x-training/ai8x-training/scripts/output_file.sh /home/test/max7800x/test_scripts/

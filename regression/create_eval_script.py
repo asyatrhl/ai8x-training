@@ -11,7 +11,6 @@ import argparse
 import os
 
 import yaml
-from create_onnx_script import tar_names, model_paths
 
 
 def joining(lst):
@@ -28,9 +27,6 @@ parser.add_argument('--testpaths', help='Enter the paths for the test', required
 args = parser.parse_args()
 yaml_path = args.testconf
 test_path = args.testpaths
-
-# yaml_path = r"/home/asyaturhal/desktop/eval/ai8x-training/regression/test_config.yaml"
-# test_path = r"/home/asyaturhal/desktop/eval/ai8x-training/regression/paths.yaml"
 
 # Open the YAML file
 with open(yaml_path, 'r', encoding='utf-8') as yaml_file:
@@ -58,35 +54,4 @@ with open(output_file_path, "w", encoding='utf-8') as evaluate_file:
             # Open the file and read its contents
             with open(os.path.join(script_path, filename), encoding='utf-8') as input_file:
                 contents = input_file.read()
-
-                temp = contents.split()
-                temp.insert(1, "\n")
-                i = temp.index('--exp-load-weights-from')
-                j = temp.index('--model')
-                k = temp.index('--dataset')
-
-                log_model = temp[j+1]
-                log_data = temp[k+1]
-
-                for tar in model_paths:
-                    element = tar.split('-')
-                    modelsearch = element[-4][3:]
-                    datasearch = element[-3].split('_')[0]
-                    if datasearch == temp[k+1] and modelsearch == temp[j+1]:
-                        tar_path = tar
-                        temp[i+1] = tar_path
-
-                log_name = temp[j+1] + '-' + temp[k+1]
-                log_file_names.append(filename[:-3])
-
-                if log_data == "FaceID":
-                    continue
-
-                if log_data == "VGGFace2_FaceDetection":
-                    continue
-
-                temp.insert(-1, '--name ' + log_name)
-                temp.append("\n")
-                contents = joining(temp)
-
                 evaluate_file.write(contents)

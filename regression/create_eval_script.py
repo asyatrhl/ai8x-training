@@ -11,7 +11,6 @@ import argparse
 import os
 
 import yaml
-from create_onnx_script import model_paths
 
 
 def joining(lst):
@@ -55,4 +54,15 @@ with open(output_file_path, "w", encoding='utf-8') as evaluate_file:
             # Open the file and read its contents
             with open(os.path.join(script_path, filename), encoding='utf-8') as input_file:
                 contents = input_file.read()
+                temp = contents.split()
+                temp.insert(1, "\n")
+
+                i = temp.index("--exp-load-weights-from")
+                temp[i+1] = temp[i+1][1:]
+
+                temp.insert(-1, "--name " + filename[9:-3])
+                temp.insert(-1, "--data /data_ssd")
+
+                temp.append(" \n")
+                contents = joining(temp)
                 evaluate_file.write(contents)

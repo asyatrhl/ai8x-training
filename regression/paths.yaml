@@ -31,4 +31,4 @@ output_path: /home/test/max7800x/log_diff/
 # pass_fail.py
 
 log_path: /home/test/max7800x/log_diff
-eval_path = /home/test/max7800x/evaluation_logs/
+eval_path: /home/test/max7800x/evaluation_logs/

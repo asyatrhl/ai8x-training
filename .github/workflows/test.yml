@@ -41,10 +41,6 @@ jobs:
   #       run: |
   #         python ./regression/eval_pass_fail --testpaths ./regression/paths.yaml
 
-
-
-
-
   build:
     runs-on: self-hosted
     timeout-minutes: 345600
@@ -60,7 +56,6 @@ jobs:
         with:
           repository: MaximIntegratedAI/ai8x-synthesis
           ref: develop
-          # submodules: recursive
           path: ai8x-synthesis
       - name: Setup Pyenv and Install Dependencies
         uses: gabrielfalcao/pyenv-action@v13
@@ -76,17 +71,14 @@ jobs:
         run: |
           pip3 install -U pip wheel setuptools
           pip3 install -r requirements-cu11.txt
-      - name: Eval
-        run: |
-          python ./regression/create_eval_script.py --testconf ./regression/test_config.yaml --testpaths ./regression/paths.yaml
-      - name: Eval
-        run: |
-          bash ./scripts/evaluation_file.sh
-      - name: Eval
-        run: |
-          python ./regression/eval_pass_fail.py --testpaths ./regression/paths.yaml
-      # - name: Last Develop Check
-      #   run: python ./regression/last_dev.py --testconf ./regression/test_config.yaml --testpaths ./regression/paths.yaml
+      - name: Create Evaluation Scripts
+        run: python ./regression/create_eval_script.py --testconf ./regression/test_config.yaml --testpaths ./regression/paths.yaml
+      - name: Run Evaluation Scripts
+        run: bash ./scripts/evaluation_file.sh
+      - name: Save Evaluation Log Files
+        run: cp -r /home/test/actions-runner/_work/ai8x-training/ai8x-training/logs/ /home/test/max7800x/evaluation_logs/
+      - name: Evaluation Results
+        run: python ./regression/eval_pass_fail.py --testpaths ./regression/paths.yaml
 
   # new-code:
   #   runs-on: self-hosted

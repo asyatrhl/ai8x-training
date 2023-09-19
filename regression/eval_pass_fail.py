@@ -9,7 +9,6 @@ Check the test results
 """
 import argparse
 import os
-
 import yaml
 
 
@@ -32,7 +31,7 @@ failed = []
 for filename in sorted(os.listdir(directory_path)):
     path = os.path.join(directory_path, filename)
     file_path = os.path.join(path, os.listdir(path)[0])
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding='utf-8') as file:
         content = file.read()
         if "Loss" in content:
             pass_file = filename.split("___")[0]
@@ -42,6 +41,6 @@ for filename in sorted(os.listdir(directory_path)):
             failed.append(f"\033[31m\u2718\033[0m Evaluation test failed for {fail_file}.")
 
 for filename in failed:
-    print(filename) 
+    print(filename)
 for filename in passed:
-    print(filename) 
+    print(filename)

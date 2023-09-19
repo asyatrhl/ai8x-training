@@ -43,9 +43,6 @@ script_path = pathconfig["script_path"]
 # Output file name and path
 output_file_path = pathconfig["output_file_path_evaluation"]
 
-# global log_file_names
-log_file_names = []
-
 # Loop through all files in the folder
 with open(output_file_path, "w", encoding='utf-8') as evaluate_file:
     for filename in os.listdir(script_path):

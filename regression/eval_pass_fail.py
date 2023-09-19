@@ -9,8 +9,8 @@ Check the test results
 """
 import argparse
 import os
-import yaml
 
+import yaml
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--testpaths', help='Enter the paths for the test', required=True)

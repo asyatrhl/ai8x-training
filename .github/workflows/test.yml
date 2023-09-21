@@ -41,7 +41,7 @@ jobs:
       - name: Run Evaluation Scripts
         run: bash ./scripts/evaluation_file.sh
       - name: Save Evaluation Log Files
-        run: cp -r /home/test/actions-runner/_work/ai8x-training/ai8x-training/logs/ /home/test/max7800x/evaluation_logs/
+        run: cp -r ./logs/ /home/test/max7800x/evaluation_logs/
       - name: Evaluation Results
         run: python ./regression/eval_pass_fail.py --testpaths ./regression/paths.yaml
 

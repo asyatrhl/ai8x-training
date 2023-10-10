@@ -165,10 +165,10 @@ class KWS:
                     print('No key `shift` in input augmentation dictionary! '
                           'Using defaults: [Min:-0.1, Max: 0.1]')
                     self.augmentation['shift'] = {'min': -0.1, 'max': 0.1}
-                if 'strech' not in augmentation:
-                    print('No key `strech` in input augmentation dictionary! '
+                if 'stretch' not in augmentation:
+                    print('No key `stretch` in input augmentation dictionary! '
                           'Using defaults: [Min: 0.8, Max: 1.3]')
-                    self.augmentation['strech'] = {'min': 0.8, 'max': 1.3}
+                    self.augmentation['stretch'] = {'min': 0.8, 'max': 1.3}
 
     def __download(self):
 
@@ -434,8 +434,8 @@ class KWS:
                                                    self.augmentation['noise_var']['max'])
         random_shift_time = np.random.uniform(self.augmentation['shift']['min'],
                                               self.augmentation['shift']['max'])
-        random_strech_coeff = np.random.uniform(self.augmentation['strech']['min'],
-                                                self.augmentation['strech']['max'])
+        random_strech_coeff = np.random.uniform(self.augmentation['stretch']['min'],
+                                                self.augmentation['stretch']['max'])
 
         aug_audio = tsm.wsola(audio, random_strech_coeff)
         aug_audio = self.shift(aug_audio, random_shift_time, fs)

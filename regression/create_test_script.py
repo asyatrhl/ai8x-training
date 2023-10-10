@@ -98,17 +98,11 @@ with open(output_file_path, "w", encoding='utf-8') as output_file:
                     path_data = config[log_data]["datapath"]
                     temp[i+1] = str(config[log_data][log_model]["epoch"])
                 except KeyError:
-                    # Handle the KeyError by assigning a dummy 
                     print(f"\033[93m\u26A0\033[0m Warning: {temp[j+1]} model is missing information in test configuration files.")
                     continue
 
-                    temp.insert(-1, '--data ' + path_data)
-                    temp.append("\n")
+                temp.insert(-1, '--data ' + path_data)
+                temp.append("\n")
 
-                    contents = joining(temp)
-                    output_file.write(contents)
-                
-                except KeyError:
-                    # Handle the KeyError by assigning a dummy 
-                    print(f"Warning {temp[j+1]} model is missing information in test configuration files.")
-                    # path_data = "/data_ssd"
+                contents = joining(temp)
+                output_file.write(contents)

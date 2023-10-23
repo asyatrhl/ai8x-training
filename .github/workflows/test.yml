@@ -77,8 +77,8 @@ jobs:
     # needs: [build]
     timeout-minutes: 345600
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      # - name: Checkout code
+      #   uses: actions/checkout@v2
 
       - name: Checkout PR
         run: |

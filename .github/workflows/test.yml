@@ -1,8 +1,8 @@
 name: auto-testing
 on:
   pull_request:
-    # branches:
-    #   - develop
+    branches:
+      - evaluation_scripts
 
 jobs:
   # eval:

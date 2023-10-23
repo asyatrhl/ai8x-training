@@ -2,7 +2,7 @@ name: auto-testing
 on:
   pull_request:
     branches:
-      - evaluation_scripts
+       - dev
 
 jobs:
   # eval:

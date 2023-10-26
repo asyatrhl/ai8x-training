@@ -16,7 +16,7 @@ output_file_path_evaluation: ./scripts/evaluation_file.sh
 script_path_dev: /home/test/max7800x/last_developed/last_dev_source/scripts
 output_file_path_dev: /home/test/max7800x/last_developed/dev_scripts/last_dev_train.sh
 source_path: /home/test/actions-runner/_work/ai8x-training/ai8x-training/logs/
-destination_path: /home/test/max7800x/last_developed/dev_logs/
+destination_path: /home/asyaturhal/desktop/last_dev/
 local_path: /home/test/max7800x/last_developed/last_dev_source/
 commit_num_path: /home/test/max7800x/last_developed/commit_number.txt
 

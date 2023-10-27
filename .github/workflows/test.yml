@@ -82,6 +82,13 @@ jobs:
           repository: oguzhanbsolak/ai8x-training
           ref: develop
           submodules: recursive
+      - name: Checkout Test Codes
+        uses: actions/checkout@v2
+        with:
+          repository: asyatrhl/ai8x-training-test-codes
+          ref: main
+          path: test_codes
+      
       - name: Setup Pyenv and Install Dependencies
         uses: gabrielfalcao/pyenv-action@v13
         with:

@@ -1,13 +1,17 @@
-name: Listen for pull requests
-
+name: Trigger External Workflow
+# Repo A
 on:
-  repository_dispatch:
-    types: [incoming_pull_request]
+  pull_request:
+    types: [opened]
 
 jobs:
-  listen:
+  trigger_dispatch:
     runs-on: self-hosted
-
     steps:
-    - name: Your custom action
-      run: echo "A new pull request has been received"
+      - name: Dispatch event
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.regression_test_token }}
+          repository: asyatrhl/ai8x-regression
+          branch: main
+          event-type: 'repo-a-pull-request'

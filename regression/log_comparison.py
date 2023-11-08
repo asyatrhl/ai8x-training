@@ -189,27 +189,24 @@ if all(ex_list2):
 not_found_model = []
 map_value_list = {}
 
-for files_new in sorted(os.listdir(new_logs_path)):
+for files_new, files_old in zip(sorted(os.listdir(new_logs_path)), sorted(os.listdir(old_logs_path))):
     files_new_temp = files_new.split("___")[0]
     if files_new_temp not in old_log_list:
         not_found_model.append(files_new_temp + " not found in last developed log files.")
-    for files_old in sorted(os.listdir(old_logs_path)):
-        files_old_temp = files_old.split("___")[0]
-        if files_old_temp == files_new_temp:
+    files_old_temp = files_old.split("___")[0]
+    if files_old_temp == files_new_temp:
+        old_path = os.path.join(old_logs_path, files_old)
+        new_path = os.path.join(new_logs_path, files_new)
 
-            old_path = os.path.join(old_logs_path, files_old)
-            new_path = os.path.join(new_logs_path, files_new)
+        old_files = sorted(os.listdir(old_path))
+        new_files = sorted(os.listdir(new_path))
 
-            old_files = sorted(os.listdir(old_path))
-            new_files = sorted(os.listdir(new_path))
+        old_log_file = [file for file in old_files if file.endswith(".log")][0]
+        new_log_file = [file for file in new_files if file.endswith(".log")][0]
 
-            old_log_file = [file for file in old_files if file.endswith(".log")][0]
-            new_log_file = [file for file in new_files if file.endswith(".log")][0]
+        old_path_log = os.path.join(old_path, old_log_file)
+        new_path_log = os.path.join(new_path, new_log_file)
 
-            old_path_log = os.path.join(old_path, old_log_file)
-            new_path_log = os.path.join(new_path, new_log_file)
-
-            map_value_list[files_new_temp] = compare_logs(
-                old_path_log, new_path_log, files_new, output_path
-            )
-            break
+        map_value_list[files_new_temp] = compare_logs(
+            old_path_log, new_path_log, files_new, output_path
+        )

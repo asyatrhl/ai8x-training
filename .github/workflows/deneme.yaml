@@ -1,0 +1,13 @@
+name: Listen for pull requests
+
+on:
+  repository_dispatch:
+    types: [incoming_pull_request]
+
+jobs:
+  listen:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Your custom action
+      run: echo "A new pull request has been received"

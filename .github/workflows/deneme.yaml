@@ -16,6 +16,6 @@ jobs:
         with:
           token: ${{ secrets.regression_test_token }}
           repository: asyatrhl/ai8x-regression
-          branch: main
+          # branch: main
           event-type: 'repo-a-pull-request'
           client-payload: ${{ env.REPO_B_INFO }}

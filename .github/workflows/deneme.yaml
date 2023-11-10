@@ -2,7 +2,8 @@ name: Trigger External Workflow
 # Repo A
 on:
   pull_request:
-    types: [opened]
+    types:
+      - opened
 
 jobs:
   trigger_dispatch:

@@ -8,6 +8,9 @@ jobs:
   trigger_dispatch:
     runs-on: ubuntu-latest
     steps:
+      - name: Set up environment
+        run: echo "REPO_B_INFO=$(jq -n --arg repo "${{ github.repository }}" --arg sha "${{ github.sha }}" '{repository: $repo, sha: $sha}' ) >> $GITHUB_ENV"
+
       - name: Dispatch event
         uses: peter-evans/repository-dispatch@v1
         with:
@@ -15,3 +18,4 @@ jobs:
           repository: asyatrhl/ai8x-regression
           branch: main
           event-type: 'repo-a-pull-request'
+          client-payload: ${{ env.REPO_B_INFO }}

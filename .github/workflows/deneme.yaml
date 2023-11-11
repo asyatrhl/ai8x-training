@@ -13,7 +13,7 @@ jobs:
         # run: echo "REPO_B_INFO=$(jq -r .pull_request.head.repo.clone_url $GITHUB_EVENT_PATH) >> $GITHUB_ENV"
         run: |
           REPO_B_INFO=$(jq -r .pull_request.head.repo.clone_url $GITHUB_EVENT_PATH)
-          echo REPO_B_INFO
+          echo $REPO_B_INFO
       - name: Dispatch event
         uses: peter-evans/repository-dispatch@v1
         with:

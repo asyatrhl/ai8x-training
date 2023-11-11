@@ -12,7 +12,7 @@ jobs:
         # run: echo "REPO_B_INFO=$(jq -n --arg repo "${{ github.repository }}" --arg sha "${{ github.sha }}" '{repository: $repo, sha: $sha}' ) >> $GITHUB_ENV"
         # run: echo "REPO_B_INFO=$(jq -r .pull_request.head.repo.clone_url $GITHUB_EVENT_PATH) >> $GITHUB_ENV"
         run: |
-          echo "REPO_B_INFO=$(jq -n --arg repo "${{ github.repository }}" --arg sha "${{ github.sha }}" '{repository: $repo, sha: $sha}' )" >> $GITHUB_ENV
+          printf "REPO_B_INFO=$(jq -n --arg repo \"%s\" --arg sha \"%s\" '{repository: \$repo, sha: \$sha}' \"%{{ github.repository }}\" \"%{{ github.sha }}\")\n" >> $GITHUB_ENV
           echo $REPO_B_INFO
       - name: Dispatch event
         uses: peter-evans/repository-dispatch@v1

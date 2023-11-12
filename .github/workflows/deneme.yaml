@@ -1,4 +1,4 @@
-v.name: Trigger External Workflow
+name: Trigger External Workflow
 # Repo A
 on:
   pull_request:

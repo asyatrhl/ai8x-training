@@ -1,4 +1,4 @@
-name: Trigger External Workflow
+v.name: Trigger External Workflow
 # Repo A
 on:
   pull_request:
@@ -22,4 +22,4 @@ jobs:
           token: ${{ secrets.regression_test_token }}
           repository: asyatrhl/ai8x-regression
           event-type: 'repo-a-pull-request'
-          client-payload: '{"PR_Branch": "${{ PR_Branch }}", "Repository": "${{ Repository }}" }'
+          client-payload: '{"PR_Branch": "${{ env.PR_Branch }}", "Repository": "${{ env.Repository }}" }'

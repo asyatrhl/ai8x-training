@@ -14,12 +14,14 @@ jobs:
         run: |
           PR_Branch=${{ github.event.pull_request.head.ref }}
           Repository=${{ github.repository }}
-          echo " $PR_Branch"
-          echo " $Repository"
+          PR_Number=${{ github.event.pull_request.number }}
+          echo "PR_Branch: $PR_Branch"
+          echo "Repository: $Repository"
+          echo "PR_Number: $PR_Number"
       - name: Dispatch event
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.regression_test_token }}
           repository: asyatrhl/ai8x-regression
           event-type: 'repo-a-pull-request'
-          client-payload: '{"PR_Branch": "${{ github.event.pull_request.head.ref }}", "Repository": "${{ github.repository }}", "PR_State": "${{ github.event_name }}" }'
+          client-payload: '{"PR_Branch": "${{ github.event.pull_request.head.ref }}", "Repository": "${{ github.repository }}","PR_Number": "${{ github.event.pull_request.number }}", "PR_State": "${{ github.event_name }}" }'

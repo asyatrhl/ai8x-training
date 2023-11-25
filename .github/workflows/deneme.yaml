@@ -3,7 +3,7 @@ name: Trigger External Workflow
 on:
   pull_request:
     types: [opened]
-  push:
+  # push:
 
 jobs:
   trigger_dispatch:

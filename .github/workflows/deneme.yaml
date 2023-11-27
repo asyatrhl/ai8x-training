@@ -1,18 +1,13 @@
 name: Trigger External Workflow
-# Repo A
-# on:
-#   pull_request:
-#     types: [opened]
 on:
   pull_request_target:
+    types: [opened, edited, synchronize]
 
 jobs:
   trigger_dispatch:
     runs-on: ubuntu-latest
     steps:
       - name: Set up environment
-        # run: echo "REPO_B_INFO=$(jq -n --arg repo "${{ github.repository }}" --arg sha "${{ github.sha }}" '{repository: $repo, sha: $sha}' ) >> $GITHUB_ENV"
-        # run: echo "REPO_B_INFO=$(jq -r .pull_request.head.repo.clone_url $GITHUB_EVENT_PATH) >> $GITHUB_ENV"
         run: |
           PR_Branch=${{ github.event.pull_request.head.ref }}
           Repository=${{ github.repository }}
@@ -26,4 +21,4 @@ jobs:
           token: ${{ secrets.regression_test_token }}
           repository: asyatrhl/ai8x-regression
           event-type: 'repo-a-pull-request'
-          client-payload: '{"PR_Branch": "${{ github.event.pull_request.head.ref }}", "Repository": "${{ github.repository }}","PR_Number": "${{ github.event.pull_request.number }}", "PR_State": "${{ github.event_name }}" }'
+          client-payload: '{"PR_Branch": "${{ github.event.pull_request.head.ref }}", "Repository": "${{ github.repository }}","PR_Number": "${{ github.event.pull_request.number }}" }'

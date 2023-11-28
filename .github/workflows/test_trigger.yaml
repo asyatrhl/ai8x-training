@@ -21,4 +21,4 @@ jobs:
           token: ${{ secrets.regression_test_token }}
           repository: asyatrhl/ai8x-regression
           event-type: 'repo-a-pull-request'
-          client-payload: '{"PR_Branch": "${{ github.event.pull_request.head.ref }}", "Repository": "${{ github.repository }}","PR_Number": "${{ github.event.pull_request.number }}" }'
+          client-payload: '{"PR_Branch": "${{ github.event.pull_request.head.ref }}", "Repository": "${{ github.repository }}","PR_Number": "${{ github.event.pull_request.number }}","PR_Sha": "${{ github.event.pull_request.head.sha }} }'

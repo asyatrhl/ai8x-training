@@ -1,29 +1,3 @@
-# name: Trigger External Workflow
-# on:
-#   pull_request_target:
-#     types: [opened, edited, synchronize]
-
-# jobs:
-#   trigger_dispatch:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Set up environment
-#         run: |
-#           PR_Branch=${{ github.event.pull_request.head.ref }}
-#           Repository=${{ github.repository }}
-#           PR_Number=${{ github.event.pull_request.number }}
-#           echo "PR_Branch: $PR_Branch"
-#           echo "Repository: $Repository"
-#           echo "PR_Number: $PR_Number"
-#       - name: Dispatch event
-#         uses: peter-evans/repository-dispatch@v1
-#         with:
-#           # token: ${{ secrets.regression_test_token }}
-#           token: ${{ secrets.REGRESSION }}
-#           repository: asyatrhl/ai8x-regression
-#           ref: regression_test
-#           event-type: 'repo-pull-request'
-#           client-payload: '{"PR_Branch": "${{ github.event.pull_request.head.ref }}", "Repository": "${{ github.repository }}","PR_Number": "${{ github.event.pull_request.number }}","PR_Sha": "${{ github.event.pull_request.head.sha }}" }'
 name: Trigger External Workflow
 
 on:
@@ -44,7 +18,7 @@ jobs:
           echo "Repository: $Repository"
           echo "PR_Number: $PR_Number"
           echo "PR_Sha: $PR_Sha"
-      
+
       - name: Dispatch event
         run: |
           curl -X POST \

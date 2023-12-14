@@ -16,6 +16,9 @@ jobs:
           echo "IsSpecificRepository=${IsSpecificRepository}"
           echo "IsDevelopBranch=${IsDevelopBranch}"
         shell: bash
+      - name: Show outputs (for debugging)
+        run: echo "${{ toJson(outputs) }}"
+
 
       - name: Set up environment
         # if: steps.check-repository-branch.outputs.IsSpecificRepository == true && steps.check-repository-branch.outputs.IsDevelopBranch == true

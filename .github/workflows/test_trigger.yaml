@@ -7,6 +7,8 @@ on:
 jobs:
   trigger_dispatch:
     runs-on: ubuntu-latest
+    outputs:
+      value: ${{ steps.check-repository-branch.outputs }}
     steps:
       - name: Check if the repository is a specific repository and branch
         id: check-repository-branch
@@ -17,8 +19,8 @@ jobs:
         #   echo "IsDevelopBranch=${IsDevelopBranch}"
         # shell: bash
         run: |
-          echo "::set-output name=IsSpecificRepository::${{ github.repository == 'owner/repo-a' }}"
-          echo "::set-output name=IsDevelopBranch::${{ github.ref == 'refs/heads/develop' }}"
+          echo "::set-output name=IsSpecificRepository::${{ github.repository == 'asyatrhl/ai8x-training' }}"
+          echo "::set-output name=IsDevelopBranch::${{ github.ref == 'refs/heads/main_test_fork' }}"
       - name: Show outputs (for debugging)
         run: echo "${{ toJson(outputs) }}"
         

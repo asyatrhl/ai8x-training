@@ -7,8 +7,6 @@ on:
 jobs:
   trigger_dispatch:
     runs-on: ubuntu-latest
-    outputs:
-      value: ${{ steps.check-repository-branch.outputs }}
     steps:
       - name: Check if the repository is a specific repository and branch
         run: |

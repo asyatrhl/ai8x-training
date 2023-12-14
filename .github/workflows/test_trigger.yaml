@@ -19,7 +19,8 @@ jobs:
 
       - name: Set up environment
         # if: steps.check-repository-branch.outputs.IsSpecificRepository == true && steps.check-repository-branch.outputs.IsDevelopBranch == true
-        if: steps.check-repository-branch.outputs.IsSpecificRepository == 'true' && steps.check-repository-branch.outputs.IsDevelopBranch == 'true'
+        # if: steps.check-repository-branch.outputs.IsSpecificRepository == 'true' && steps.check-repository-branch.outputs.IsDevelopBranch == 'true'
+        if: env.IsSpecificRepository == 'true' && env.IsDevelopBranch == 'true'
         run: |
           PR_Branch=${{ github.event.pull_request.head.ref }}
           Repository=${{ github.repository }}

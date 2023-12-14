@@ -10,11 +10,15 @@ jobs:
     steps:
       - name: Check if the repository is a fork
         id: check-fork
-        run: echo "IsFork=$(echo "${{ github.repository }}" | grep '/' | grep -v "$(echo "${{ github.repository }}" | cut -d / -f 1)")"
+        run: |
+          IsSpecificRepository=${{ github.repository == 'asyatrhl/ai8x-regression' }}
+          IsDevelopBranch=${{ github.ref == 'refs/heads/develop' }}
+          echo "IsSpecificRepository=${IsSpecificRepository}"
+          echo "IsDevelopBranch=${IsDevelopBranch}"
         shell: bash
 
       - name: Set up environment
-        if: steps.check-fork.outputs.IsFork == ''
+        if: steps.check-repository-branch.outputs.IsSpecificRepository == 'true' && steps.check-repository-branch.outputs.IsDevelopBranch == 'true'
         run: |
           PR_Branch=${{ github.event.pull_request.head.ref }}
           Repository=${{ github.repository }}

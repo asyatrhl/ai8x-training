@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check if the repository is a fork
-        id: check-fork
+        id: check-repository-branch
         run: |
           IsSpecificRepository=${{ github.repository == 'asyatrhl/ai8x-training' }}
           IsDevelopBranch=${{ github.ref == 'refs/heads/main_test_fork' }}

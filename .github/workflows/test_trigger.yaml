@@ -11,7 +11,7 @@ jobs:
       value: ${{ steps.check-repository-branch.outputs }}
     steps:
       - name: Check if the repository is a specific repository and branch
-        id: check-repository-branch
+        # id: check-repository-branch
         # run: |
         #   IsSpecificRepository=${{ github.repository == 'asyatrhl/ai8x-training' }}
         #   IsDevelopBranch=${{ github.ref == 'refs/heads/main_test_fork' }}
@@ -19,10 +19,11 @@ jobs:
         #   echo "IsDevelopBranch=${IsDevelopBranch}"
         # shell: bash
         run: |
-          echo "::set-output name=IsSpecificRepository::${{ github.repository == 'asyatrhl/ai8x-training' }}"
-          echo "::set-output name=IsDevelopBranch::${{ github.ref == 'refs/heads/main_test_fork' }}"
-      - name: Show outputs (for debugging)
-        run: echo "${{ toJson(outputs) }}"
+          echo "IS_SPECIFIC_REPOSITORY=${{ github.repository == 'asyatrhl/ai8x-training' }}" >> $GITHUB_ENV
+          echo "IS_DEVELOP_BRANCH=${{ github.ref == 'refs/heads/main_test_fork' }}" >> $GITHUB_ENV
+
+      - name: Show environment variables (for debugging)
+        run: env
         
 
 

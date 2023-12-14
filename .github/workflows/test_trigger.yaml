@@ -11,8 +11,8 @@ jobs:
       - name: Check if the repository is a fork
         id: check-fork
         run: |
-          IsSpecificRepository=${{ github.repository == 'asyatrhl/ai8x-regression' }}
-          IsDevelopBranch=${{ github.ref == 'refs/heads/develop' }}
+          IsSpecificRepository=${{ github.repository == 'asyatrhl/ai8x-training' }}
+          IsDevelopBranch=${{ github.ref == 'refs/heads/main_test_fork' }}
           echo "IsSpecificRepository=${IsSpecificRepository}"
           echo "IsDevelopBranch=${IsDevelopBranch}"
         shell: bash

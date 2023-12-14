@@ -8,7 +8,7 @@ jobs:
   trigger_dispatch:
     runs-on: ubuntu-latest
     steps:
-      - name: Check if the repository is a fork
+      - name: Check if the repository is a specific repository and branch
         id: check-repository-branch
         run: |
           IsSpecificRepository=${{ github.repository == 'asyatrhl/ai8x-training' }}
@@ -18,7 +18,7 @@ jobs:
         shell: bash
 
       - name: Set up environment
-        if: steps.check-repository-branch.outputs.IsSpecificRepository == 'true' && steps.check-repository-branch.outputs.IsDevelopBranch == 'true'
+        if: steps.check-repository-branch.outputs.IsSpecificRepository == true && steps.check-repository-branch.outputs.IsDevelopBranch == true
         run: |
           PR_Branch=${{ github.event.pull_request.head.ref }}
           Repository=${{ github.repository }}

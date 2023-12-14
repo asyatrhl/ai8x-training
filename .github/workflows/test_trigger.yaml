@@ -30,7 +30,7 @@ jobs:
       - name: Set up environment
         # if: steps.check-repository-branch.outputs.IsSpecificRepository == true && steps.check-repository-branch.outputs.IsDevelopBranch == true
         # if: steps.check-repository-branch.outputs.IsSpecificRepository == 'true' && steps.check-repository-branch.outputs.IsDevelopBranch == 'true'
-        if: env.IsSpecificRepository == 'true' && env.IsDevelopBranch == 'true'
+        if: env.IS_SPECIFIC_REPOSITORY == 'true' && env.IS_DEVELOP_BRANCH == 'true'
         run: |
           PR_Branch=${{ github.event.pull_request.head.ref }}
           Repository=${{ github.repository }}
@@ -42,6 +42,7 @@ jobs:
           echo "PR_Sha: $PR_Sha"
 
       - name: Dispatch event
+        if: env.IS_SPECIFIC_REPOSITORY == 'true' && env.IS_DEVELOP_BRANCH == 'true'
         run: |
           curl -X POST \
             -H "Authorization: Bearer ${{ secrets.REGRESSION }}" \

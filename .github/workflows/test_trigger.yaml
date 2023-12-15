@@ -10,7 +10,9 @@ jobs:
     steps:
       - name: Check repository
         run: |
-          echo "IS_REPOSITORY=${{ github.repository == '${{ vars.ORG_NAME_2 }}/ai8x-training' }}" >> $GITHUB_ENV
+          # echo "IS_REPOSITORY=${{ github.repository == '${{ vars.ORG_NAME_2 }}/ai8x-training' }}" >> $GITHUB_ENV
+          ORG_NAME_2=$(echo "${{ vars.ORG_NAME_2 }}" | tr '[:upper:]' '[:lower:]')
+          echo "IS_REPOSITORY=${{ github.repository == '$ORG_NAME_2/ai8x-training' }}" >> $GITHUB_ENV
           echo "IS_DEVELOP_BRANCH=${{ github.ref == 'refs/heads/main_test' }}" >> $GITHUB_ENV
 
       - name: Set up environment

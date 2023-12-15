@@ -11,7 +11,7 @@ jobs:
       - name: Check repository
         run: |
           REPO_OWNER=$(echo "${{ github.repository }}" | cut -d '/' -f 1)
-          echo "IS_REPOSITORY=${REPO_OWNER == 'MaximIntegratedAI'}}" >> $GITHUB_ENV
+          echo "IS_REPOSITORY=${[REPO_OWNER == 'MaximIntegratedAI'}}" >> $GITHUB_ENV
           echo "IS_DEVELOP_BRANCH=${{ github.ref == 'refs/heads/develop' }}" >> $GITHUB_ENV
 
       - name: Set up environment

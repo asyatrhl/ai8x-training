@@ -10,10 +10,7 @@ jobs:
     steps:
       - name: Check repository
         run: |
-          # REPO_OWNER=$(echo "${{ github.repository }}" | cut -d '/' -f 1)
-          # echo "::set-output name=IS_REPOSITORY::${REPO_OWNER == 'MaximIntegratedAI'}"
-          # echo "::set-output name=IS_DEVELOP_BRANCH::${{ github.ref == 'refs/heads/develop' }}"
-          echo "IS_REPOSITORY=${{ github.repository == 'vars.ORG_NAME_2/ai8x-training' }}" >> $GITHUB_ENV
+          echo "IS_REPOSITORY=${{ github.repository == '${{ vars.ORG_NAME_2 }}/ai8x-training' }}" >> $GITHUB_ENV
           echo "IS_DEVELOP_BRANCH=${{ github.ref == 'refs/heads/main_test' }}" >> $GITHUB_ENV
 
       - name: Set up environment

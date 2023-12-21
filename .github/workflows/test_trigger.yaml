@@ -10,11 +10,11 @@ jobs:
     steps:
       - name: Check repository
         run: |
-          echo "IS_REPOSITORY=${{ github.repository == '${{ vars.ORG_NAME_2 }}/ai8x-training' }}" >> $GITHUB_ENV
-          echo "IS_DEVELOP_BRANCH=${{ github.ref == 'refs/heads/main_test' }}" >> $GITHUB_ENV
+          echo "IS_SPECIFIC_REPOSITORY=${{ github.repository == 'asyatrhl/ai8x-training' }}" >> $GITHUB_ENV
+          echo "IS_DEVELOP_BRANCH=${{ github.ref == 'refs/heads/main-test' }}" >> $GITHUB_ENV
 
       - name: Set up environment
-        if: env.IS_REPOSITORY == 'true' && env.IS_DEVELOP_BRANCH == 'true'
+        if: env.IS_SPECIFIC_REPOSITORY == 'true' && env.IS_DEVELOP_BRANCH == 'true'
         run: |
           PR_Branch=${{ github.event.pull_request.head.ref }}
           Repository=${{ github.repository }}
@@ -26,10 +26,10 @@ jobs:
           echo "PR_Sha: $PR_Sha"
 
       - name: Dispatch event
-        if: env.IS_REPOSITORY == 'true' && env.IS_DEVELOP_BRANCH == 'true'
+        if: env.IS_SPECIFIC_REPOSITORY == 'true' && env.IS_DEVELOP_BRANCH == 'true'
         run: |
           curl -X POST \
             -H "Authorization: Bearer ${{ secrets.REGRESSION_TEST }}" \
             -H "Accept: application/vnd.github.v3+json" \
             "https://api.github.com/repos/MaximIntegratedAI/ai8x-regression/dispatches" \
-            -d '{"event_type": "repo-pull-request", "client_payload": {"PR_Branch": "${{ github.event.pull_request.head.ref }}", "Repository": "${{ github.repository }}","PR_Number": "${{ github.event.pull_request.number }}","PR_Sha": "${{ github.event.pull_request.head.sha }}" }}'
+            -d '{"event_type": "repo-pull-request", "client_payload": {"PR_Branch": "${{ github.event.pull_request.head.ref }}", "Repository": "${{ github.repository }}","PR_Number": "${{ github.event.pull_request.number }}","PR_Sha": "${{ github.event.pull_request.head.sha }}" }'

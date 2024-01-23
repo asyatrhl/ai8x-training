@@ -17,7 +17,7 @@ jobs:
         if: env.IS_SPECIFIC_REPOSITORY == 'true' && env.IS_DEVELOP_BRANCH == 'true'
         run: |
           PR_Branch=${{ github.event.pull_request.head.ref }}
-          Repository=${{ github.event.pull_request.repository }}
+          Repository=${{ github.event.pull_request.head }}
           PR_Number=${{ github.event.pull_request.number }}
           PR_Sha=${{ github.event.pull_request.head.sha }}
           echo "PR_Branch: $PR_Branch"

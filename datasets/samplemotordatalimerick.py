@@ -10,7 +10,6 @@ Classes and functions used to create Cork Motor Data Dataset
 import errno
 import os
 import pickle
-import sys
 import math
 import numpy as np
 from torch.utils.data import Dataset
@@ -19,10 +18,10 @@ from numpy.fft import fft
 import pandas as pd
 import torch
 
-import ai8x
-
 from sklearn.preprocessing import QuantileTransformer
 import scipy
+
+import ai8x
 
 
 class SampleMotorDataLimerick(Dataset):
@@ -31,7 +30,7 @@ class SampleMotorDataLimerick(Dataset):
     """
 
     # Order 0 is used for default sensor: ADX365C
-    sensor_options = ('ADXL356C')
+    sensor_options = 'ADXL356C'
     # Order 0 is reserved for 'all' do not change order
     rpm_options = ('all', '0600', '1200', '1800', '2400', '3000')
     # Order 0 is used for default sensor: ADX365C, do not change order
@@ -127,7 +126,6 @@ class SampleMotorDataLimerick(Dataset):
         # Third dimension: Window for self.duration_in_sec. 1000 samples for default settings
         num_features = file_raw_data_windows.shape[0]
         num_windows = file_raw_data_windows.shape[1]
-        input_window_size = file_raw_data_windows.shape[2]
 
         fft_output_window_size = SampleMotorDataLimerick.cnn_1dinput_len
 
@@ -163,17 +161,17 @@ class SampleMotorDataLimerick(Dataset):
     def parse_LF300_and_return_common_df_row(file_full_path):
         # Colums added just for readability can return raw data np array as well, can also add file identifier
         df_raw = pd.read_csv(file_full_path, sep='\t', header=None, skiprows=(0, 1))
-        df_raw.columns = ["Acceleration_x (g)", "Acceleration_y (g)", "Acceleration_z (g)", "Parsing Artifact"] 
+        df_raw.columns = ["Acceleration_x (g)", "Acceleration_y (g)", "Acceleration_z (g)", "Parsing Artifact"]
 
         raw_data = df_raw[["Acceleration_x (g)", "Acceleration_y (g)", "Acceleration_z (g)"]].to_numpy()
-        #SampleMotorDataLimerick.common_dataframe_columns
+        # SampleMotorDataLimerick.common_dataframe_columns
         return ['LF300', os.path.basename(file_full_path).split('/')[-1], raw_data]
 
     @staticmethod
     def parse_ADXL356C_and_return_common_df_row(file_full_path):
         # Colums added just for readability can return raw data np array as well, can also add file identifier
         df_raw = pd.read_csv(file_full_path, sep=';', header=None)
-        df_raw.rename(columns={0: 'Time', 1: 'Voltage_x', 2: 'Voltage_y', 3: 'Voltage_z', 4: 'x', 5: 'y', 6: 'z'}, inplace=True) 
+        df_raw.rename(columns={0: 'Time', 1: 'Voltage_x', 2: 'Voltage_y', 3: 'Voltage_z', 4: 'x', 5: 'y', 6: 'z'}, inplace=True)
         ss_vibr_x1 = df_raw.iloc[0]['x']
         ss_vibr_y1 = df_raw.iloc[0]['y']
         ss_vibr_z1 = df_raw.iloc[0]['z']
@@ -282,9 +280,9 @@ class SampleMotorDataLimerick(Dataset):
             return
 
         self.__gen_datasets()
-    
+
     def normalize_signal(self, train_features, test_normal_features, anomaly_features):
-        if(self.normalization_mode == 0): # Global Min Max
+        if self.normalization_mode == 0: # Global Min Max
 
             # Normalize data:
             self.train_features_max = np.max(train_features, axis=0)
@@ -297,7 +295,7 @@ class SampleMotorDataLimerick(Dataset):
                         (train_features[:, feature, signal] - self.train_features_min[feature, signal]) / \
                         (self.train_features_max[feature, signal] - self.train_features_min[feature, signal])
 
-            # Normalize test normal data:            
+            # Normalize test normal data:
             for feature in range(test_normal_features.shape[1]):
                 for signal in range(test_normal_features.shape[2]):
                     test_normal_features[:, feature, signal] = \
@@ -311,7 +309,7 @@ class SampleMotorDataLimerick(Dataset):
                         (anomaly_features[:, feature, signal] - self.train_features_min[feature, signal]) / \
                         (self.train_features_max[feature, signal] - self.train_features_min[feature, signal])
 
-        elif(self.normalization_mode == 1): # Local Min Max
+        elif self.normalization_mode == 1: # Local Min Max
             # Normalize data:
             for instance in range(train_features.shape[0]):
                 instance_max = np.max(train_features[instance, :, :], axis=1)
@@ -345,7 +343,7 @@ class SampleMotorDataLimerick(Dataset):
                             (anomaly_features[instance, feature, signal] - instance_min[feature]) / \
                             (instance_max[feature] - instance_min[feature])
 
-        elif(self.normalization_mode == 2): # Quantile
+        elif self.normalization_mode == 2: # Quantile
 
             scaler = QuantileTransformer(output_distribution='normal')
             train_features = scaler.fit_transform(train_features.reshape(train_features.shape[0], -1)).reshape(train_features.shape)
@@ -387,7 +385,7 @@ class SampleMotorDataLimerick(Dataset):
 
                 if self.sensor_selected == 'ADXL356C':
                     healthy_row = SampleMotorDataLimerick.parse_ADXL356C_and_return_common_df_row(file_full_path=full_path)
-                
+
                 if self.sensor_selected == 'LF300':
                     healthy_row = SampleMotorDataLimerick.parse_LF300_and_return_common_df_row(file_full_path=full_path)
 
@@ -397,7 +395,7 @@ class SampleMotorDataLimerick(Dataset):
 
                 if self.sensor_selected == 'ADXL356C':
                     faulty_row = SampleMotorDataLimerick.parse_ADXL356C_and_return_common_df_row(file_full_path=full_path)
-           
+
                 if self.sensor_selected == 'LF300':
                     faulty_row = SampleMotorDataLimerick.parse_LF300_and_return_common_df_row(file_full_path=full_path)
 
@@ -422,7 +420,7 @@ class SampleMotorDataLimerick(Dataset):
                 num_training = int(SampleMotorDataLimerick.train_ratio * cnn_signals.shape[0])
 
                 for i in range(cnn_signals.shape[0]):
-                    if(i < num_training):
+                    if i < num_training:
                         train_features.append(cnn_signals[i])
                     else:
                         test_normal_features.append(cnn_signals[i])
@@ -512,7 +510,7 @@ class SampleMotorDataLimerick(Dataset):
                 lbl = self.transform(lbl)
 
         if not self.label_as_signal:
-            lbl = lbl.astype(np.long)    
+            lbl = lbl.astype(np.long)
         else:
             lbl = lbl.numpy().astype(np.float32)
 
@@ -596,9 +594,9 @@ def samplemotordatalimerick_get_datasets_for_train(data, load_train=True, load_t
     overlap_ratio = 0.75
 
     wanted_sampling_rate_Hz = 2000
-    downsampling_ratio = round(SampleMotorDataLimerick.sensor_options_sr_Hz[selected_sensor_idx] / wanted_sampling_rate_Hz) 
+    downsampling_ratio = round(SampleMotorDataLimerick.sensor_options_sr_Hz[selected_sensor_idx] / wanted_sampling_rate_Hz)
 
-    # ds_ratio = 10,  sr: 20K / 10 = 2000, 0.25 sec window, fft input will have: 500 samples, 
+    # ds_ratio = 10,  sr: 20K / 10 = 2000, 0.25 sec window, fft input will have: 500 samples,
     # fftout's first 256 samples will be used
     # cnn input will have 2556 samples
 
@@ -630,9 +628,9 @@ def samplemotordatalimerick_get_datasets_for_eval_with_anomaly_label(data, load_
     overlap_ratio = 0.75
 
     wanted_sampling_rate_Hz = 2000
-    downsampling_ratio = round(SampleMotorDataLimerick.sensor_options_sr_Hz[selected_sensor_idx] / wanted_sampling_rate_Hz) 
+    downsampling_ratio = round(SampleMotorDataLimerick.sensor_options_sr_Hz[selected_sensor_idx] / wanted_sampling_rate_Hz)
 
-    # ds_ratio = 10,  sr: 20K / 10 = 2000, 0.25 sec window, fft input will have: 500 samples, 
+    # ds_ratio = 10,  sr: 20K / 10 = 2000, 0.25 sec window, fft input will have: 500 samples,
     # fftout's first 256 samples will be used
     # cnn input will have 2556 samples
 
@@ -664,9 +662,9 @@ def samplemotordatalimerick_get_datasets_for_eval_with_signal(data, load_train=T
     overlap_ratio = 0.75
 
     wanted_sampling_rate_Hz = 2000
-    downsampling_ratio = round(SampleMotorDataLimerick.sensor_options_sr_Hz[selected_sensor_idx] / wanted_sampling_rate_Hz) 
+    downsampling_ratio = round(SampleMotorDataLimerick.sensor_options_sr_Hz[selected_sensor_idx] / wanted_sampling_rate_Hz)
 
-    # ds_ratio = 10,  sr: 20K / 10 = 2000, 0.25 sec window, fft input will have: 500 samples, 
+    # ds_ratio = 10,  sr: 20K / 10 = 2000, 0.25 sec window, fft input will have: 500 samples,
     # fftout's first 256 samples will be used
     # cnn input will have 2556 samples
 

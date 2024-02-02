@@ -77,11 +77,11 @@ def extract_reconstructions_losses(model, dataloader, device):
     return reconstructions, losses, inputs, labels
 
 
-def plot_all_metrics(F1s, BalancedAccuracies, FPRs, Recalls, percentiles, thresholds):
+def plot_all_metrics(F1s, BalancedAccuracies, FPRs, Recalls, percentiles):
     """
-    F1, Balanced Accuracy, False Positive Rate metrics are plotted with respect to threshold decided 
-    according to percentiles of training loss in percentile list.
-    """ 
+    F1, Balanced Accuracy, False Positive Rate metrics are plotted with respect to 
+    threshold decided     according to percentiles of training loss in percentile list.
+    """
     fontsize=22
     linewidth = 4
 
@@ -103,7 +103,8 @@ def plot_all_metrics(F1s, BalancedAccuracies, FPRs, Recalls, percentiles, thresh
 
     axs[1].grid()
 
-    axs[1].set_title('\nBalanced Accuracy ((TPR + TNR) / 2) on Testset\n\n', fontsize=fontsize + 4, color='#0070C0')
+    axs[1].set_title('\nBalanced Accuracy ((TPR + TNR) / 2) on Testset\n\n',
+                     fontsize=fontsize + 4, color='#0070C0')
     axs[1].tick_params(axis='both', which='both', labelsize=fontsize)
     axs[1].legend(("Balanced Acc.",), loc='lower left', fontsize=fontsize - 2)
 
@@ -112,7 +113,8 @@ def plot_all_metrics(F1s, BalancedAccuracies, FPRs, Recalls, percentiles, thresh
         axs[2].annotate(f"{xy[1]: .3f}", xy=xy, fontsize=fontsize - 2)
 
     axs[2].grid()
-    axs[2].set_title('\nFalse Positive Rate on Testset\n\n', fontsize=fontsize + 4, color='#0070C0')
+    axs[2].set_title('\nFalse Positive Rate on Testset\n\n',
+                     fontsize=fontsize + 4, color='#0070C0')
     axs[2].tick_params(axis='both', which='both', labelsize=fontsize)
     axs[2].legend(("FPR",), loc='lower left', fontsize=fontsize - 2)
 
@@ -126,8 +128,8 @@ def plot_all_metrics(F1s, BalancedAccuracies, FPRs, Recalls, percentiles, thresh
     axs[3].tick_params(axis='both', which='both', labelsize=fontsize)
     axs[3].legend(("Recall",), loc='lower left', fontsize=fontsize - 2)
 
-
-    fig.supxlabel('\nReconstruction Loss distribution percentile of training samples (%)', fontsize=fontsize + 4)
+    fig.supxlabel('\nReconstruction Loss distribution percentile of training samples (%)',
+                  fontsize=fontsize + 4)
 
     plt.tight_layout()
     plt.show()
@@ -135,18 +137,21 @@ def plot_all_metrics(F1s, BalancedAccuracies, FPRs, Recalls, percentiles, thresh
 
 def sweep_performance_metrics(thresholds, train_tuple, test_tuple):
     """
-    F1s, BalancedAccuracies, FPRs, Recalls are calculated and returned based on different thresholds.
+    F1s, BalancedAccuracies, FPRs, Recalls are calculated 
+    and returned based on different thresholds.
     """
 
     if len(train_tuple) == 4:
         train_reconstructions, train_losses, train_inputs, train_labels = train_tuple
     elif len(train_tuple) == 7:
-        train_reconstructions, train_losses, train_inputs, train_labels, train_l_representations, train_l2_representations, train_latent_losses = train_tuple
+        train_reconstructions, train_losses, train_inputs, train_labels,  \
+        train_l_representations, train_l2_representations, train_latent_losses = train_tuple
 
     if len(test_tuple) == 4:
         test_reconstructions, test_losses, test_inputs, test_labels = test_tuple
     elif len(test_tuple) == 7:
-        test_reconstructions, test_losses, test_inputs, test_labels, test_l_representations, test_l2_representations, test_latent_losses = test_tuple
+        test_reconstructions, test_losses, test_inputs, test_labels,  \
+        test_l_representations, test_l2_representations, test_latent_losses = test_tuple
 
     FPRs = []
     F1s = []
@@ -156,12 +161,12 @@ def sweep_performance_metrics(thresholds, train_tuple, test_tuple):
     for threshold in thresholds:
         FPR, TNR, Recall, Precision, Accuracy, F1, BalancedAccuracy = calc_ae_perf_metrics(test_reconstructions, test_inputs, test_labels, threshold=threshold, print_all=False)
         FPR_train, TNR_train, Recall_train, Precision_train, Accuracy_train, F1_train, BalancedAccuracy_train = calc_ae_perf_metrics(train_reconstructions, train_inputs, train_labels, threshold=threshold, print_all=False)
-        
+
         F1s.append(F1.item())
         BalancedAccuracies.append(BalancedAccuracy.item())
         FPRs.append(FPR.item())
         Recalls.append(Recall.item())
-    
+
         print(f"F1: {F1: .4f}, BalancedAccuracy: {BalancedAccuracy: .4f}, FPR: {FPR: .4f}, Precision: {Precision: .4f}, TPR (Recall): {Recall: .4f}, Accuracy: {Accuracy: .4f}, TRAIN-SET Accuracy: {Accuracy_train: .4f}")
 
     return F1s, BalancedAccuracies, FPRs, Recalls
@@ -191,7 +196,7 @@ def calc_ae_perf_metrics(reconstructions, inputs, labels, threshold, print_all=T
         label_batch = labels[i]
         reconstructions_batch = reconstructions[i]
         inputs_batch = inputs[i]
-        
+
         loss = loss_fn(reconstructions_batch, inputs_batch)
 
         # Loss Decay
@@ -204,9 +209,7 @@ def calc_ae_perf_metrics(reconstructions, inputs, labels, threshold, print_all=T
         loss_batch = decayed_loss.mean(dim=(1,2))
         prediction_batch = loss_batch > threshold
 
-
         b =  torch.squeeze(torch.logical_not(label_batch))
-        c = b
 
         TN += torch.sum(torch.logical_and(torch.logical_not(prediction_batch), torch.squeeze(torch.logical_not(label_batch))))
         TP += torch.sum(torch.logical_and((prediction_batch), torch.squeeze(label_batch)))

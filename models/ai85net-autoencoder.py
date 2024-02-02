@@ -29,7 +29,7 @@ class CNN_BASE(nn.Module):
         Auto Encoder Weigth Initilization
         """
         weight_init = weight_init.lower()
-        assert weight_init == "kaiming" or weight_init == "xavier" or weight_init == "glorot"
+        assert weight_init in ('kaiming', 'xavier', 'glorot')
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
@@ -37,7 +37,7 @@ class CNN_BASE(nn.Module):
                     print("Initialising Conv2d weights with Kaiming distribution")
                     nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
 
-                elif weight_init == "glorot" or weight_init == "xavier":
+                elif weight_init in ('glorot', 'xavier'):
                     print("Initialising Conv2d weights with Xavier Glorot distribution")
                     nn.init.xavier_uniform_(m.weight)
 
@@ -46,7 +46,7 @@ class CNN_BASE(nn.Module):
                     print("Initialising ConvTranspose2d weights with Kaiming distribution")
                     nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
 
-                elif weight_init == "glorot" or weight_init == "xavier":
+                elif weight_init in ('glorot', 'xavier'):
                     print("Initialising ConvTranspose2d weights with Xavier Glorot distribution")
                     nn.init.xavier_uniform_(m.weight)
 
@@ -55,7 +55,7 @@ class CNN_BASE(nn.Module):
                     print("Initialising Linear weights with Kaiming distribution")
                     nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
 
-                elif weight_init == "glorot" or weight_init == "xavier":
+                elif weight_init in ('glorot', 'xavier'):
                     print("Initialising Linear weights with Xavier Glorot distribution")
                     nn.init.xavier_uniform_(m.weight)
 
@@ -87,7 +87,7 @@ class AI85AutoEncoder(CNN_BASE):
         print("Batchnorm setting in model = ", batchNorm)
 
         weight_init = weight_init.lower()
-        assert weight_init == "kaiming" or weight_init == "xavier" or weight_init == "glorot"
+        assert weight_init in ('kaiming', 'xavier', 'glorot')
 
         # Num channels is equal to the length of FFTs here
         self.num_channels = num_channels

@@ -47,7 +47,6 @@ def extract_reconstructions_losses(model, dataloader, device):
     reconstructions = []
     inputs = []
     labels = []
-    l_representations = []
 
     with torch.no_grad():
         for tup in dataloader:
@@ -61,7 +60,7 @@ def extract_reconstructions_losses(model, dataloader, device):
 
             inputs.append(signal)
             labels.append(label)
-            
+
             model_out = model(signal)
             if isinstance(model_out, tuple):
                 model_out = model_out[0]
@@ -89,12 +88,10 @@ def plot_all_metrics(F1s, BalancedAccuracies, FPRs, Recalls, percentiles, thresh
     fig, axs = plt.subplots(1, 4, figsize=(36, 11))
 
     axs[0].plot(percentiles, F1s, '-o', linewidth=linewidth)
-    for i, xy in enumerate(zip(percentiles, F1s)):                                       
-        #axs[0].annotate(f"{thresholds[i]: .3f}\n{xy[1]: .3f}", xy=xy, fontsize=fontsize - 2)
+    for i, xy in enumerate(zip(percentiles, F1s)):
         axs[0].annotate(f"{xy[1]: .3f}", xy=xy, fontsize=fontsize - 2)
 
     axs[0].grid()
-    #axs[0].set_xlabel('Reconstruction Loss distribution percentile of training samples (%) \n x Coords in Point labels represent percentile value', fontsize=fontsize)
 
     axs[0].set_title('\nF1 Score on Testset\n\n', fontsize=fontsize + 4, color='#0070C0')
     axs[0].tick_params(axis='both', which='both', labelsize=fontsize)
@@ -102,44 +99,35 @@ def plot_all_metrics(F1s, BalancedAccuracies, FPRs, Recalls, percentiles, thresh
 
     axs[1].plot(percentiles, BalancedAccuracies, '-o', linewidth=linewidth)
     for i, xy in enumerate(zip(percentiles, BalancedAccuracies)):                                       
-        #axs[1].annotate(f"{thresholds[i]: .3f}\n{xy[1]: .3f}", xy=xy, fontsize=fontsize - 2)
         axs[1].annotate(f"{xy[1]: .3f}", xy=xy, fontsize=fontsize - 2)
 
     axs[1].grid()
-    #axs[1].set_xlabel('Reconstruction Loss distribution percentile of training samples (%) \n x Coords in Point labels represent percentile value', fontsize=fontsize)
 
     axs[1].set_title('\nBalanced Accuracy ((TPR + TNR) / 2) on Testset\n\n', fontsize=fontsize + 4, color='#0070C0')
     axs[1].tick_params(axis='both', which='both', labelsize=fontsize)
     axs[1].legend(("Balanced Acc.",), loc='lower left', fontsize=fontsize - 2)
 
     axs[2].plot(percentiles, FPRs, '-o', linewidth=linewidth)
-    for i, xy in enumerate(zip(percentiles, FPRs)):                                       
-        # axs[2].annotate(f"{thresholds[i]: .3f}\n{xy[1]: .3f}", xy=xy, fontsize=fontsize - 2)
+    for i, xy in enumerate(zip(percentiles, FPRs)):
         axs[2].annotate(f"{xy[1]: .3f}", xy=xy, fontsize=fontsize - 2)
 
     axs[2].grid()
-    #axs[2].set_xlabel('Reconstruction Loss distribution percentile of training samples (%) \n x Coords in Point labels represent percentile value', fontsize=fontsize)
-
     axs[2].set_title('\nFalse Positive Rate on Testset\n\n', fontsize=fontsize + 4, color='#0070C0')
     axs[2].tick_params(axis='both', which='both', labelsize=fontsize)
     axs[2].legend(("FPR",), loc='lower left', fontsize=fontsize - 2)
 
 
     axs[3].plot(percentiles, Recalls, '-o', linewidth=linewidth)
-    for i, xy in enumerate(zip(percentiles, Recalls)):                                       
-        # axs[2].annotate(f"{thresholds[i]: .3f}\n{xy[1]: .3f}", xy=xy, fontsize=fontsize - 2)
+    for i, xy in enumerate(zip(percentiles, Recalls)):
         axs[3].annotate(f"{xy[1]: .3f}", xy=xy, fontsize=fontsize - 2)
 
     axs[3].grid()
-    #axs[2].set_xlabel('Reconstruction Loss distribution percentile of training samples (%) \n x Coords in Point labels represent percentile value', fontsize=fontsize)
-
     axs[3].set_title('\nTrue Positive Rate on Testset\n\n', fontsize=fontsize + 4, color='#0070C0')
     axs[3].tick_params(axis='both', which='both', labelsize=fontsize)
     axs[3].legend(("Recall",), loc='lower left', fontsize=fontsize - 2)
 
 
     fig.supxlabel('\nReconstruction Loss distribution percentile of training samples (%)', fontsize=fontsize + 4)
-    #fig.suptitle('\n\n')
 
     plt.tight_layout()
     plt.show()
@@ -189,7 +177,7 @@ def calc_ae_perf_metrics(reconstructions, inputs, labels, threshold, print_all=T
     FN = 0
     TP = 0
     TN = 0
-    
+
     Recall = -1
     Precision = -1
     Accuracy = -1
@@ -198,7 +186,7 @@ def calc_ae_perf_metrics(reconstructions, inputs, labels, threshold, print_all=T
 
     BalancedAccuracy = -1
     TNR = -1   # specificity (SPC), selectivity
-    
+
     for i in range(len(inputs)):
         label_batch = labels[i]
         reconstructions_batch = reconstructions[i]
@@ -225,7 +213,6 @@ def calc_ae_perf_metrics(reconstructions, inputs, labels, threshold, print_all=T
         FN += torch.sum(torch.logical_and(torch.logical_not(prediction_batch), torch.squeeze(label_batch)))
         FP += torch.sum(torch.logical_and((prediction_batch), torch.squeeze(torch.logical_not(label_batch))))
 
-
     if TP + FN != 0:
         Recall = TP / (TP + FN)
 
@@ -248,8 +235,6 @@ def calc_ae_perf_metrics(reconstructions, inputs, labels, threshold, print_all=T
         print(f"FP: {FP}")
         print(f"TN: {TN}")
         print(f"FN: {FN}")
-        print()
-        
         print(f"FPR: {FPR}")
         print(f"TNR = Specifity: {TNR}")
         print(f"TPR (Recall): {Recall}")

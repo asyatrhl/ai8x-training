@@ -9,8 +9,6 @@ Auto Encoder Network
 """
 
 from torch import nn
-import numpy as np
-import torch
 
 import ai8x
 
@@ -19,35 +17,35 @@ class CNN_BASE(nn.Module):
     Auto Encoder Network
     """
     def __init__(self,
-                 num_channels=3,
-                 bias=True,
-                 weight_init="kaiming",
-                 num_classes=0,
-                 **kwargs):
+                 num_channels=3, # pylint: disable=unused-argument
+                 bias=True, # pylint: disable=unused-argument
+                 weight_init="kaiming", # pylint: disable=unused-argument
+                 num_classes=0, # pylint: disable=unused-argument
+                 **kwargs): # pylint: disable=unused-argument
         super().__init__()
-        
+
     def initWeights(self, weight_init="kaiming"):
         """
         Auto Encoder Weigth Initilization
         """
         weight_init = weight_init.lower()
         assert weight_init == "kaiming" or weight_init == "xavier" or weight_init == "glorot"
-    
+
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
                 if weight_init == "kaiming":
                     print("Initialising Conv2d weights with Kaiming distribution")
                     nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
-                    
+
                 elif weight_init == "glorot" or weight_init == "xavier":
                     print("Initialising Conv2d weights with Xavier Glorot distribution")
                     nn.init.xavier_uniform_(m.weight)
-            
+
             elif isinstance(m, nn.ConvTranspose2d):
                 if weight_init == "kaiming":
                     print("Initialising ConvTranspose2d weights with Kaiming distribution")
                     nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
-    
+
                 elif weight_init == "glorot" or weight_init == "xavier":
                     print("Initialising ConvTranspose2d weights with Xavier Glorot distribution")
                     nn.init.xavier_uniform_(m.weight)
@@ -56,7 +54,7 @@ class CNN_BASE(nn.Module):
                 if weight_init == "kaiming":
                     print("Initialising Linear weights with Kaiming distribution")
                     nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
-    
+
                 elif weight_init == "glorot" or weight_init == "xavier":
                     print("Initialising Linear weights with Xavier Glorot distribution")
                     nn.init.xavier_uniform_(m.weight)
@@ -73,7 +71,16 @@ class AI85AutoEncoder(CNN_BASE):
     Input Shape: [BATCH_SZ, FFT_LEN, N_AXES] -> [BATCH_SZ, 256, 3] = [N, N_CHANNELS, SIGNAL_LEN]
     """
 
-    def __init__(self, num_channels=256, dimensions=None, num_classes=1, n_axes=3, bias=True, weight_init="kaiming", batchNorm=True, bottleNeckDim=4, **kwargs):
+    def __init__(self,
+                 num_channels=256,
+                 dimensions=None, # pylint: disable=unused-argument
+                 num_classes=1, # pylint: disable=unused-argument
+                 n_axes=3,
+                 bias=True,
+                 weight_init="kaiming",
+                 batchNorm=True,
+                 bottleNeckDim=4,
+                 **kwargs):
 
         super().__init__()
 
@@ -95,10 +102,10 @@ class AI85AutoEncoder(CNN_BASE):
         n_out = 128
         if batchNorm:
             self.en_conv1 = ai8x.FusedConv1dBNReLU(n_in, n_out, 1, stride=S, padding=P, dilation=1,
-                                               bias=bias, batchnorm='Affine', **kwargs)
+                                                   bias=bias, batchnorm='Affine', **kwargs)
         else:
             self.en_conv1 = ai8x.FusedConv1dReLU(n_in, n_out, 1, stride=S, padding=P, dilation=1,
-                                               bias=bias, **kwargs)
+                                                 bias=bias, **kwargs)
         self.layer1_n_in  = n_in
         self.layer1_n_out = n_out
 
@@ -107,10 +114,10 @@ class AI85AutoEncoder(CNN_BASE):
         n_out = 64
         if batchNorm:
             self.en_conv2 = ai8x.FusedConv1dBNReLU(n_in, n_out, 3, stride=S, padding=P, dilation=1,
-                                               bias=bias, batchnorm='Affine', **kwargs)
+                                                   bias=bias, batchnorm='Affine', **kwargs)
         else:
             self.en_conv2 = ai8x.FusedConv1dReLU(n_in, n_out, 3, stride=S, padding=P, dilation=1,
-                                               bias=bias, **kwargs)
+                                                 bias=bias, **kwargs)
         self.layer2_n_in  = n_in
         self.layer2_n_out = n_out
 
@@ -119,18 +126,18 @@ class AI85AutoEncoder(CNN_BASE):
         self.en_lin1 = ai8x.FusedLinearReLU(n_in, n_out, bias=bias, **kwargs)
         # ----- END OF DECODER ----- #
 
-        # ---- BOTTLENECK ---- # 
+        # ---- BOTTLENECK ---- #
         n_in=n_out
         self.bottleNeckDim = bottleNeckDim
         n_out=self.bottleNeckDim
         self.en_lin2 = ai8x.Linear(n_in, n_out, bias=0, **kwargs)
-        # ---- END OF BOTTLENECK ---- # 
+        # ---- END OF BOTTLENECK ---- #
 
         # ----- ENCODER ----- #
         n_in=n_out
         n_out=32
         self.de_lin1 = ai8x.FusedLinearReLU(n_in, n_out, bias=bias, **kwargs)
-        
+
         n_in=n_out
         n_out=96
         self.de_lin2 = ai8x.FusedLinearReLU(n_in, n_out, bias=bias, **kwargs)

@@ -30,18 +30,21 @@ class SampleMotorDataLimerick(Dataset):
     ADXL356C
     """
 
-    sensor_options = ('ADXL356C') # Order 0 is used for default sensor: ADX365C, do not change order
-    rpm_options = ('all', '0600', '1200', '1800', '2400', '3000') # Order 0 is reserved for 'all' do not change order
- 
-    sensor_options_sr_Hz = (20000, 4000) # Order 0 is used for default sensor: ADX365C, do not change order
-    sensor_options_file_len_in_sec = (2, 10) # Order 0 is used for default sensor: ADX365C, do not change order
-
-    healthy_file_identifier = '_GoB_GS_BaLo_WA_' # Good Bearing, Good Shaft, Balanced Load and Well Aligned
+    # Order 0 is used for default sensor: ADX365C
+    sensor_options = ('ADXL356C')
+    # Order 0 is reserved for 'all' do not change order
+    rpm_options = ('all', '0600', '1200', '1800', '2400', '3000')
+    # Order 0 is used for default sensor: ADX365C, do not change order
+    sensor_options_sr_Hz = (20000, 4000)
+    # Order 0 is used for default sensor: ADX365C, do not change order
+    sensor_options_file_len_in_sec = (2, 10)
+    # Good Bearing, Good Shaft, Balanced Load and Well Aligned
+    healthy_file_identifier = '_GoB_GS_BaLo_WA_'
 
     cnn_1dinput_len = 256
 
     num_end_zeros = 10
-    num_start_zeros = 3 
+    num_start_zeros = 3
 
     common_dataframe_columns = ["sensor_identifier", "file_identifier", "raw_data_accel_in_g"]
 
@@ -50,7 +53,8 @@ class SampleMotorDataLimerick(Dataset):
     @staticmethod
     def sliding_windows_1d(array, window_size, overlap_ratio):
         """
-        One dimensional array is windowed and returned in window_size length according to overlap ratio.
+        One dimensional array is windowed and returned
+        in window_size length according to overlap ratio.
         """
 
         window_overlap = math.ceil(window_size * overlap_ratio)
@@ -70,7 +74,8 @@ class SampleMotorDataLimerick(Dataset):
     @staticmethod
     def sliding_windows_on_columns_of_2d(array, window_size, overlap_ratio):
         """
-        Two dimensional array is windowed and returned in window_size length according to overlap ratio.
+        Two dimensional array is windowed and returned
+        in window_size length according to overlap ratio.
         """
 
         array_len, num_of_cols = array.shape
@@ -82,7 +87,8 @@ class SampleMotorDataLimerick(Dataset):
         result_list = np.zeros((num_of_cols, num_of_windows, window_size))
 
         for i in range(num_of_cols):
-            result_list[i, :, :] = SampleMotorDataLimerick.sliding_windows_1d(array[:, i], window_size, overlap_ratio)
+            result_list[i, :, :] = SampleMotorDataLimerick.sliding_windows_1d(array[:, i],
+                                                                              window_size, overlap_ratio)
 
         return result_list
 
@@ -108,12 +114,13 @@ class SampleMotorDataLimerick(Dataset):
 
         new_sampling_rate = int(self.selected_sensor_sr / self.downsampling_ratio)
 
-        file_raw_data_sampled = scipy.signal.decimate(file_raw_data, self.downsampling_ratio, axis=0)
+        file_raw_data_sampled = scipy.signal.decimate(file_raw_data,
+                                                      self.downsampling_ratio, axis=0)
 
         file_raw_data_windows = SampleMotorDataLimerick.split_file_raw_data(file_raw_data_sampled,
-                                                             new_sampling_rate,
-                                                             self.signal_duration_in_sec,
-                                                             self.overlap_ratio)
+                                                                            new_sampling_rate,
+                                                                            self.signal_duration_in_sec,
+                                                                            self.overlap_ratio)
 
         # First dimension: 3
         # Second dimension: number of windows

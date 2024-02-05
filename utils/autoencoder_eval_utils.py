@@ -152,7 +152,8 @@ def sweep_performance_metrics(thresholds, train_tuple, test_tuple):
     Recalls = []
 
     for threshold in thresholds:
-        FPR, _, Recall, Precision, Accuracy, F1, BalancedAccuracy = calc_ae_perf_metrics(  # no-codespell
+        # no-codespell
+        FPR, _, Recall, Precision, Accuracy, F1, BalancedAccuracy = calc_ae_perf_metrics(
             test_reconstructions,
             test_inputs,
             test_labels,

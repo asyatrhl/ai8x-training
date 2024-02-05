@@ -17,8 +17,6 @@ class CNN_BASE(nn.Module):
     """
     Auto Encoder Network
     """
-
-
     def __init__(self,
                  num_channels=3,  # pylint: disable=unused-argument
                  bias=True,  # pylint: disable=unused-argument

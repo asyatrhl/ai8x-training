@@ -7,11 +7,11 @@
 """ Some utility functions for AutoEncoder Models """
 import numpy as np
 import torch
-
 from torch import nn
-import matplotlib.pyplot as plt
 
+import matplotlib.pyplot as plt
 import seaborn as sns
+
 sns.set_style("white")
 
 
@@ -88,7 +88,7 @@ def plot_all_metrics(F1s, BalancedAccuracies, FPRs, Recalls, percentiles):
     fig, axs = plt.subplots(1, 4, figsize=(36, 11))
 
     axs[0].plot(percentiles, F1s, '-o', linewidth=linewidth)
-    for i, xy in enumerate(zip(percentiles, F1s)): # pylint: disable=unused-argument
+    for i, xy in enumerate(zip(percentiles, F1s)): # pylint: disable=unused-variable
         axs[0].annotate(f"{xy[1]: .3f}", xy=xy, fontsize=fontsize - 2)
 
     axs[0].grid()
@@ -141,8 +141,8 @@ def sweep_performance_metrics(thresholds, train_tuple, test_tuple):
     and returned based on different thresholds.
     """
 
-    train_reconstructions, train_losses, train_inputs, train_labels = train_tuple # pylint: disable=unused-argument
-    test_reconstructions, test_losses, test_inputs, test_labels = test_tuple # pylint: disable=unused-argument
+    train_reconstructions, train_losses, train_inputs, train_labels = train_tuple  # pylint: disable=unused-variable
+    test_reconstructions, test_losses, test_inputs, test_labels = test_tuple  # pylint: disable=unused-variable
 
     FPRs = []
     F1s = []
@@ -150,10 +150,21 @@ def sweep_performance_metrics(thresholds, train_tuple, test_tuple):
     Recalls = []
 
     for threshold in thresholds:
-        FPR, TNR, Recall, Precision, Accuracy, F1, BalancedAccuracy = \
-            calc_ae_perf_metrics(test_reconstructions, test_inputs, test_labels, threshold=threshold, print_all=False)
-        FPR_train, TNR_train, Recall_train, Precision_train, Accuracy_train, F1_train, BalancedAccuracy_train = \
-            calc_ae_perf_metrics(train_reconstructions, train_inputs, train_labels, threshold=threshold, print_all=False) # pylint: disable=unused-argument
+        FPR, TNR, Recall, Precision, Accuracy, F1, BalancedAccuracy = calc_ae_perf_metrics(  # pylint: disable=unused-variable
+            test_reconstructions,
+            test_inputs,
+            test_labels,
+            threshold=threshold,
+            print_all=False
+            )
+
+        FPR_tr, TNR_tr, Rec_tr, Prec_tr, Accuracy_train, F1_tr, B_Acc_tr = calc_ae_perf_metrics( # pylint: disable=unused-variable
+                train_reconstructions,
+                train_inputs,
+                train_labels,
+                threshold=threshold,
+                print_all=False
+            )
 
         F1s.append(F1.item())
         BalancedAccuracies.append(BalancedAccuracy.item())
@@ -189,7 +200,7 @@ def calc_ae_perf_metrics(reconstructions, inputs, labels, threshold, print_all=T
     BalancedAccuracy = -1
     TNR = -1   # specificity (SPC), selectivity
 
-    for i in enumerate(inputs):
+    for i, _ in enumerate(inputs):
         label_batch = labels[i]
         reconstructions_batch = reconstructions[i]
         inputs_batch = inputs[i]
@@ -208,10 +219,12 @@ def calc_ae_perf_metrics(reconstructions, inputs, labels, threshold, print_all=T
 
         TN += torch.sum(torch.logical_and(torch.logical_not(prediction_batch),
                                           torch.squeeze(torch.logical_not(label_batch))))
-        TP += torch.sum(torch.logical_and((prediction_batch), torch.squeeze(label_batch)))
+        TP += torch.sum(torch.logical_and((prediction_batch),
+                                          torch.squeeze(label_batch)))
         FN += torch.sum(torch.logical_and(torch.logical_not(prediction_batch),
                                           torch.squeeze(label_batch)))
-        FP += torch.sum(torch.logical_and((prediction_batch), torch.squeeze(torch.logical_not(label_batch))))
+        FP += torch.sum(torch.logical_and((prediction_batch),
+                                          torch.squeeze(torch.logical_not(label_batch))))
 
     if TP + FN != 0:
         Recall = TP / (TP + FN)

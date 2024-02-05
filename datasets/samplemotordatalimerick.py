@@ -17,10 +17,9 @@ import torch
 from numpy.fft import fft
 from torch.utils.data import Dataset
 from torchvision import transforms
-import pandas as pd
 
+import pandas as pd
 import scipy
-from sklearn.preprocessing import QuantileTransformer
 
 import ai8x
 
@@ -189,16 +188,12 @@ class SampleMotorDataLimerick(Dataset):
                  eval_mode=False,
                  label_as_signal=True,
                  random_or_speed_split=True,
-                 normalization_mode=1,
                  accel_in_second_dim=True,
                  sensor_selected=sensor_options[0],
                  rpm_selected=rpm_options[0]):
 
         if d_type not in ('test', 'train'):
             raise ValueError("d_type can only be set to 'test' or 'train'")
-
-        if normalization_mode not in range(3):
-            raise ValueError(f"Invalid normalization mode value:{normalization_mode}, should have been selected from: {0, 1, 2}")
 
         if rpm_selected not in SampleMotorDataLimerick.rpm_options:
             raise ValueError(f"rpm_selected can only be set from: {SampleMotorDataLimerick.rpm_options}")
@@ -220,7 +215,6 @@ class SampleMotorDataLimerick(Dataset):
         self.label_as_signal = label_as_signal
 
         self.random_or_speed_split = random_or_speed_split
-        self.normalization_mode = normalization_mode
         self.accel_in_second_dim = accel_in_second_dim
 
         self.sensor_selected = sensor_selected
@@ -239,7 +233,6 @@ class SampleMotorDataLimerick(Dataset):
                                 f'dur_{self.signal_duration_in_sec}_' + \
                                 f'ovlp_ratio_{self.overlap_ratio}_' + \
                                 f'random_split_{self.random_or_speed_split}_' + \
-                                f'normalization_{self.normalization_mode}_' + \
                                 f'sensor_selected_{self.sensor_selected}_' +\
                                 f'rpm_{self.rpm_selected}' 
 
@@ -273,90 +266,39 @@ class SampleMotorDataLimerick(Dataset):
         self.__gen_datasets()
 
     def normalize_signal(self, train_features, test_normal_features, anomaly_features):
-        if self.normalization_mode == 0: # Global Min Max
+        # Normalize signal with Local Min Max Normalization
+        # Normalize data:
+        for instance in range(train_features.shape[0]):
+            instance_max = np.max(train_features[instance, :, :], axis=1)
+            instance_min = np.min(train_features[instance, :, :], axis=1)
 
-            # Normalize data:
-            self.train_features_max = np.max(train_features, axis=0)
-            self.train_features_min = np.min(train_features, axis=0) # (3, 256)
-
-            # Normalize train normal data:
             for feature in range(train_features.shape[1]):
                 for signal in range(train_features.shape[2]):
-                    train_features[:, feature, signal] = \
-                        (train_features[:, feature, signal] - self.train_features_min[feature, signal]) / \
-                        (self.train_features_max[feature, signal] - self.train_features_min[feature, signal])
+                    train_features[instance, feature, signal] = \
+                        (train_features[instance, feature, signal] - instance_min[feature]) / \
+                        (instance_max[feature] - instance_min[feature])
 
-            # Normalize test normal data:
+        # Normalize test normal data:
+        for instance in range(test_normal_features.shape[0]):
+            instance_max = np.max(test_normal_features[instance, :, :], axis=1)
+            instance_min = np.min(test_normal_features[instance, :, :], axis=1)
+
             for feature in range(test_normal_features.shape[1]):
                 for signal in range(test_normal_features.shape[2]):
-                    test_normal_features[:, feature, signal] = \
-                        (test_normal_features[:, feature, signal] - self.train_features_min[feature, signal]) / \
-                        (self.train_features_max[feature, signal] - self.train_features_min[feature, signal])
+                    test_normal_features[instance, feature, signal] = \
+                        (test_normal_features[instance, feature, signal] - instance_min[feature]) / \
+                        (instance_max[feature] - instance_min[feature])
 
-            # Normalize anomaly features:
+        # Normalize anomaly features:
+        for instance in range(anomaly_features.shape[0]):
+            instance_min = np.min(anomaly_features[instance, :, :], axis=1)
+            instance_max = np.max(anomaly_features[instance, :, :], axis=1)
+
             for feature in range(anomaly_features.shape[1]):
                 for signal in range(anomaly_features.shape[2]):
-                    anomaly_features[:, feature, signal] = \
-                        (anomaly_features[:, feature, signal] - self.train_features_min[feature, signal]) / \
-                        (self.train_features_max[feature, signal] - self.train_features_min[feature, signal])
-
-        elif self.normalization_mode == 1: # Local Min Max
-            # Normalize data:
-            for instance in range(train_features.shape[0]):
-                instance_max = np.max(train_features[instance, :, :], axis=1)
-                instance_min = np.min(train_features[instance, :, :], axis=1)
-
-                for feature in range(train_features.shape[1]):
-                    for signal in range(train_features.shape[2]):
-                        train_features[instance, feature, signal] = \
-                            (train_features[instance, feature, signal] - instance_min[feature]) / \
-                            (instance_max[feature] - instance_min[feature])
-
-            # Normalize test normal data:
-            for instance in range(test_normal_features.shape[0]):
-                instance_max = np.max(test_normal_features[instance, :, :], axis=1)
-                instance_min = np.min(test_normal_features[instance, :, :], axis=1)
-
-                for feature in range(test_normal_features.shape[1]):
-                    for signal in range(test_normal_features.shape[2]):
-                        test_normal_features[instance, feature, signal] = \
-                            (test_normal_features[instance, feature, signal] - instance_min[feature]) / \
-                            (instance_max[feature] - instance_min[feature])
-
-            # Normalize anomaly features:
-            for instance in range(anomaly_features.shape[0]):
-                instance_min = np.min(anomaly_features[instance, :, :], axis=1)
-                instance_max = np.max(anomaly_features[instance, :, :], axis=1)
-
-                for feature in range(anomaly_features.shape[1]):
-                    for signal in range(anomaly_features.shape[2]):
-                        anomaly_features[instance, feature, signal] = \
-                            (anomaly_features[instance, feature, signal] - instance_min[feature]) / \
-                            (instance_max[feature] - instance_min[feature])
-
-        elif self.normalization_mode == 2: # Quantile
-
-            scaler = QuantileTransformer(output_distribution='normal')
-            train_features = scaler.fit_transform(
-                train_features.reshape(train_features.shape[0], -1)
-                ).reshape(train_features.shape)
-            train_features = np.clip(train_features, -3, 3)
-            train_features = (train_features + 3) / 6
-
-            test_normal_features = scaler.transform(
-                test_normal_features.reshape(test_normal_features.shape[0], -1)
-                ).reshape(test_normal_features.shape)
-            test_normal_features = np.clip(test_normal_features, -3, 3)
-            test_normal_features = (test_normal_features + 3) / 6
-
-            anomaly_features = scaler.transform(
-                anomaly_features.reshape(anomaly_features.shape[0], -1)
-                ).reshape(anomaly_features.shape)
-            anomaly_features = np.clip(anomaly_features, -3, 3)
-            anomaly_features = (anomaly_features + 3) / 6
-        else:
-            error_message = "Incorrect normalization mode is selected."
-            raise Exception(error_message)
+                    anomaly_features[instance, feature, signal] = \
+                        (anomaly_features[instance, feature, signal] - instance_min[feature]) / \
+                        (instance_max[feature] - instance_min[feature])
 
         return train_features, test_normal_features, anomaly_features
 
@@ -528,9 +470,8 @@ def samplemotordatalimerick_get_datasets(data, load_train=True, load_test=True,
                                eval_mode=False,
                                label_as_signal=True,
                                random_or_speed_split=True,
-                               normalization_mode=1,
                                accel_in_second_dim=True,
-                               sensor_selected=SampleMotorDataLimerick.sensor_options,
+                               sensor_selected=SampleMotorDataLimerick.sensor_options[0],
                                rpm_selected=SampleMotorDataLimerick.rpm_options[0]):
     """"
     Returns Sample Motor Data Limerick Dataset
@@ -550,7 +491,6 @@ def samplemotordatalimerick_get_datasets(data, load_train=True, load_test=True,
                                       eval_mode=eval_mode,
                                       label_as_signal=label_as_signal,
                                       random_or_speed_split=random_or_speed_split,
-                                      normalization_mode=normalization_mode,
                                       accel_in_second_dim=accel_in_second_dim,
                                       sensor_selected=sensor_selected,
                                       rpm_selected=rpm_selected)
@@ -572,7 +512,6 @@ def samplemotordatalimerick_get_datasets(data, load_train=True, load_test=True,
                                       eval_mode=eval_mode,
                                       label_as_signal=label_as_signal,
                                       random_or_speed_split=random_or_speed_split,
-                                      normalization_mode=normalization_mode,
                                       accel_in_second_dim=accel_in_second_dim,
                                       sensor_selected=sensor_selected,
                                       rpm_selected=rpm_selected)
@@ -584,7 +523,12 @@ def samplemotordatalimerick_get_datasets(data, load_train=True, load_test=True,
     return train_dataset, test_dataset
 
 
-def samplemotordatalimerick_get_datasets_for_train(data, load_train=True, load_test=True):
+def samplemotordatalimerick_get_datasets_for_train(data,
+                                                   load_train=True,
+                                                   load_test=True):
+    """"
+    Returns Sample Motor Data Limerick Dataset For Training Mode
+    """
 
     eval_mode = False   # Test set includes validation normals
     label_as_signal = True
@@ -605,15 +549,12 @@ def samplemotordatalimerick_get_datasets_for_train(data, load_train=True, load_t
 
     random_or_speed_split = True
 
-    normalization_mode = 1 # Local MinMax
-
     return samplemotordatalimerick_get_datasets(data, load_train, load_test,
                                       downsampling_ratio=downsampling_ratio,
                                       signal_duration_in_sec=signal_duration_in_sec,
                                       overlap_ratio=overlap_ratio,
                                       eval_mode=eval_mode,
                                       label_as_signal=label_as_signal,
-                                      normalization_mode=normalization_mode,
                                       random_or_speed_split=random_or_speed_split,
                                       accel_in_second_dim=accel_in_second_dim
     )
@@ -622,6 +563,10 @@ def samplemotordatalimerick_get_datasets_for_train(data, load_train=True, load_t
 def samplemotordatalimerick_get_datasets_for_eval_with_anomaly_label(data,
                                                                      load_train=True,
                                                                      load_test=True):
+    """"
+    Returns Sample Motor Data Limerick Dataset For Evaluation Mode
+    Label is anomaly status
+    """
 
     eval_mode = True   # Test set includes validation normals
     label_as_signal = False
@@ -642,24 +587,24 @@ def samplemotordatalimerick_get_datasets_for_eval_with_anomaly_label(data,
 
     random_or_speed_split = True
 
-    normalization_mode = 1 # Local MinMax
-
     return samplemotordatalimerick_get_datasets(data, load_train, load_test,
                                       downsampling_ratio=downsampling_ratio,
                                       signal_duration_in_sec=signal_duration_in_sec,
                                       overlap_ratio=overlap_ratio,
                                       eval_mode=eval_mode,
                                       label_as_signal=label_as_signal,
-                                      normalization_mode=normalization_mode,
                                       random_or_speed_split=random_or_speed_split,
                                       accel_in_second_dim=accel_in_second_dim
-                                      )
     )
 
 
 def samplemotordatalimerick_get_datasets_for_eval_with_signal(data,
                                                               load_train=True,
                                                               load_test=True):
+    """"
+    Returns Sample Motor Data Limerick Dataset For Evaluation Mode
+    Label is signal
+    """
 
     eval_mode = True   # Test set includes validation normals
     label_as_signal = True
@@ -680,15 +625,12 @@ def samplemotordatalimerick_get_datasets_for_eval_with_signal(data,
 
     random_or_speed_split = True
 
-    normalization_mode = 1 # Local MinMax
-
     return samplemotordatalimerick_get_datasets(data, load_train, load_test,
                                       downsampling_ratio=downsampling_ratio,
                                       signal_duration_in_sec=signal_duration_in_sec,
                                       overlap_ratio=overlap_ratio,
                                       eval_mode=eval_mode,
                                       label_as_signal=label_as_signal,
-                                      normalization_mode=normalization_mode,
                                       random_or_speed_split=random_or_speed_split,
                                       accel_in_second_dim=accel_in_second_dim
     )

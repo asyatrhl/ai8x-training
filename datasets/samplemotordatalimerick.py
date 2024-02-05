@@ -313,8 +313,7 @@ class SampleMotorDataLimerick(Dataset):
               f'files (specs identifier: {self.specs_identifier}) ...\n')
 
         actual_root_dir = os.path.join(self.root, self.__class__.__name__,
-                                       "SpectraQuest Rig Data Voyager 3/",
-                                       "CbM_Testing_Spectraquest/CbM_Testing_Spectraquest/")
+                                       "SpectraQuest_Rig_Data_Voyager_3/")
 
         data_dir = os.path.join(actual_root_dir, f'Test_Results_Data_{self.sensor_selected}/')
 

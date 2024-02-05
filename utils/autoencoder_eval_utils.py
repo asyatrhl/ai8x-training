@@ -117,7 +117,7 @@ def plot_all_metrics(F1s, BalancedAccuracies, FPRs, Recalls, percentiles):
     axs[2].set_title('\nFalse Positive Rate on Testset\n\n',
                      fontsize=fontsize + 4, color='#0070C0')
     axs[2].tick_params(axis='both', which='both', labelsize=fontsize)
-    axs[2].legend(("FPR",), loc='lower left', fontsize=fontsize - 2)
+    axs[2].legend(("FPR",), loc='lower left', fontsize=fontsize - 2) # no-codespell
 
     axs[3].plot(percentiles, Recalls, '-o', linewidth=linewidth)
     for i, xy in enumerate(zip(percentiles, Recalls)):
@@ -152,7 +152,7 @@ def sweep_performance_metrics(thresholds, train_tuple, test_tuple):
     Recalls = []
 
     for threshold in thresholds:
-        FPR, _, Recall, Precision, Accuracy, F1, BalancedAccuracy = calc_ae_perf_metrics(
+        FPR, _, Recall, Precision, Accuracy, F1, BalancedAccuracy = calc_ae_perf_metrics( # no-codespell
             test_reconstructions,
             test_inputs,
             test_labels,
@@ -170,11 +170,11 @@ def sweep_performance_metrics(thresholds, train_tuple, test_tuple):
 
         F1s.append(F1.item())
         BalancedAccuracies.append(BalancedAccuracy.item())
-        FPRs.append(FPR.item())
+        FPRs.append(FPR.item()) # no-codespell
         Recalls.append(Recall.item())
 
         print(f"F1: {F1: .4f}, BalancedAccuracy: {BalancedAccuracy: .4f}, "
-              f"FPR: {FPR: .4f}, Precision: {Precision: .4f}, TPR (Recall): "
+              f"FPR: {FPR: .4f}, Precision: {Precision: .4f}, TPR (Recall): " # no-codespell
               f"{Recall: .4f}, Accuracy: {Accuracy: .4f}, "
               f"TRAIN-SET Accuracy: {Accuracy_train: .4f}")
 
@@ -183,7 +183,7 @@ def sweep_performance_metrics(thresholds, train_tuple, test_tuple):
 
 def calc_ae_perf_metrics(reconstructions, inputs, labels, threshold, print_all=True):
     """
-    FPR, TNR, Recall, Precision, Accuracy, F1, BalancedAccuracy
+    False Positive Rate, TNR, Recall, Precision, Accuracy, F1, BalancedAccuracy
     metrics of AutoEncoder are calculated and returned.
     """
 
@@ -197,7 +197,7 @@ def calc_ae_perf_metrics(reconstructions, inputs, labels, threshold, print_all=T
     Precision = -1
     Accuracy = -1
     F1 = -1
-    FPR = -1
+    FPR = -1 # no-codespell
 
     BalancedAccuracy = -1
     TNR = -1   # specificity (SPC), selectivity
@@ -237,7 +237,7 @@ def calc_ae_perf_metrics(reconstructions, inputs, labels, threshold, print_all=T
     Accuracy = (TP + TN) / (TP + TN + FP + FN)
 
     if (TN + FP) != 0:
-        FPR = FP / (TN + FP)
+        FPR = FP / (TN + FP) # no-codespell
         TNR = TN / (TN + FP)
 
     if Precision + Recall != 0:
@@ -250,7 +250,7 @@ def calc_ae_perf_metrics(reconstructions, inputs, labels, threshold, print_all=T
         print(f"FP: {FP}")
         print(f"TN: {TN}")
         print(f"FN: {FN}")
-        print(f"FPR: {FPR}")
+        print(f"FPR: {FPR}") # no-codespell
         print(f"TNR = Specificity: {TNR}")
         print(f"TPR (Recall): {Recall}")
         print(f"Precision: {Precision}")
@@ -258,4 +258,4 @@ def calc_ae_perf_metrics(reconstructions, inputs, labels, threshold, print_all=T
         print(f"F1: {F1}")
         print(f"BalancedAccuracy: {BalancedAccuracy}")
 
-    return FPR, TNR, Recall, Precision, Accuracy, F1, BalancedAccuracy
+    return FPR, TNR, Recall, Precision, Accuracy, F1, BalancedAccuracy # no-codespell

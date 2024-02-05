@@ -17,6 +17,7 @@ sns.set_style("white")
 
 DECAY_FACTOR = 1
 
+
 def calc_model_size(model):
     """
     Returns the model's weight anf bias number.
@@ -71,7 +72,7 @@ def extract_reconstructions_losses(model, dataloader, device):
             decay_vector = np.tile(decay_vector, (loss_numpy.shape[0], loss_numpy.shape[1], 1))
 
             decayed_loss = loss_numpy * decay_vector
-            losses.extend(decayed_loss.mean(axis=(1,2)))
+            losses.extend(decayed_loss.mean(axis=(1, 2)))
             reconstructions.append(model_out)
 
     return reconstructions, losses, inputs, labels
@@ -79,16 +80,16 @@ def extract_reconstructions_losses(model, dataloader, device):
 
 def plot_all_metrics(F1s, BalancedAccuracies, FPRs, Recalls, percentiles):
     """
-    F1, Balanced Accuracy, False Positive Rate metrics are plotted with respect to 
-    threshold decided     according to percentiles of training loss in percentile list.
+    F1, Balanced Accuracy, False Positive Rate metrics are plotted with respect to
+    threshold decided according to percentiles of training loss in percentile list.
     """
-    fontsize=22
+    fontsize = 22
     linewidth = 4
 
     fig, axs = plt.subplots(1, 4, figsize=(36, 11))
 
     axs[0].plot(percentiles, F1s, '-o', linewidth=linewidth)
-    for i, xy in enumerate(zip(percentiles, F1s)): # pylint: disable=unused-variable
+    for i, xy in enumerate(zip(percentiles, F1s)):  # pylint: disable=unused-variable
         axs[0].annotate(f"{xy[1]: .3f}", xy=xy, fontsize=fontsize - 2)
 
     axs[0].grid()
@@ -118,7 +119,6 @@ def plot_all_metrics(F1s, BalancedAccuracies, FPRs, Recalls, percentiles):
     axs[2].tick_params(axis='both', which='both', labelsize=fontsize)
     axs[2].legend(("FPR",), loc='lower left', fontsize=fontsize - 2)
 
-
     axs[3].plot(percentiles, Recalls, '-o', linewidth=linewidth)
     for i, xy in enumerate(zip(percentiles, Recalls)):
         axs[3].annotate(f"{xy[1]: .3f}", xy=xy, fontsize=fontsize - 2)
@@ -137,12 +137,14 @@ def plot_all_metrics(F1s, BalancedAccuracies, FPRs, Recalls, percentiles):
 
 def sweep_performance_metrics(thresholds, train_tuple, test_tuple):
     """
-    F1s, BalancedAccuracies, FPRs, Recalls are calculated 
+    F1s, BalancedAccuracies, FPRs, Recalls are calculated
     and returned based on different thresholds.
     """
 
-    train_reconstructions, train_losses, train_inputs, train_labels = train_tuple  # pylint: disable=unused-variable
-    test_reconstructions, test_losses, test_inputs, test_labels = test_tuple  # pylint: disable=unused-variable
+    train_reconstructions, train_losses, \
+        train_inputs, train_labels = train_tuple  # pylint: disable=unused-variable
+    test_reconstructions, test_losses, \
+        test_inputs, test_labels = test_tuple  # pylint: disable=unused-variable
 
     FPRs = []
     F1s = []
@@ -150,7 +152,7 @@ def sweep_performance_metrics(thresholds, train_tuple, test_tuple):
     Recalls = []
 
     for threshold in thresholds:
-        FPR, TNR, Recall, Precision, Accuracy, F1, BalancedAccuracy = calc_ae_perf_metrics(  # pylint: disable=unused-variable
+        FPR, _, Recall, Precision, Accuracy, F1, BalancedAccuracy = calc_ae_perf_metrics(
             test_reconstructions,
             test_inputs,
             test_labels,
@@ -158,7 +160,7 @@ def sweep_performance_metrics(thresholds, train_tuple, test_tuple):
             print_all=False
             )
 
-        FPR_tr, TNR_tr, Rec_tr, Prec_tr, Accuracy_train, F1_tr, B_Acc_tr = calc_ae_perf_metrics( # pylint: disable=unused-variable
+        _, _, _, _, Accuracy_train, _, _ = calc_ae_perf_metrics(
                 train_reconstructions,
                 train_inputs,
                 train_labels,
@@ -181,7 +183,7 @@ def sweep_performance_metrics(thresholds, train_tuple, test_tuple):
 
 def calc_ae_perf_metrics(reconstructions, inputs, labels, threshold, print_all=True):
     """
-    FPR, TNR, Recall, Precision, Accuracy, F1, BalancedAccuracy 
+    FPR, TNR, Recall, Precision, Accuracy, F1, BalancedAccuracy
     metrics of AutoEncoder are calculated and returned.
     """
 
@@ -214,7 +216,7 @@ def calc_ae_perf_metrics(reconstructions, inputs, labels, threshold, print_all=T
         decayed_loss = loss_numpy * decay_vector
         decayed_loss = torch.Tensor(decayed_loss).to(label_batch.device)
 
-        loss_batch = decayed_loss.mean(dim=(1,2))
+        loss_batch = decayed_loss.mean(dim=(1, 2))
         prediction_batch = loss_batch > threshold
 
         TN += torch.sum(torch.logical_and(torch.logical_not(prediction_batch),

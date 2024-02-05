@@ -88,8 +88,8 @@ class SampleMotorDataLimerick(Dataset):
         for i in range(num_of_cols):
             result_list[i, :, :] = SampleMotorDataLimerick.sliding_windows_1d(
                 array[:, i],
-                 window_size, overlap_ratio
-                 )
+                window_size, overlap_ratio
+                )
 
         return result_list
 
@@ -162,6 +162,9 @@ class SampleMotorDataLimerick(Dataset):
 
     @staticmethod
     def create_common_empty_df():
+        """
+        Create empty dataframe
+        """
         df = pd.DataFrame(columns=SampleMotorDataLimerick.common_dataframe_columns)
         return df
 
@@ -173,7 +176,9 @@ class SampleMotorDataLimerick(Dataset):
         """
         df_raw = pd.read_csv(file_full_path, sep=';', header=None)
         df_raw.rename(
-            columns={0: 'Time', 1: 'Voltage_x', 2: 'Voltage_y', 3: 'Voltage_z', 4: 'x', 5: 'y', 6: 'z'}, inplace=True
+            columns={0: 'Time', 1: 'Voltage_x', 2: 'Voltage_y',
+                     3: 'Voltage_z', 4: 'x', 5: 'y', 6: 'z'},
+            inplace=True
             )
         ss_vibr_x1 = df_raw.iloc[0]['x']
         ss_vibr_y1 = df_raw.iloc[0]['y']
@@ -285,8 +290,7 @@ class SampleMotorDataLimerick(Dataset):
 
         self.__gen_datasets()
 
-    @staticmethod
-    def normalize_signal(features):
+    def normalize_signal(self, features):
         """
         Normalize signal with Local Min Max Normalization
         """
@@ -297,9 +301,10 @@ class SampleMotorDataLimerick(Dataset):
 
             for feature in range(features.shape[1]):
                 for signal in range(features.shape[2]):
-                    features[instance, feature, signal] = \
-                        (features[instance, feature, signal] - instance_min[feature]) / \
+                    features[instance, feature, signal] = (
+                        (features[instance, feature, signal] - instance_min[feature]) /
                         (instance_max[feature] - instance_min[feature])
+                    )
 
         return features
 
@@ -327,7 +332,7 @@ class SampleMotorDataLimerick(Dataset):
         for file in os.listdir(data_dir):
             full_path = os.path.join(data_dir, file)
 
-            if any(file.startswith(rpm_prefix + SampleMotorDataLimerick.healthy_file_identifier) \
+            if any(file.startswith(rpm_prefix + SampleMotorDataLimerick.healthy_file_identifier)
                    for rpm_prefix in selected_rpm_prefixes):
                 if self.sensor_selected == 'ADXL356C':
                     healthy_row = SampleMotorDataLimerick.parse_ADXL356C_and_return_common_df_row(
@@ -390,9 +395,9 @@ class SampleMotorDataLimerick(Dataset):
 
         anomaly_features = np.asarray(anomaly_features)
 
-        train_features = normalize_signal(train_features)
-        test_normal_features = normalize_signal(test_normal_features)
-        anomaly_features = normalize_signal(anomaly_features)
+        train_features = self.normalize_signal(train_features)
+        test_normal_features = self.normalize_signal(test_normal_features)
+        anomaly_features = self.normalize_signal(anomaly_features)
 
         # For eliminating filter effects
         train_features[:, :, :SampleMotorDataLimerick.num_start_zeros] = 0.5

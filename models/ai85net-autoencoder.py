@@ -12,16 +12,19 @@ from torch import nn
 
 import ai8x
 
+
 class CNN_BASE(nn.Module):
     """
     Auto Encoder Network
     """
+
+
     def __init__(self,
-                 num_channels=3, # pylint: disable=unused-argument
-                 bias=True, # pylint: disable=unused-argument
-                 weight_init="kaiming", # pylint: disable=unused-argument
-                 num_classes=0, # pylint: disable=unused-argument
-                 **kwargs): # pylint: disable=unused-argument
+                 num_channels=3,  # pylint: disable=unused-argument
+                 bias=True,  # pylint: disable=unused-argument
+                 weight_init="kaiming",  # pylint: disable=unused-argument
+                 num_classes=0,  # pylint: disable=unused-argument
+                 **kwargs):  # pylint: disable=unused-argument
         super().__init__()
 
     def initWeights(self, weight_init="kaiming"):
@@ -63,7 +66,7 @@ class CNN_BASE(nn.Module):
 class AI85AutoEncoder(CNN_BASE):
     """
     Neural Network that has depthwise convolutions to reduce input dimensions.
-    Filters work across individual axis data first. 
+    Filters work across individual axis data first.
     Output of 1D Conv layer is then flattened before being fed to fully connected layers
     Fully connected layers down sample the data to a bottleneck. This completes the encoder.
     The decoder is then the same in reverse
@@ -73,8 +76,8 @@ class AI85AutoEncoder(CNN_BASE):
 
     def __init__(self,
                  num_channels=256,
-                 dimensions=None, # pylint: disable=unused-argument
-                 num_classes=1, # pylint: disable=unused-argument
+                 dimensions=None,  # pylint: disable=unused-argument
+                 num_classes=1,  # pylint: disable=unused-argument
                  n_axes=3,
                  bias=True,
                  weight_init="kaiming",
@@ -106,7 +109,7 @@ class AI85AutoEncoder(CNN_BASE):
         else:
             self.en_conv1 = ai8x.FusedConv1dReLU(n_in, n_out, 1, stride=S, padding=P, dilation=1,
                                                  bias=bias, **kwargs)
-        self.layer1_n_in  = n_in
+        self.layer1_n_in = n_in
         self.layer1_n_out = n_out
 
         # Kernel in 2nd layer looks at 3 axes at once. Output Width = 1. Depth=n_out
@@ -118,38 +121,38 @@ class AI85AutoEncoder(CNN_BASE):
         else:
             self.en_conv2 = ai8x.FusedConv1dReLU(n_in, n_out, 3, stride=S, padding=P, dilation=1,
                                                  bias=bias, **kwargs)
-        self.layer2_n_in  = n_in
+        self.layer2_n_in = n_in
         self.layer2_n_out = n_out
 
-        n_in=n_out
-        n_out=32
+        n_in = n_out
+        n_out = 32
         self.en_lin1 = ai8x.FusedLinearReLU(n_in, n_out, bias=bias, **kwargs)
         # ----- END OF DECODER ----- #
 
         # ---- BOTTLENECK ---- #
-        n_in=n_out
+        n_in = n_out
         self.bottleNeckDim = bottleNeckDim
-        n_out=self.bottleNeckDim
+        n_out = self.bottleNeckDim
         self.en_lin2 = ai8x.Linear(n_in, n_out, bias=0, **kwargs)
         # ---- END OF BOTTLENECK ---- #
 
         # ----- ENCODER ----- #
-        n_in=n_out
-        n_out=32
+        n_in = n_out
+        n_out = 32
         self.de_lin1 = ai8x.FusedLinearReLU(n_in, n_out, bias=bias, **kwargs)
 
-        n_in=n_out
-        n_out=96
+        n_in = n_out
+        n_out = 96
         self.de_lin2 = ai8x.FusedLinearReLU(n_in, n_out, bias=bias, **kwargs)
 
-        n_in=n_out
-        n_out=num_channels*n_axes
+        n_in = n_out
+        n_out = num_channels*n_axes
         self.out_lin = ai8x.Linear(n_in, n_out, bias=0, **kwargs)
         # ----- END OF ENCODER ----- #
 
         self.initWeights(weight_init)
 
-    def forward(self, x ,return_bottleneck=False):
+    def forward(self, x, return_bottleneck=False):
         """Forward prop"""
         x = self.en_conv1(x)
         x = self.en_conv2(x)

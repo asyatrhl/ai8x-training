@@ -170,7 +170,7 @@ class SampleMotorDataLimerick(Dataset):
 
     @staticmethod
     def parse_ADXL356C_and_return_common_df_row(file_full_path):
-        """ 
+        """
         Colums added just for readability can return raw data np array as well,
         can also add file identifier
         """
@@ -319,7 +319,7 @@ class SampleMotorDataLimerick(Dataset):
         data_dir = os.path.join(actual_root_dir, f'Test_Results_Data_{self.sensor_selected}/')
 
         selected_rpm_prefixes = (
-            SampleMotorDataLimerick.rpm_options[1:] \
+            SampleMotorDataLimerick.rpm_options[1:]
             if self.rpm_selected == SampleMotorDataLimerick.rpm_options[0] else self.rpm_selected
             )
 

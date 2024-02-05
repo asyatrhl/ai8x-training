@@ -39,7 +39,7 @@ def calc_model_size(model):
 
 def extract_reconstructions_losses(model, dataloader, device):
     """
-    Calculates and returns reconstructed signal recontruction loss, input signals
+    Calculates and returns reconstructed signal reconstruction loss, input signals
     and latent space representations for autoencoder model.
     """
     model.eval()
@@ -251,7 +251,7 @@ def calc_ae_perf_metrics(reconstructions, inputs, labels, threshold, print_all=T
         print(f"TN: {TN}")
         print(f"FN: {FN}")
         print(f"FPR: {FPR}")
-        print(f"TNR = Specifity: {TNR}")
+        print(f"TNR = Specificity: {TNR}")
         print(f"TPR (Recall): {Recall}")
         print(f"Precision: {Precision}")
         print(f"Accuracy: {Accuracy}")

@@ -96,7 +96,7 @@ class SampleMotorDataLimerick(Dataset):
     @staticmethod
     def split_file_raw_data(file_raw_data, file_raw_data_fs_in_Hz, duration_in_sec, overlap_ratio):
         """
-        Raw data is splitted into windowed data.
+        Raw data is split into windowed data.
         """
 
         num_of_samples_per_window = int(file_raw_data_fs_in_Hz * duration_in_sec)
@@ -171,7 +171,7 @@ class SampleMotorDataLimerick(Dataset):
     @staticmethod
     def parse_ADXL356C_and_return_common_df_row(file_full_path):
         """
-        Colums added just for readability can return raw data np array as well,
+        Columns added just for readability can return raw data np array as well,
         can also add file identifier
         """
         df_raw = pd.read_csv(file_full_path, sep=';', header=None)

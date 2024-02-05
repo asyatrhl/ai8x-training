@@ -27,7 +27,7 @@ class CNN_BASE(nn.Module):
 
     def initWeights(self, weight_init="kaiming"):
         """
-        Auto Encoder Weigth Initilization
+        Auto Encoder Weigth Initialization
         """
         weight_init = weight_init.lower()
         assert weight_init in ('kaiming', 'xavier', 'glorot')

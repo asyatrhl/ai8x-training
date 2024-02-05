@@ -86,8 +86,10 @@ class SampleMotorDataLimerick(Dataset):
         result_list = np.zeros((num_of_cols, num_of_windows, window_size))
 
         for i in range(num_of_cols):
-            result_list[i, :, :] = SampleMotorDataLimerick.sliding_windows_1d(array[:, i],
-                                                                              window_size, overlap_ratio)
+            result_list[i, :, :] = SampleMotorDataLimerick.sliding_windows_1d(
+                array[:, i],
+                 window_size, overlap_ratio
+                 )
 
         return result_list
 
@@ -99,11 +101,13 @@ class SampleMotorDataLimerick(Dataset):
 
         num_of_samples_per_window = int(file_raw_data_fs_in_Hz * duration_in_sec)
 
-        sliding_windows = SampleMotorDataLimerick.sliding_windows_on_columns_of_2d(file_raw_data,
-                                                                    num_of_samples_per_window,
-                                                                    overlap_ratio)
-        return sliding_windows
+        sliding_windows = SampleMotorDataLimerick.sliding_windows_on_columns_of_2d(
+            file_raw_data,
+            num_of_samples_per_window,
+            overlap_ratio
+            )
 
+        return sliding_windows
 
     def process_file_and_return_signal_windows(self, file_raw_data):
         """
@@ -116,10 +120,12 @@ class SampleMotorDataLimerick(Dataset):
         file_raw_data_sampled = scipy.signal.decimate(file_raw_data,
                                                       self.downsampling_ratio, axis=0)
 
-        file_raw_data_windows = SampleMotorDataLimerick.split_file_raw_data(file_raw_data_sampled,
-                                                                            new_sampling_rate,
-                                                                            self.signal_duration_in_sec,
-                                                                            self.overlap_ratio)
+        file_raw_data_windows = SampleMotorDataLimerick.split_file_raw_data(
+            file_raw_data_sampled,
+            new_sampling_rate,
+            self.signal_duration_in_sec,
+            self.overlap_ratio
+            )
 
         # First dimension: 3
         # Second dimension: number of windows
@@ -145,9 +151,11 @@ class SampleMotorDataLimerick(Dataset):
 
                 file_cnn_signals[feature, window, :] = fft_out
 
-            file_cnn_signals[:, window, :] = file_cnn_signals[:, window, :] / np.sqrt(np.power(file_cnn_signals[:, window, :], 2).sum())
+            file_cnn_signals[:, window, :] = file_cnn_signals[:, window, :] / \
+                np.sqrt(np.power(file_cnn_signals[:, window, :], 2).sum())
 
-        # Reshape from (num_features, num_windows, window_size) into: (num_windows, num_features, window_size)
+        # Reshape from (num_features, num_windows, window_size) into:
+        # (num_windows, num_features, window_size)
         file_cnn_signals = file_cnn_signals.transpose([1, 0, 2])
 
         return file_cnn_signals
@@ -159,9 +167,14 @@ class SampleMotorDataLimerick(Dataset):
 
     @staticmethod
     def parse_ADXL356C_and_return_common_df_row(file_full_path):
-        # Colums added just for readability can return raw data np array as well, can also add file identifier
+        """ 
+        Colums added just for readability can return raw data np array as well,
+        can also add file identifier
+        """
         df_raw = pd.read_csv(file_full_path, sep=';', header=None)
-        df_raw.rename(columns={0: 'Time', 1: 'Voltage_x', 2: 'Voltage_y', 3: 'Voltage_z', 4: 'x', 5: 'y', 6: 'z'}, inplace=True)
+        df_raw.rename(
+            columns={0: 'Time', 1: 'Voltage_x', 2: 'Voltage_y', 3: 'Voltage_z', 4: 'x', 5: 'y', 6: 'z'}, inplace=True
+            )
         ss_vibr_x1 = df_raw.iloc[0]['x']
         ss_vibr_y1 = df_raw.iloc[0]['y']
         ss_vibr_z1 = df_raw.iloc[0]['z']
@@ -169,7 +182,8 @@ class SampleMotorDataLimerick(Dataset):
         df_raw["Acceleration_y (g)"] = 50 * (df_raw["Voltage_y"] - ss_vibr_y1)
         df_raw["Acceleration_z (g)"] = 50 * (df_raw["Voltage_z"] - ss_vibr_z1)
 
-        raw_data = df_raw[["Acceleration_x (g)", "Acceleration_y (g)", "Acceleration_z (g)"]].to_numpy()
+        raw_data = df_raw[["Acceleration_x (g)", "Acceleration_y (g)", "Acceleration_z (g)"]]
+        raw_data = raw_data.to_numpy()
         return ['ADXL356C', os.path.basename(file_full_path).split('/')[-1], raw_data]
 
     def __makedir_exist_ok(self, dirpath):
@@ -193,13 +207,19 @@ class SampleMotorDataLimerick(Dataset):
                  rpm_selected=rpm_options[0]):
 
         if d_type not in ('test', 'train'):
-            raise ValueError("d_type can only be set to 'test' or 'train'")
+            raise ValueError(
+                "d_type can only be set to 'test' or 'train'"
+                )
 
         if rpm_selected not in SampleMotorDataLimerick.rpm_options:
-            raise ValueError(f"rpm_selected can only be set from: {SampleMotorDataLimerick.rpm_options}")
+            raise ValueError(
+                f"rpm_selected can only be set from: {SampleMotorDataLimerick.rpm_options}"
+                )
 
         if not isinstance(downsampling_ratio, int) or downsampling_ratio < 1:
-            raise ValueError("downsampling_ratio can only be set to an integer value greater than 0")
+            raise ValueError(
+                "downsampling_ratio can only be set to an integer value greater than 0"
+                )
 
         self.selected_sensor_sr = SampleMotorDataLimerick.sensor_options_sr_Hz[0]
 
@@ -234,7 +254,7 @@ class SampleMotorDataLimerick(Dataset):
                                 f'ovlp_ratio_{self.overlap_ratio}_' + \
                                 f'random_split_{self.random_or_speed_split}_' + \
                                 f'sensor_selected_{self.sensor_selected}_' +\
-                                f'rpm_{self.rpm_selected}' 
+                                f'rpm_{self.rpm_selected}'
 
         train_dataset_pkl_file_path = \
             os.path.join(processed_folder, f'train_{self.specs_identifier}.pkl')
@@ -265,54 +285,37 @@ class SampleMotorDataLimerick(Dataset):
 
         self.__gen_datasets()
 
-    def normalize_signal(self, train_features, test_normal_features, anomaly_features):
-        # Normalize signal with Local Min Max Normalization
+    @staticmethod
+    def normalize_signal(features):
+        """
+        Normalize signal with Local Min Max Normalization
+        """
         # Normalize data:
-        for instance in range(train_features.shape[0]):
-            instance_max = np.max(train_features[instance, :, :], axis=1)
-            instance_min = np.min(train_features[instance, :, :], axis=1)
+        for instance in range(features.shape[0]):
+            instance_max = np.max(features[instance, :, :], axis=1)
+            instance_min = np.min(features[instance, :, :], axis=1)
 
-            for feature in range(train_features.shape[1]):
-                for signal in range(train_features.shape[2]):
-                    train_features[instance, feature, signal] = \
-                        (train_features[instance, feature, signal] - instance_min[feature]) / \
+            for feature in range(features.shape[1]):
+                for signal in range(features.shape[2]):
+                    features[instance, feature, signal] = \
+                        (features[instance, feature, signal] - instance_min[feature]) / \
                         (instance_max[feature] - instance_min[feature])
 
-        # Normalize test normal data:
-        for instance in range(test_normal_features.shape[0]):
-            instance_max = np.max(test_normal_features[instance, :, :], axis=1)
-            instance_min = np.min(test_normal_features[instance, :, :], axis=1)
-
-            for feature in range(test_normal_features.shape[1]):
-                for signal in range(test_normal_features.shape[2]):
-                    test_normal_features[instance, feature, signal] = \
-                        (test_normal_features[instance, feature, signal] - instance_min[feature]) / \
-                        (instance_max[feature] - instance_min[feature])
-
-        # Normalize anomaly features:
-        for instance in range(anomaly_features.shape[0]):
-            instance_min = np.min(anomaly_features[instance, :, :], axis=1)
-            instance_max = np.max(anomaly_features[instance, :, :], axis=1)
-
-            for feature in range(anomaly_features.shape[1]):
-                for signal in range(anomaly_features.shape[2]):
-                    anomaly_features[instance, feature, signal] = \
-                        (anomaly_features[instance, feature, signal] - instance_min[feature]) / \
-                        (instance_max[feature] - instance_min[feature])
-
-        return train_features, test_normal_features, anomaly_features
+        return features
 
     def __gen_datasets(self):
         print('\nGenerating dataset pickle files from the raw data '
               f'files (specs identifier: {self.specs_identifier}) ...\n')
 
         actual_root_dir = os.path.join(self.root, self.__class__.__name__,
-                                       "SpectraQuest Rig Data Voyager 3/CbM_Testing_Spectraquest/CbM_Testing_Spectraquest/")
+                                       "SpectraQuest Rig Data Voyager 3/",
+                                       "CbM_Testing_Spectraquest/CbM_Testing_Spectraquest/")
 
         data_dir = os.path.join(actual_root_dir, f'Test_Results_Data_{self.sensor_selected}/')
 
         selected_rpm_prefixes = (
-            SampleMotorDataLimerick.rpm_options[1:] if self.rpm_selected == SampleMotorDataLimerick.rpm_options[0] else self.rpm_selected
+            SampleMotorDataLimerick.rpm_options[1:] \
+            if self.rpm_selected == SampleMotorDataLimerick.rpm_options[0] else self.rpm_selected
             )
 
         faulty_data_list = []
@@ -324,7 +327,8 @@ class SampleMotorDataLimerick(Dataset):
         for file in os.listdir(data_dir):
             full_path = os.path.join(data_dir, file)
 
-            if any(file.startswith(rpm_prefix + SampleMotorDataLimerick.healthy_file_identifier) for rpm_prefix in selected_rpm_prefixes):
+            if any(file.startswith(rpm_prefix + SampleMotorDataLimerick.healthy_file_identifier) \
+                   for rpm_prefix in selected_rpm_prefixes):
                 if self.sensor_selected == 'ADXL356C':
                     healthy_row = SampleMotorDataLimerick.parse_ADXL356C_and_return_common_df_row(
                         file_full_path=full_path
@@ -347,7 +351,7 @@ class SampleMotorDataLimerick(Dataset):
 
         # LOAD NORMAL FEATURES
         test_train_idx_max = 4
-        test_train_idx = 0 # 0, 1, 2 : train, 3: test
+        test_train_idx = 0  # 0, 1, 2 : train, 3: test
 
         train_features = []
         test_normal_features = []
@@ -386,11 +390,9 @@ class SampleMotorDataLimerick(Dataset):
 
         anomaly_features = np.asarray(anomaly_features)
 
-        train_features, test_normal_features, anomaly_features = self.normalize_signal(
-            train_features,
-            test_normal_features,
-            anomaly_features
-        )
+        train_features = normalize_signal(train_features)
+        test_normal_features = normalize_signal(test_normal_features)
+        anomaly_features = normalize_signal(anomaly_features)
 
         # For eliminating filter effects
         train_features[:, :, :SampleMotorDataLimerick.num_start_zeros] = 0.5
@@ -464,15 +466,15 @@ class SampleMotorDataLimerick(Dataset):
 
 
 def samplemotordatalimerick_get_datasets(data, load_train=True, load_test=True,
-                               downsampling_ratio=10,
-                               signal_duration_in_sec=0.25,
-                               overlap_ratio=0.75,
-                               eval_mode=False,
-                               label_as_signal=True,
-                               random_or_speed_split=True,
-                               accel_in_second_dim=True,
-                               sensor_selected=SampleMotorDataLimerick.sensor_options[0],
-                               rpm_selected=SampleMotorDataLimerick.rpm_options[0]):
+                                         downsampling_ratio=10,
+                                         signal_duration_in_sec=0.25,
+                                         overlap_ratio=0.75,
+                                         eval_mode=False,
+                                         label_as_signal=True,
+                                         random_or_speed_split=True,
+                                         accel_in_second_dim=True,
+                                         sensor_selected=SampleMotorDataLimerick.sensor_options[0],
+                                         rpm_selected=SampleMotorDataLimerick.rpm_options[0]):
     """"
     Returns Sample Motor Data Limerick Dataset
     """
@@ -484,16 +486,16 @@ def samplemotordatalimerick_get_datasets(data, load_train=True, load_test=True,
         ])
 
         train_dataset = SampleMotorDataLimerick(root=data_dir, d_type='train',
-                                      transform=train_transform,
-                                      downsampling_ratio = downsampling_ratio,
-                                      signal_duration_in_sec=signal_duration_in_sec,
-                                      overlap_ratio=overlap_ratio,
-                                      eval_mode=eval_mode,
-                                      label_as_signal=label_as_signal,
-                                      random_or_speed_split=random_or_speed_split,
-                                      accel_in_second_dim=accel_in_second_dim,
-                                      sensor_selected=sensor_selected,
-                                      rpm_selected=rpm_selected)
+                                                transform=train_transform,
+                                                downsampling_ratio=downsampling_ratio,
+                                                signal_duration_in_sec=signal_duration_in_sec,
+                                                overlap_ratio=overlap_ratio,
+                                                eval_mode=eval_mode,
+                                                label_as_signal=label_as_signal,
+                                                random_or_speed_split=random_or_speed_split,
+                                                accel_in_second_dim=accel_in_second_dim,
+                                                sensor_selected=sensor_selected,
+                                                rpm_selected=rpm_selected)
 
         print(f'Train dataset length: {len(train_dataset)}\n')
     else:
@@ -505,16 +507,16 @@ def samplemotordatalimerick_get_datasets(data, load_train=True, load_test=True,
         ])
 
         test_dataset = SampleMotorDataLimerick(root=data_dir, d_type='test',
-                                     transform=test_transform,
-                                      downsampling_ratio = downsampling_ratio,
-                                      signal_duration_in_sec=signal_duration_in_sec,
-                                      overlap_ratio=overlap_ratio,
-                                      eval_mode=eval_mode,
-                                      label_as_signal=label_as_signal,
-                                      random_or_speed_split=random_or_speed_split,
-                                      accel_in_second_dim=accel_in_second_dim,
-                                      sensor_selected=sensor_selected,
-                                      rpm_selected=rpm_selected)
+                                               transform=test_transform,
+                                               downsampling_ratio=downsampling_ratio,
+                                               signal_duration_in_sec=signal_duration_in_sec,
+                                               overlap_ratio=overlap_ratio,
+                                               eval_mode=eval_mode,
+                                               label_as_signal=label_as_signal,
+                                               random_or_speed_split=random_or_speed_split,
+                                               accel_in_second_dim=accel_in_second_dim,
+                                               sensor_selected=sensor_selected,
+                                               rpm_selected=rpm_selected)
 
         print(f'Test dataset length: {len(test_dataset)}\n')
     else:
@@ -533,83 +535,7 @@ def samplemotordatalimerick_get_datasets_for_train(data,
     eval_mode = False   # Test set includes validation normals
     label_as_signal = True
 
-    selected_sensor_idx = 0 # ADX356
-    signal_duration_in_sec = 0.25
-    overlap_ratio = 0.75
-
-    wanted_sampling_rate_Hz = 2000
-    downsampling_ratio = round(SampleMotorDataLimerick.sensor_options_sr_Hz[selected_sensor_idx] / \
-                               wanted_sampling_rate_Hz)
-
-    # ds_ratio = 10,  sr: 20K / 10 = 2000, 0.25 sec window, fft input will have: 500 samples,
-    # fftout's first 256 samples will be used
-    # cnn input will have 2556 samples
-
-    accel_in_second_dim = True
-
-    random_or_speed_split = True
-
-    return samplemotordatalimerick_get_datasets(data, load_train, load_test,
-                                      downsampling_ratio=downsampling_ratio,
-                                      signal_duration_in_sec=signal_duration_in_sec,
-                                      overlap_ratio=overlap_ratio,
-                                      eval_mode=eval_mode,
-                                      label_as_signal=label_as_signal,
-                                      random_or_speed_split=random_or_speed_split,
-                                      accel_in_second_dim=accel_in_second_dim
-    )
-
-
-def samplemotordatalimerick_get_datasets_for_eval_with_anomaly_label(data,
-                                                                     load_train=True,
-                                                                     load_test=True):
-    """"
-    Returns Sample Motor Data Limerick Dataset For Evaluation Mode
-    Label is anomaly status
-    """
-
-    eval_mode = True   # Test set includes validation normals
-    label_as_signal = False
-
-    selected_sensor_idx = 0 # ADX356
-    signal_duration_in_sec = 0.25
-    overlap_ratio = 0.75
-
-    wanted_sampling_rate_Hz = 2000
-    downsampling_ratio = round(SampleMotorDataLimerick.sensor_options_sr_Hz[selected_sensor_idx] / \
-                               wanted_sampling_rate_Hz)
-
-    # ds_ratio = 10,  sr: 20K / 10 = 2000, 0.25 sec window, fft input will have: 500 samples,
-    # fftout's first 256 samples will be used
-    # cnn input will have 2556 samples
-
-    accel_in_second_dim = True
-
-    random_or_speed_split = True
-
-    return samplemotordatalimerick_get_datasets(data, load_train, load_test,
-                                      downsampling_ratio=downsampling_ratio,
-                                      signal_duration_in_sec=signal_duration_in_sec,
-                                      overlap_ratio=overlap_ratio,
-                                      eval_mode=eval_mode,
-                                      label_as_signal=label_as_signal,
-                                      random_or_speed_split=random_or_speed_split,
-                                      accel_in_second_dim=accel_in_second_dim
-    )
-
-
-def samplemotordatalimerick_get_datasets_for_eval_with_signal(data,
-                                                              load_train=True,
-                                                              load_test=True):
-    """"
-    Returns Sample Motor Data Limerick Dataset For Evaluation Mode
-    Label is signal
-    """
-
-    eval_mode = True   # Test set includes validation normals
-    label_as_signal = True
-
-    selected_sensor_idx = 0 # ADX356
+    selected_sensor_idx = 0  # ADX356
     signal_duration_in_sec = 0.25
     overlap_ratio = 0.75
 
@@ -626,14 +552,87 @@ def samplemotordatalimerick_get_datasets_for_eval_with_signal(data,
     random_or_speed_split = True
 
     return samplemotordatalimerick_get_datasets(data, load_train, load_test,
-                                      downsampling_ratio=downsampling_ratio,
-                                      signal_duration_in_sec=signal_duration_in_sec,
-                                      overlap_ratio=overlap_ratio,
-                                      eval_mode=eval_mode,
-                                      label_as_signal=label_as_signal,
-                                      random_or_speed_split=random_or_speed_split,
-                                      accel_in_second_dim=accel_in_second_dim
-    )
+                                                downsampling_ratio=downsampling_ratio,
+                                                signal_duration_in_sec=signal_duration_in_sec,
+                                                overlap_ratio=overlap_ratio,
+                                                eval_mode=eval_mode,
+                                                label_as_signal=label_as_signal,
+                                                random_or_speed_split=random_or_speed_split,
+                                                accel_in_second_dim=accel_in_second_dim)
+
+
+def samplemotordatalimerick_get_datasets_for_eval_with_anomaly_label(data,
+                                                                     load_train=True,
+                                                                     load_test=True):
+    """"
+    Returns Sample Motor Data Limerick Dataset For Evaluation Mode
+    Label is anomaly status
+    """
+
+    eval_mode = True   # Test set includes validation normals
+    label_as_signal = False
+
+    selected_sensor_idx = 0  # ADX356
+    signal_duration_in_sec = 0.25
+    overlap_ratio = 0.75
+
+    wanted_sampling_rate_Hz = 2000
+    downsampling_ratio = round(SampleMotorDataLimerick.sensor_options_sr_Hz[selected_sensor_idx] /
+                               wanted_sampling_rate_Hz)
+
+    # ds_ratio = 10,  sr: 20K / 10 = 2000, 0.25 sec window, fft input will have: 500 samples,
+    # fftout's first 256 samples will be used
+    # cnn input will have 2556 samples
+
+    accel_in_second_dim = True
+
+    random_or_speed_split = True
+
+    return samplemotordatalimerick_get_datasets(data, load_train, load_test,
+                                                downsampling_ratio=downsampling_ratio,
+                                                signal_duration_in_sec=signal_duration_in_sec,
+                                                overlap_ratio=overlap_ratio,
+                                                eval_mode=eval_mode,
+                                                label_as_signal=label_as_signal,
+                                                random_or_speed_split=random_or_speed_split,
+                                                accel_in_second_dim=accel_in_second_dim)
+
+
+def samplemotordatalimerick_get_datasets_for_eval_with_signal(data,
+                                                              load_train=True,
+                                                              load_test=True):
+    """"
+    Returns Sample Motor Data Limerick Dataset For Evaluation Mode
+    Label is signal
+    """
+
+    eval_mode = True   # Test set includes validation normals
+    label_as_signal = True
+
+    selected_sensor_idx = 0  # ADX356
+    signal_duration_in_sec = 0.25
+    overlap_ratio = 0.75
+
+    wanted_sampling_rate_Hz = 2000
+    downsampling_ratio = round(SampleMotorDataLimerick.sensor_options_sr_Hz[selected_sensor_idx] /
+                               wanted_sampling_rate_Hz)
+
+    # ds_ratio = 10,  sr: 20K / 10 = 2000, 0.25 sec window, fft input will have: 500 samples,
+    # fftout's first 256 samples will be used
+    # cnn input will have 2556 samples
+
+    accel_in_second_dim = True
+
+    random_or_speed_split = True
+
+    return samplemotordatalimerick_get_datasets(data, load_train, load_test,
+                                                downsampling_ratio=downsampling_ratio,
+                                                signal_duration_in_sec=signal_duration_in_sec,
+                                                overlap_ratio=overlap_ratio,
+                                                eval_mode=eval_mode,
+                                                label_as_signal=label_as_signal,
+                                                random_or_speed_split=random_or_speed_split,
+                                                accel_in_second_dim=accel_in_second_dim)
 
 
 datasets = [

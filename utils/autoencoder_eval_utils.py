@@ -200,10 +200,10 @@ def calc_ae_perf_metrics(reconstructions, inputs, labels, threshold, print_all=T
     BalancedAccuracy = -1
     TNR = -1   # specificity (SPC), selectivity
 
-    for i, _ in enumerate(inputs):
+    for i, inputs_batch in enumerate(inputs):
         label_batch = labels[i]
         reconstructions_batch = reconstructions[i]
-        inputs_batch = inputs[i]
+        # inputs_batch = inputs[i]
 
         loss = loss_fn(reconstructions_batch, inputs_batch)
 

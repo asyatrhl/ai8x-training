@@ -104,7 +104,7 @@ def plot_all_metrics(F1s, BalancedAccuracies, FPRs, Recalls, percentiles):
 
     axs[1].grid()
 
-    axs[1].set_title('\nBalanced Accuracy ((TPR + TNR) / 2) on Testset\n\n',
+    axs[1].set_title('\nBalanced Accuracy ((TPRate + TNRate) / 2) on Testset\n\n',
                      fontsize=fontsize + 4, color='#0070C0')
     axs[1].tick_params(axis='both', which='both', labelsize=fontsize)
     axs[1].legend(("Balanced Acc.",), loc='lower left', fontsize=fontsize - 2)
@@ -174,7 +174,7 @@ def sweep_performance_metrics(thresholds, train_tuple, test_tuple):
         Recalls.append(Recall.item())
 
         print(f"F1: {F1: .4f}, BalancedAccuracy: {BalancedAccuracy: .4f}, "
-              f"FPRate: {FPRate: .4f}, Precision: {Precision: .4f}, TPR (Recall): "
+              f"FPRate: {FPRate: .4f}, Precision: {Precision: .4f}, TPRate (Recall): "
               f"{Recall: .4f}, Accuracy: {Accuracy: .4f}, "
               f"TRAIN-SET Accuracy: {Accuracy_train: .4f}")
 
@@ -183,7 +183,7 @@ def sweep_performance_metrics(thresholds, train_tuple, test_tuple):
 
 def calc_ae_perf_metrics(reconstructions, inputs, labels, threshold, print_all=True):
     """
-    False Positive Rate, TNR, Recall, Precision, Accuracy, F1, BalancedAccuracy
+    False Positive Rate, TNRate, Recall, Precision, Accuracy, F1, BalancedAccuracy
     metrics of AutoEncoder are calculated and returned.
     """
 
@@ -200,7 +200,7 @@ def calc_ae_perf_metrics(reconstructions, inputs, labels, threshold, print_all=T
     FPRate = -1
 
     BalancedAccuracy = -1
-    TNR = -1   # specificity (SPC), selectivity
+    TNRate = -1   # specificity (SPC), selectivity
 
     for i, inputs_batch in enumerate(inputs):
         label_batch = labels[i]
@@ -238,12 +238,12 @@ def calc_ae_perf_metrics(reconstructions, inputs, labels, threshold, print_all=T
 
     if (TN + FP) != 0:
         FPRate = FP / (TN + FP)
-        TNR = TN / (TN + FP)
+        TNRate = TN / (TN + FP)
 
     if Precision + Recall != 0:
         F1 = 2 * (Precision * Recall) / (Precision + Recall)
 
-    BalancedAccuracy = (Recall + TNR) / 2
+    BalancedAccuracy = (Recall + TNRate) / 2
 
     if print_all:
         print(f"TP: {TP}")
@@ -251,11 +251,11 @@ def calc_ae_perf_metrics(reconstructions, inputs, labels, threshold, print_all=T
         print(f"TN: {TN}")
         print(f"FN: {FN}")
         print(f"FPRate: {FPRate}")
-        print(f"TNR = Specificity: {TNR}")
-        print(f"TPR (Recall): {Recall}")
+        print(f"TNRate = Specificity: {TNRate}")
+        print(f"TPRate (Recall): {Recall}")
         print(f"Precision: {Precision}")
         print(f"Accuracy: {Accuracy}")
         print(f"F1: {F1}")
         print(f"BalancedAccuracy: {BalancedAccuracy}")
 
-    return FPRate, TNR, Recall, Precision, Accuracy, F1, BalancedAccuracy
+    return FPRate, TNRate, Recall, Precision, Accuracy, F1, BalancedAccuracy

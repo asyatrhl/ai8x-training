@@ -351,7 +351,7 @@ class SampleMotorDataLimerick(Dataset):
         # Can keep and process those further
         df_normals = pd.DataFrame(data=np.array(healthy_data_list, dtype=object),
                                   columns=SampleMotorDataLimerick.common_dataframe_columns)
-        df_anormals = pd.DataFrame(data=np.array(faulty_data_list,dtype=object),
+        df_anormals = pd.DataFrame(data=np.array(faulty_data_list, dtype=object),
                                    columns=SampleMotorDataLimerick.common_dataframe_columns)
 
         # LOAD NORMAL FEATURES

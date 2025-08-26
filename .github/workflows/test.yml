@@ -15,7 +15,7 @@ jobs:
       #     echo "IS_DEVELOP_BRANCH=${{ github.ref == 'refs/heads/develop' }}" >> $GITHUB_ENV
 
       - name: Set up environment
-        if: env.IS_SPECIFIC_REPOSITORY == 'true' && env.IS_DEVELOP_BRANCH == 'true'
+        # if: env.IS_SPECIFIC_REPOSITORY == 'true' && env.IS_DEVELOP_BRANCH == 'true'
         run: |
           PR_Branch=${{ github.event.pull_request.head.ref }}
           Repository=${{ github.event.pull_request.head.repo.full_name }}
@@ -27,7 +27,7 @@ jobs:
           echo "PR_Sha: $PR_Sha"
 
       - name: Dispatch event
-        if: env.IS_SPECIFIC_REPOSITORY == 'true' && env.IS_DEVELOP_BRANCH == 'true'
+        # if: env.IS_SPECIFIC_REPOSITORY == 'true' && env.IS_DEVELOP_BRANCH == 'true'
         run: |
           curl -X POST \
             -H "Authorization: Bearer ${{ secrets.REGRESSION_TEST }}" \
